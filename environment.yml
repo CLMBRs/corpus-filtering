@@ -1,0 +1,8 @@
+name: corpus_filter_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - stanfordcorenlp
+  - python=3.9
+  - stanza
