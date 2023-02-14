@@ -18,7 +18,7 @@ def serialize(f_in, f_out):
     d = pipeline('\n'.join(lines))
     print('Document processed through Stanza pipeline.')
 
-    print('Serializing Document to file {f_out}...')
+    print(f'Serializing Document to file {f_out}...')
     with open(f_out, 'wb') as f:
         pickle.dump(d, f)
 
