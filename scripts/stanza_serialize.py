@@ -3,9 +3,10 @@ import pickle
 import sys
 import stanza
 
-PROCESSORS = 'tokenize,pos,lemma,depparse,constituency'
+DEFAULT_BATCH_SIZE = 10000
 LOG_LEVEL = 'DEBUG'
-DEFAULT_BATCH_SIZE = 5 #10000
+PROCESSORS = 'tokenize,pos,lemma,depparse,constituency'
+USE_GPU = True
 
 def serialize(fpath_in, fpath_out, batch_size=DEFAULT_BATCH_SIZE):
     """
@@ -18,7 +19,7 @@ def serialize(fpath_in, fpath_out, batch_size=DEFAULT_BATCH_SIZE):
         None (no return value)
     """
     print('Constructing Stanza pipeline...')
-    pipeline = stanza.Pipeline(lang='en', processors=PROCESSORS, tokenize_pretokenized=True, logging_level=LOG_LEVEL)
+    pipeline = stanza.Pipeline(lang='en', processors=PROCESSORS, tokenize_pretokenized=True, logging_level=LOG_LEVEL, use_gpu=USE_GPU)
     print('Constructed Stanza pipeline.')
 
     print(f'Annotating and serializing sentences from: {fpath_in}.')
