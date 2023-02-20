@@ -44,7 +44,7 @@ def serialize(fpath_in: str, fpath_out: str, batch_size: Optional[int] = DEFAULT
             # file handle for `batch_size` lines per loop, but the file handle may return fewer lines if there are less
             # than `batch_size` lines left in the file. Thus, we compare the actual number of lines returned with the
             # expected batch size, and continue to the next loop just in case three conditions are met:
-            #   (1) `batch_size` is not None (which would mean we are doing one giant batch
+            #   (1) `batch_size` is not None (which would mean we are doing one giant batch)
             #   (2) the number of lines returned by the file handle is equal to the desired batch size
             #   (3) the number of lines returned by the file handle is not zero
             while keep_going:
