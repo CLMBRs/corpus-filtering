@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 import sys
-from typing import Generator, Generic, TypeVar, Optional
+from typing import Generator, Generic, TextIO, TypeVar, Optional, Union
 
 import stanza
 from stanza.models.common.doc import Sentence as StanzaSentence
@@ -118,23 +118,21 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
                 Path to where sentences for which the predicate evaluates False should
                 be written. Optional; if `None`, rejected sentences will be discarded.
         """
-        self._f_accept_out = open(f_accept_out_path, "w")
+        self._f_accept_out: Optional[TextIO] = open(f_accept_out_path, "w")
+        self._f_reject_out: Optional[TextIO] = None
         if f_reject_out_path:
             self._f_reject_out = open(f_reject_out_path, "w")
-        else:
-            self._f_reject_out = None
 
     def close(self):
         """Do file handle cleanup so this class can be used in a `with` block."""
         if self._f_accept_out is not None:
             self._f_accept_out.close()
+            self._f_accept_out = None
         if self._f_reject_out is not None:
-            self._f_accept_out.close()
+            self._f_reject_out.close()
+            self._f_reject_out = None
 
-        self._f_accept_out = None
-        self._f_reject_out = None
-
-    def _sent_to_str(self, sent: T) -> str:
+    def _sent_to_str(self, sent: T) -> Union[T, str]:
         """Method that subclasses may override if the type of input corpus' atoms are
         not strings or otherwise require preprocessing prior to being written to disk.
 
@@ -160,6 +158,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
         """
         sent_str = self._sent_to_str(sent)
         out_line = f"{sent_str}\n"
+        assert self._f_accept_out is not None, 'Accept output file was closed!'
         if not reject:
             self._f_accept_out.write(out_line)
         elif reject and self._f_reject_out:
