@@ -6,3 +6,4 @@ dependencies:
   - stanfordcorenlp
   - python=3.9
   - stanza
+  - nltk
