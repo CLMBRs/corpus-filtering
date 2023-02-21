@@ -7,26 +7,15 @@ class PickleStanzaDocCorpusView(PickleCorpusView):
 
     Also necessary because of a bug in NLTK (at least as of v.3.8.1) that greatly impedes the functionality of
     `PickleCorpusView`. See NLTK issues #2331,#3124 on Github.
+
+    For more detailed documentation of this class and the methods below, please refer to the NLTK docs.
     """
     def __init__(self, fileid, doc_block_size=1):
-        super().__init__(self, fileid, delete_on_gc=False)
-        self.encoding = None
+        super().__init__(fileid)
+        self._encoding = None # This fixes the bug with NLTK's PickleCorpusView
         self.BLOCK_SIZE = doc_block_size
 
     def read_block(self, stream):
         docs = super().read_block(stream)
         sents = [s for doc in docs for s in doc.sentences] # flatten sentence lists of all docs
-        for sent in sents:
-            yield sent
-
-        # while sents and len(sents) < self.SENT_BLOCK_SIZE:
-        #     docs += super().read_block(stream)
-
-        # while res:
-        #     yield res[:self.SENT_BLOCK_SIZE]
-        #     res = res[self.SENT_BLOCK_SIZE:]
-
-        # if len(res) > self.SENT_BLOCK_SIZE:
-        #     pass
-        # else:
-        #     return res
+        return sents
