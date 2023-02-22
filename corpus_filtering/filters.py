@@ -45,11 +45,13 @@ class CorpusFilterWriter(ABC, Generic[T]):
 
     @abstractmethod
     def _exclude_sent(self, sent: T) -> bool:
-        """Predicate that determines whether the basic atoms of this corpus (i.e.
-        sentences) are filtered in or out.
+        """Predicate that partitions the basic atoms of this corpus (i.e. sentences)
+        into two sets.
 
-        The specific semantics of what it means for this function to evaluate True or
-        False are defined by the `_write` function.
+        This function determines the specific truth conditions for a sentence to be
+        placed in one partition or the other, but the `_write` function defines the
+        behavior associated with either truth condition. Conventionally, a return value
+        of False indicates that the sentence should be "filtered out" or "rejected."
 
         Args:
             sent:
@@ -66,9 +68,6 @@ class CorpusFilterWriter(ABC, Generic[T]):
     def _get_sents(self) -> Generator[T, None, None]:
         """Generator for the entities that are the atoms of the input corpus- typically
         sentences or similar.
-
-        The type of return value of this generator must match that expected by
-        `_exclude_sent` and `write`.
 
         Returns:
             A generator over the atoms of the corpus. The type of this argument must
@@ -132,7 +131,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
             self._f_reject_out.close()
             self._f_reject_out = None
 
-    def _sent_to_str(self, sent: T) -> Union[T, str]:
+    def _sent_to_str(self, sent: T) -> str:
         """Method that subclasses may override if the type of input corpus' atoms are
         not strings or otherwise require preprocessing prior to being written to disk.
 
@@ -141,7 +140,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
         Returns:
             A string that can be written to file in normal `w` mode.
         """
-        return sent
+        return str(sent)
 
     def _write(self, sent: T, reject: bool):
         """Write a sentence to disk based on the given predicate evaluation value.
@@ -158,7 +157,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
         """
         sent_str = self._sent_to_str(sent)
         out_line = f"{sent_str}\n"
-        assert self._f_accept_out is not None, 'Accept output file was closed!'
+        assert self._f_accept_out is not None, "Accept output file was closed!"
         if not reject:
             self._f_accept_out.write(out_line)
         elif reject and self._f_reject_out:

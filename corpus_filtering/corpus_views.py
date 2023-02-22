@@ -8,14 +8,17 @@ class PickleStanzaDocCorpusView(PickleCorpusView):
     `Document` objects themselves.
 
     Also necessary because of a bug in NLTK (at least as of v.3.8.1) that greatly
-    impedes the functionality of `PickleCorpusView`. See NLTK issues #2331,#3124 on
-    Github.
+    impedes the functionality of `PickleCorpusView`. See NLTK issues #2331, #3124 on
+    Github:
+        https://github.com/nltk/nltk/issues/2331
+        https://github.com/nltk/nltk/issues/3124
 
     For more detailed documentation of this class and the methods below, please refer to
-    the NLTK docs.
+    the NLTK docs:
+        https://www.nltk.org/api/nltk.corpus.reader.util.html#nltk.corpus.reader.util.PickleCorpusView
     """
 
-    def __init__(self, fileid, doc_block_size=1):
+    def __init__(self, fileid: str, doc_block_size=1):
         super().__init__(fileid)
         self._encoding = None  # This fixes the bug with NLTK's PickleCorpusView
         self.BLOCK_SIZE = doc_block_size
