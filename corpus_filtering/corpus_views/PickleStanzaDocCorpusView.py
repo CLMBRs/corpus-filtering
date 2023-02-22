@@ -18,7 +18,7 @@ class PickleStanzaDocCorpusView(PickleCorpusView):
         https://www.nltk.org/api/nltk.corpus.reader.util.html#nltk.corpus.reader.util.PickleCorpusView
     """
 
-    def __init__(self, fileid: str, doc_block_size=1):
+    def __init__(self, fileid, doc_block_size=1):
         super().__init__(fileid)
         self._encoding = None  # This fixes the bug with NLTK's PickleCorpusView
         self.BLOCK_SIZE = doc_block_size
