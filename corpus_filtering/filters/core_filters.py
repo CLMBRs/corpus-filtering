@@ -5,9 +5,17 @@ from typing import Generator, Generic, TextIO, TypeVar, Optional, Union
 import stanza
 from stanza.models.common.doc import Sentence as StanzaSentence
 
-from corpus_views import PickleStanzaDocCorpusView
+from corpus_filtering.corpus_views import PickleStanzaDocCorpusView
+
+__all__ = [
+    "CorpusFilterWriter",
+    "CorpusFilterTextFileWriter",
+    "PickleStanzaDocCorpusFilterWriter",
+]
 
 T = TypeVar("T")
+
+API_FILTERS = []
 
 
 class CorpusFilterWriter(ABC, Generic[T]):
@@ -178,6 +186,10 @@ class PickleStanzaDocCorpusFilterWriter(CorpusFilterTextFileWriter[StanzaSentenc
     Under the hood, uses thin wrapper around `nltk.corpus.reader.util.PickleCorpusView`
     to lazily load the pickled data as needed.
     """
+
+    api_subparser_add_argument_kwargs = getattr(
+        CorpusFilterTextFileWriter, "api_subparser_kwargs", {}
+    ).copy()
 
     def __init__(
         self,
