@@ -1,21 +1,24 @@
 from abc import abstractmethod, ABC
-import sys
-from typing import Generator, Generic, TextIO, TypeVar, Optional, Union
-
-import stanza
-from stanza.models.common.doc import Sentence as StanzaSentence
-
-from corpus_filtering.corpus_views import PickleStanzaDocCorpusView
+from typing import final, Generator, Generic, Optional, TextIO, Type, TypeVar, Union
 
 __all__ = [
+    "cli_register",
     "CorpusFilterWriter",
     "CorpusFilterTextFileWriter",
-    "PickleStanzaDocCorpusFilterWriter",
 ]
 
 T = TypeVar("T")
 
-API_FILTERS = []
+CLI_FILTERS: list[Type["CorpusFilterWriter"]] = []
+
+
+def cli_register(filter_cls: Type["CorpusFilterWriter"]):
+    """Decorator for filter classes that declares them part of the public CLI API.
+
+    See __main__.py for more information.
+    """
+    CLI_FILTERS.append(filter_cls)
+    return filter_cls
 
 
 class CorpusFilterWriter(ABC, Generic[T]):
@@ -23,18 +26,18 @@ class CorpusFilterWriter(ABC, Generic[T]):
     of the partitioned corpuses to file.
 
     A CorpusFilterWriter consists of three entities:
-        -- An Iterable that yields input entities of type T (typically, corresponding
+        -- A predicate function that accepts an element of type T and returns a boolean.
+        -- A Generator that yields input entities of type T (typically, corresponding
             to sentences)
-        -- A predicate function that accepts an element of type T from the Iterable and
-            returns a boolean.
-        -- A function that accepts an element of type T from the Iterable and the
-            result of evaluating the predicate on that element, and defines if/how to
-            write it to file.
+        -- A function that accepts an element of type T from the Generator and the
+            boolean result of evaluating the predicate on that element, and defines
+            if/how to write it to file (or to some other output stream).
 
     Subclasses of CorpusFilter should concretely implement the logic of those entities
     (adjusting their constructors accordingly).
     """
 
+    @final
     def filter_write(self):
         for sent in self._get_sents():
             self._write(sent, reject=self._exclude_sent(sent))
@@ -44,11 +47,17 @@ class CorpusFilterWriter(ABC, Generic[T]):
         return self
 
     def close(self):
-        """Do any necessary cleanup logic at the end of a `with` block."""
+        """Do any necessary cleanup logic at the end of a `with` block; can also be
+        called manually should the user wish to open/close a filter-writer and its
+        associated file handle(s) manually."""
         pass
 
     def __exit__(self, type, value, traceback):
-        """Used by Python's `with` statement."""
+        """Used by Python's `with` statement.
+
+        Delegates to close(), which can also be called by itself, to allow filter-writer
+        subclasses and their users to permit the opening/closing of file handles on a
+        manual basis."""
         self.close()
 
     @abstractmethod
@@ -114,6 +123,24 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
     program exit.
     """
 
+    cli_subcmd_arguments = [
+        {
+            "args": ["f_accept_out_path"],
+            "kwargs": {
+                "help": "Path to file where accepted sentences should be written.",
+                "metavar": "accepted_file_path",
+            },
+        },
+        {
+            "args": ["-r", "--reject"],
+            "kwargs": {
+                "help": "Path to file where rejected sentences should be written.",
+                "metavar": "rejected_file_path",
+                "dest": "f_reject_out_path",
+            },
+        },
+    ]
+
     def __init__(self, f_accept_out_path: str, f_reject_out_path: Optional[str] = None):
         """Constructor for CorpusFilterTextFileWriter.
 
@@ -122,7 +149,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
                 Path to where sentences for which the predicate evaluates False should
                 be written
             f_reject_out_path:
-                Path to where sentences for which the predicate evaluates False should
+                Path to where sentences for which the predicate evaluates True should
                 be written. Optional; if `None`, rejected sentences will be discarded.
         """
         self._f_accept_out: Optional[TextIO] = open(f_accept_out_path, "w")
@@ -168,74 +195,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
         assert self._f_accept_out is not None, "Accept output file was closed!"
         if not reject:
             self._f_accept_out.write(out_line)
+            self._f_accept_out.flush()
         elif reject and self._f_reject_out:
             self._f_reject_out.write(out_line)
-
-
-class PickleStanzaDocCorpusFilterWriter(CorpusFilterTextFileWriter[StanzaSentence]):
-    """Reads in a corpus of pickled `stanza.Document` objects, partitions it based on
-    some predicate, and writes one or more of the partitioned corpuses to file.
-
-    The output sentences are the plaintext, that is, the `text` attribute of Stanza's
-    `Sentence` class.
-
-    As this is a subclass of CorpusFilterTextFileWriter, subclasses or instances of this
-    class may choose to write only accepted sentences to file, or to write accepted
-    sentences to one file and rejected ones to a different one.
-
-    Under the hood, uses thin wrapper around `nltk.corpus.reader.util.PickleCorpusView`
-    to lazily load the pickled data as needed.
-    """
-
-    api_subparser_add_argument_kwargs = getattr(
-        CorpusFilterTextFileWriter, "api_subparser_kwargs", {}
-    ).copy()
-
-    def __init__(
-        self,
-        f_in: str,
-        f_accept_out_path: str,
-        f_reject_out_path: Optional[str] = None,
-        doc_block_size: int = 1,
-    ):
-        """Constructor for PickleStanzaDocCorpusFilterWriter.
-
-        Args:
-            f_in: Path to the file containing the pickled `stanza.Document` objects.
-            f_accept_out_path:
-                Path to where sentences for which the predicate evaluates False should
-                be written.
-            f_reject_out_path:
-                Path to where sentences for which the predicate evaluates False should
-                be written. Optional; if `None`, rejected sentences will be discarded.
-            doc_block_size:
-                the number of `stanza.Document` objects that should be unpickled and
-                processed at a time.
-        """
-        super().__init__(f_accept_out_path, f_reject_out_path)
-
-        self._corpus_view = PickleStanzaDocCorpusView(f_in, doc_block_size)
-
-    def _sent_to_str(self, sent: StanzaSentence) -> str:
-        """Returns the text of a stanza `Sentence` object as a preprocessing step before
-        writing to file.
-
-        Args:
-            sent: A stanza `Sentence` object.
-        Returns:
-            A string that can be written to file in normal `w` mode.
-        """
-        return sent.text
-
-    def _get_sents(self) -> Generator[StanzaSentence, None, None]:
-        """Generator for stanza `Sentence` objects from `stanza.Document` objects
-        deserialized in batches from a corpus.
-
-        A wrapper around a `PickleStanzaDocCorpusView` object, which itself wraps NLTK's
-        `PickleCorpusView`.
-
-        Returns:
-            A generator over the corpus, as stanza `Sentence` objects.
-        """
-        for sent in self._corpus_view:
-            yield sent
+            self._f_reject_out.flush()

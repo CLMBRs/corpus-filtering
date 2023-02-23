@@ -1,6 +1,8 @@
 from nltk.corpus.reader.util import PickleCorpusView
 import stanza
 
+__all__ = ["PickleStanzaDocCorpusView"]
+
 
 class PickleStanzaDocCorpusView(PickleCorpusView):
     """Wrapper around NLTK's `PickleCorpusView` to read in pickled `stanza.Document`
