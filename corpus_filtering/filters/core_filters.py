@@ -1,24 +1,14 @@
 from abc import abstractmethod, ABC
+import functools
 from typing import final, Generator, Generic, Optional, TextIO, Type, TypeVar, Union
 
 __all__ = [
-    "cli_register",
+    "register_filter",
     "CorpusFilterWriter",
     "CorpusFilterTextFileWriter",
 ]
 
 T = TypeVar("T")
-
-CLI_FILTERS: list[Type["CorpusFilterWriter"]] = []
-
-
-def cli_register(filter_cls: Type["CorpusFilterWriter"]):
-    """Decorator for filter classes that declares them part of the public CLI API.
-
-    See __main__.py for more information.
-    """
-    CLI_FILTERS.append(filter_cls)
-    return filter_cls
 
 
 class CorpusFilterWriter(ABC, Generic[T]):
@@ -195,7 +185,31 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
         assert self._f_accept_out is not None, "Accept output file was closed!"
         if not reject:
             self._f_accept_out.write(out_line)
-            self._f_accept_out.flush()
         elif reject and self._f_reject_out:
             self._f_reject_out.write(out_line)
-            self._f_reject_out.flush()
+
+
+CLI_FILTERS: dict[str, Type[CorpusFilterWriter]] = {}
+
+
+def register_filter(name=None):
+    """Decorator factory for filter classes that declares them part of the public CLI
+    API.
+
+    Either decorate with `@register_filter()` in which case the CLI subcommand associated
+    with the filter will be named whatever the class is named, or pass an optional name
+    parameter, e.g. `@register_filter("MyFilter")` or `@register_filter("name=MyFilter")`.
+
+    See __main__.py for more information.
+    """
+
+    def decorate(filter_cls: Type["CorpusFilterWriter"], name):
+        name = name or filter_cls.__name__
+        # prohibit subcommands with whitespace in name (we might want to change this?)
+        name = "".join(name.split())
+        assert name not in CLI_FILTERS, "Duplicate filter name registered to CLI"
+        CLI_FILTERS[name] = filter_cls
+
+        return filter_cls
+
+    return functools.partial(decorate, name=name)

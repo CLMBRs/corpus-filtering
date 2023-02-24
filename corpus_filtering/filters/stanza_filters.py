@@ -6,7 +6,7 @@ import stanza
 from stanza.models.common.doc import Sentence as StanzaSentence
 
 from corpus_filtering.filters.core_filters import (
-    cli_register,
+    register_filter,
     CorpusFilterWriter,
     CorpusFilterTextFileWriter,
 )
@@ -93,11 +93,11 @@ class PickleStanzaDocCorpusFilterWriter(CorpusFilterTextFileWriter[StanzaSentenc
         Returns:
             A generator over the corpus, as stanza `Sentence` objects.
         """
-        for sent in self._corpus_view:
-            yield sent
+        yield from self._corpus_view
 
 
-@cli_register
+# @register_filter() # if we wanted NModNSubjFilteredCorpusWriter as the subcommand name
+@register_filter("pp-mod-subj")
 class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
     A filter for sentences where a prepositional nominal modifier of the subject occurs
