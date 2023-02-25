@@ -1,9 +1,15 @@
-from .core_filters import API_FILTERS as core_API_FILTERS
-from .core_filters import (
-    CorpusFilterWriter,
-    CorpusFilterTextFileWriter,
+from collections.abc import Iterable
+from typing import List, Type
+
+from .core_filters import *
+from .core_filters import CLI_FILTERS
+from .stanza_filters import (
     PickleStanzaDocCorpusFilterWriter,
+    NModNSubjFilteredCorpusWriter,
 )
 
-API_FILTERS = []
-API_FILTERS.extend(core_API_FILTERS)
+__all__ = [
+    "CLI_FILTERS",
+    "PickleStanzaDocCorpusFilterWriter",
+    "NModNSubjFilteredCorpusWriter",
+]
