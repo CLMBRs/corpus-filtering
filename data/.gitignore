@@ -1,0 +1,8 @@
+# Corpus files
+*.corpus
+
+# Data files
+*.data
+
+# Pickled (serialized) data files
+*.pkl
