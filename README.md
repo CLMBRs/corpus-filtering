@@ -66,7 +66,7 @@ n.b.: This only works for CPU nodes.
 1. When you are done, you can exit the environment with `conda deactivate`.
 1. If you pull code from the repo and the `environment.yml` file has changed, update your environment by running the following (after activating the environment):
     ```sh
-    conda env update -f environment.yml
+    conda env update -f environment.yml --prune
     ```
 
 ### Contribution Guidelines
@@ -76,10 +76,12 @@ For any non-trivial changes, please work on your own branch rather than on `main
 If you need any new packages, install them with `conda install PACKAGE_NAME`. Then, before committing, run:
 
 ```sh
-conda env export --from-history | grep -v "^prefix: " > environment.yml
+conda env export --from-history | grep -vE "^(name|prefix):" > environment.yml
 ```
 
 (Replace `environment.yml` with `gpu_environment.yml` as appropriate.)
+
+This makes sure the `name:` and `prefix:` lines automatically created by Conda's `export` command are not included, since these values can vary by platform/machine.
 
 Then make sure the updated `(gpu_)environment.yml` file is included with your commit. Note: if you did not install the command with `conda install`, the above command will not work properly, due to the `--from-history` flag. However, using this flag is necessary to ensure the `requirements.yml` file is platform-agnostic. Therefore, please only install packages via `conda install` (or by manually adding requirements to the YAML files).
 
