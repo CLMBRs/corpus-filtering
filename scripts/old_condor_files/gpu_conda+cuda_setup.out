@@ -1,0 +1,287 @@
+nvcc --version is: nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2015 NVIDIA Corporation
+Built on Tue_Aug_11_14:27:32_CDT_2015
+Cuda compilation tools, release 7.5, V7.5.17
+usr local cuda nvcc version is nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2019 NVIDIA Corporation
+Built on Wed_Oct_23_19:24:38_PDT_2019
+Cuda compilation tools, release 10.2, V10.2.89
+Sourced Conda.sh script. Now creating environment
+Collecting package metadata (current_repodata.json): ...working... done
+Solving environment: ...working... failed with repodata from current_repodata.json, will retry with next repodata source.
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... done
+
+## Package Plan ##
+
+  environment location: /home2/abhinavp/anaconda3/envs/gpu_corpus_filter_env
+
+  added / updated specs:
+    - python=3.9
+    - pytorch
+    - pytorch-cuda=11.6
+    - stanfordcorenlp
+    - stanza
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    blas-2.116                 |              mkl          13 KB  conda-forge
+    blas-devel-3.9.0           |   16_linux64_mkl          12 KB  conda-forge
+    cuda-11.6.1                |                0           1 KB  nvidia
+    cuda-cccl-11.6.55          |       hf6102b2_0         1.2 MB  nvidia
+    cuda-command-line-tools-11.6.2|                0           1 KB  nvidia
+    cuda-compiler-11.6.2       |                0           1 KB  nvidia
+    cuda-cudart-11.6.55        |       he381448_0         194 KB  nvidia
+    cuda-cudart-dev-11.6.55    |       h42ad0f4_0         1.0 MB  nvidia
+    cuda-cuobjdump-11.6.124    |       h2eeebcb_0         134 KB  nvidia
+    cuda-cupti-11.6.124        |       h86345e5_0        22.1 MB  nvidia
+    cuda-cuxxfilt-11.6.124     |       hecbf4f6_0         283 KB  nvidia
+    cuda-driver-dev-11.6.55    |                0          16 KB  nvidia
+    cuda-gdb-12.0.140          |                0         5.3 MB  nvidia
+    cuda-libraries-11.6.1      |                0           1 KB  nvidia
+    cuda-libraries-dev-11.6.1  |                0           2 KB  nvidia
+    cuda-memcheck-11.8.86      |                0         168 KB  nvidia
+    cuda-nsight-12.0.140       |                0       113.6 MB  nvidia
+    cuda-nsight-compute-12.0.1 |                0           1 KB  nvidia
+    cuda-nvcc-11.6.124         |       hbba6d2d_0        42.2 MB  nvidia
+    cuda-nvdisasm-12.0.140     |                0        47.9 MB  nvidia
+    cuda-nvml-dev-11.6.55      |       haa9ef22_0          65 KB  nvidia
+    cuda-nvprof-12.0.146       |                0         4.7 MB  nvidia
+    cuda-nvprune-11.6.124      |       he22ec0a_0          65 KB  nvidia
+    cuda-nvrtc-11.6.124        |       h020bade_0        17.1 MB  nvidia
+    cuda-nvrtc-dev-11.6.124    |       h249d397_0        16.8 MB  nvidia
+    cuda-nvtx-11.6.124         |       h0630a44_0          58 KB  nvidia
+    cuda-nvvp-12.0.146         |                0       114.5 MB  nvidia
+    cuda-runtime-11.6.1        |                0           1 KB  nvidia
+    cuda-samples-11.6.101      |       h8efea70_0           5 KB  nvidia
+    cuda-sanitizer-api-12.0.140|                0        16.6 MB  nvidia
+    cuda-toolkit-11.6.1        |                0           1 KB  nvidia
+    cuda-tools-11.6.1          |                0           1 KB  nvidia
+    cuda-visual-tools-11.6.1   |                0           1 KB  nvidia
+    gds-tools-1.5.1.14         |                0        40.9 MB  nvidia
+    libblas-3.9.0              |   16_linux64_mkl          13 KB  conda-forge
+    libcblas-3.9.0             |   16_linux64_mkl          12 KB  conda-forge
+    libcublas-11.9.2.110       |       h5e84587_0       300.8 MB  nvidia
+    libcublas-dev-11.9.2.110   |       h5c901ab_0       310.9 MB  nvidia
+    libcufft-10.7.1.112        |       hf425ae0_0        93.6 MB  nvidia
+    libcufft-dev-10.7.1.112    |       ha5ce4c0_0       197.2 MB  nvidia
+    libcufile-1.5.1.14         |                0         763 KB  nvidia
+    libcufile-dev-1.5.1.14     |                0          13 KB  nvidia
+    libcurand-10.3.1.124       |                0        51.7 MB  nvidia
+    libcurand-dev-10.3.1.124   |                0         449 KB  nvidia
+    libcusolver-11.3.4.124     |       h33c3c4e_0        87.0 MB  nvidia
+    libcusparse-11.7.2.124     |       h7538f96_0       160.9 MB  nvidia
+    libcusparse-dev-11.7.2.124 |       hbbe9722_0       328.9 MB  nvidia
+    liblapack-3.9.0            |   16_linux64_mkl          12 KB  conda-forge
+    liblapacke-3.9.0           |   16_linux64_mkl          12 KB  conda-forge
+    libnpp-11.6.3.124          |       hd2722f0_0       118.4 MB  nvidia
+    libnpp-dev-11.6.3.124      |       h3c42840_0       115.6 MB  nvidia
+    libnvjpeg-11.6.2.124       |       hd473ad6_0         2.3 MB  nvidia
+    libnvjpeg-dev-11.6.2.124   |       hb5906b9_0         2.0 MB  nvidia
+    mkl-2022.1.0               |     h84fe81f_915       199.6 MB  conda-forge
+    mkl-devel-2022.1.0         |     ha770c72_916          25 KB  conda-forge
+    mkl-include-2022.1.0       |     h84fe81f_915         745 KB  conda-forge
+    nsight-compute-2022.4.1.6  |                0       764.5 MB  nvidia
+    pytorch-1.13.1             |py3.9_cuda11.6_cudnn8.3.2_0        1.27 GB  pytorch
+    pytorch-cuda-11.6          |       h867d48c_1           3 KB  pytorch
+    pytorch-mutex-1.0          |             cuda           3 KB  pytorch
+    ------------------------------------------------------------
+                                           Total:        4.38 GB
+
+The following NEW packages will be INSTALLED:
+
+  _libgcc_mutex      conda-forge/linux-64::_libgcc_mutex-0.1-conda_forge None
+  _openmp_mutex      conda-forge/linux-64::_openmp_mutex-4.5-2_kmp_llvm None
+  blas               conda-forge/linux-64::blas-2.116-mkl None
+  blas-devel         conda-forge/linux-64::blas-devel-3.9.0-16_linux64_mkl None
+  brotlipy           conda-forge/linux-64::brotlipy-0.7.0-py39hb9d737c_1005 None
+  bzip2              conda-forge/linux-64::bzip2-1.0.8-h7f98852_4 None
+  ca-certificates    conda-forge/linux-64::ca-certificates-2022.12.7-ha878542_0 None
+  certifi            conda-forge/noarch::certifi-2022.12.7-pyhd8ed1ab_0 None
+  cffi               conda-forge/linux-64::cffi-1.15.1-py39he91dace_3 None
+  charset-normalizer conda-forge/noarch::charset-normalizer-2.1.1-pyhd8ed1ab_0 None
+  colorama           conda-forge/noarch::colorama-0.4.6-pyhd8ed1ab_0 None
+  cryptography       conda-forge/linux-64::cryptography-39.0.1-py39h079d5ae_0 None
+  cuda               nvidia/linux-64::cuda-11.6.1-0 None
+  cuda-cccl          nvidia/linux-64::cuda-cccl-11.6.55-hf6102b2_0 None
+  cuda-command-line~ nvidia/linux-64::cuda-command-line-tools-11.6.2-0 None
+  cuda-compiler      nvidia/linux-64::cuda-compiler-11.6.2-0 None
+  cuda-cudart        nvidia/linux-64::cuda-cudart-11.6.55-he381448_0 None
+  cuda-cudart-dev    nvidia/linux-64::cuda-cudart-dev-11.6.55-h42ad0f4_0 None
+  cuda-cuobjdump     nvidia/linux-64::cuda-cuobjdump-11.6.124-h2eeebcb_0 None
+  cuda-cupti         nvidia/linux-64::cuda-cupti-11.6.124-h86345e5_0 None
+  cuda-cuxxfilt      nvidia/linux-64::cuda-cuxxfilt-11.6.124-hecbf4f6_0 None
+  cuda-driver-dev    nvidia/linux-64::cuda-driver-dev-11.6.55-0 None
+  cuda-gdb           nvidia/linux-64::cuda-gdb-12.0.140-0 None
+  cuda-libraries     nvidia/linux-64::cuda-libraries-11.6.1-0 None
+  cuda-libraries-dev nvidia/linux-64::cuda-libraries-dev-11.6.1-0 None
+  cuda-memcheck      nvidia/linux-64::cuda-memcheck-11.8.86-0 None
+  cuda-nsight        nvidia/linux-64::cuda-nsight-12.0.140-0 None
+  cuda-nsight-compu~ nvidia/linux-64::cuda-nsight-compute-12.0.1-0 None
+  cuda-nvcc          nvidia/linux-64::cuda-nvcc-11.6.124-hbba6d2d_0 None
+  cuda-nvdisasm      nvidia/linux-64::cuda-nvdisasm-12.0.140-0 None
+  cuda-nvml-dev      nvidia/linux-64::cuda-nvml-dev-11.6.55-haa9ef22_0 None
+  cuda-nvprof        nvidia/linux-64::cuda-nvprof-12.0.146-0 None
+  cuda-nvprune       nvidia/linux-64::cuda-nvprune-11.6.124-he22ec0a_0 None
+  cuda-nvrtc         nvidia/linux-64::cuda-nvrtc-11.6.124-h020bade_0 None
+  cuda-nvrtc-dev     nvidia/linux-64::cuda-nvrtc-dev-11.6.124-h249d397_0 None
+  cuda-nvtx          nvidia/linux-64::cuda-nvtx-11.6.124-h0630a44_0 None
+  cuda-nvvp          nvidia/linux-64::cuda-nvvp-12.0.146-0 None
+  cuda-runtime       nvidia/linux-64::cuda-runtime-11.6.1-0 None
+  cuda-samples       nvidia/linux-64::cuda-samples-11.6.101-h8efea70_0 None
+  cuda-sanitizer-api nvidia/linux-64::cuda-sanitizer-api-12.0.140-0 None
+  cuda-toolkit       nvidia/linux-64::cuda-toolkit-11.6.1-0 None
+  cuda-tools         nvidia/linux-64::cuda-tools-11.6.1-0 None
+  cuda-visual-tools  nvidia/linux-64::cuda-visual-tools-11.6.1-0 None
+  emoji              conda-forge/noarch::emoji-2.2.0-pyhd8ed1ab_0 None
+  gds-tools          nvidia/linux-64::gds-tools-1.5.1.14-0 None
+  icu                conda-forge/linux-64::icu-70.1-h27087fc_0 None
+  idna               conda-forge/noarch::idna-3.4-pyhd8ed1ab_0 None
+  ld_impl_linux-64   conda-forge/linux-64::ld_impl_linux-64-2.40-h41732ed_0 None
+  libblas            conda-forge/linux-64::libblas-3.9.0-16_linux64_mkl None
+  libcblas           conda-forge/linux-64::libcblas-3.9.0-16_linux64_mkl None
+  libcublas          nvidia/linux-64::libcublas-11.9.2.110-h5e84587_0 None
+  libcublas-dev      nvidia/linux-64::libcublas-dev-11.9.2.110-h5c901ab_0 None
+  libcufft           nvidia/linux-64::libcufft-10.7.1.112-hf425ae0_0 None
+  libcufft-dev       nvidia/linux-64::libcufft-dev-10.7.1.112-ha5ce4c0_0 None
+  libcufile          nvidia/linux-64::libcufile-1.5.1.14-0 None
+  libcufile-dev      nvidia/linux-64::libcufile-dev-1.5.1.14-0 None
+  libcurand          nvidia/linux-64::libcurand-10.3.1.124-0 None
+  libcurand-dev      nvidia/linux-64::libcurand-dev-10.3.1.124-0 None
+  libcusolver        nvidia/linux-64::libcusolver-11.3.4.124-h33c3c4e_0 None
+  libcusparse        nvidia/linux-64::libcusparse-11.7.2.124-h7538f96_0 None
+  libcusparse-dev    nvidia/linux-64::libcusparse-dev-11.7.2.124-hbbe9722_0 None
+  libffi             conda-forge/linux-64::libffi-3.4.2-h7f98852_5 None
+  libgcc-ng          conda-forge/linux-64::libgcc-ng-12.2.0-h65d4601_19 None
+  libgfortran-ng     conda-forge/linux-64::libgfortran-ng-12.2.0-h69a702a_19 None
+  libgfortran5       conda-forge/linux-64::libgfortran5-12.2.0-h337968e_19 None
+  libhwloc           conda-forge/linux-64::libhwloc-2.8.0-h32351e8_1 None
+  libiconv           conda-forge/linux-64::libiconv-1.17-h166bdaf_0 None
+  liblapack          conda-forge/linux-64::liblapack-3.9.0-16_linux64_mkl None
+  liblapacke         conda-forge/linux-64::liblapacke-3.9.0-16_linux64_mkl None
+  libnpp             nvidia/linux-64::libnpp-11.6.3.124-hd2722f0_0 None
+  libnpp-dev         nvidia/linux-64::libnpp-dev-11.6.3.124-h3c42840_0 None
+  libnsl             conda-forge/linux-64::libnsl-2.0.0-h7f98852_0 None
+  libnvjpeg          nvidia/linux-64::libnvjpeg-11.6.2.124-hd473ad6_0 None
+  libnvjpeg-dev      nvidia/linux-64::libnvjpeg-dev-11.6.2.124-hb5906b9_0 None
+  libprotobuf        conda-forge/linux-64::libprotobuf-3.21.12-h3eb15da_0 None
+  libsqlite          conda-forge/linux-64::libsqlite-3.40.0-h753d276_0 None
+  libstdcxx-ng       conda-forge/linux-64::libstdcxx-ng-12.2.0-h46fd767_19 None
+  libuuid            conda-forge/linux-64::libuuid-2.32.1-h7f98852_1000 None
+  libxml2            conda-forge/linux-64::libxml2-2.10.3-h7463322_0 None
+  libzlib            conda-forge/linux-64::libzlib-1.2.13-h166bdaf_4 None
+  llvm-openmp        conda-forge/linux-64::llvm-openmp-15.0.7-h0cdce71_0 None
+  mkl                conda-forge/linux-64::mkl-2022.1.0-h84fe81f_915 None
+  mkl-devel          conda-forge/linux-64::mkl-devel-2022.1.0-ha770c72_916 None
+  mkl-include        conda-forge/linux-64::mkl-include-2022.1.0-h84fe81f_915 None
+  ncurses            conda-forge/linux-64::ncurses-6.3-h27087fc_1 None
+  nsight-compute     nvidia/linux-64::nsight-compute-2022.4.1.6-0 None
+  numpy              conda-forge/linux-64::numpy-1.24.2-py39h7360e5f_0 None
+  openssl            conda-forge/linux-64::openssl-3.0.8-h0b41bf4_0 None
+  pip                conda-forge/noarch::pip-23.0-pyhd8ed1ab_0 None
+  protobuf           conda-forge/linux-64::protobuf-4.21.12-py39h227be39_0 None
+  psutil             conda-forge/linux-64::psutil-5.9.4-py39hb9d737c_0 None
+  pycparser          conda-forge/noarch::pycparser-2.21-pyhd8ed1ab_0 None
+  pyopenssl          conda-forge/noarch::pyopenssl-23.0.0-pyhd8ed1ab_0 None
+  pysocks            conda-forge/noarch::pysocks-1.7.1-pyha2e5f31_6 None
+  python             conda-forge/linux-64::python-3.9.16-h2782a2a_0_cpython None
+  python_abi         conda-forge/linux-64::python_abi-3.9-3_cp39 None
+  pytorch            pytorch/linux-64::pytorch-1.13.1-py3.9_cuda11.6_cudnn8.3.2_0 None
+  pytorch-cuda       pytorch/noarch::pytorch-cuda-11.6-h867d48c_1 None
+  pytorch-mutex      pytorch/noarch::pytorch-mutex-1.0-cuda None
+  readline           conda-forge/linux-64::readline-8.1.2-h0f457ee_0 None
+  requests           conda-forge/noarch::requests-2.28.2-pyhd8ed1ab_0 None
+  setuptools         conda-forge/noarch::setuptools-67.3.1-pyhd8ed1ab_0 None
+  six                conda-forge/noarch::six-1.16.0-pyh6c4a22f_0 None
+  stanfordcorenlp    conda-forge/noarch::stanfordcorenlp-3.9.1.1-pyhd8ed1ab_0 None
+  stanza             conda-forge/noarch::stanza-1.4.2-pyhd8ed1ab_0 None
+  tbb                conda-forge/linux-64::tbb-2021.7.0-h924138e_1 None
+  tk                 conda-forge/linux-64::tk-8.6.12-h27826a3_0 None
+  tqdm               conda-forge/noarch::tqdm-4.64.1-pyhd8ed1ab_0 None
+  typing_extensions  conda-forge/noarch::typing_extensions-4.4.0-pyha770c72_0 None
+  tzdata             conda-forge/noarch::tzdata-2022g-h191b570_0 None
+  urllib3            conda-forge/noarch::urllib3-1.26.14-pyhd8ed1ab_0 None
+  wheel              conda-forge/noarch::wheel-0.38.4-pyhd8ed1ab_0 None
+  xz                 conda-forge/linux-64::xz-5.2.6-h166bdaf_0 None
+
+
+Proceed ([y]/n)? 
+
+Downloading and Extracting Packages
+cuda-11.6.1          | 1 KB      |            |   0% cuda-11.6.1          | 1 KB      | ########## | 100% cuda-11.6.1          | 1 KB      | ########## | 100% 
+cuda-cupti-11.6.124  | 22.1 MB   |            |   0% cuda-cupti-11.6.124  | 22.1 MB   | ##6        |  26% cuda-cupti-11.6.124  | 22.1 MB   | ######9    |  69% cuda-cupti-11.6.124  | 22.1 MB   | ########## | 100% 
+cuda-toolkit-11.6.1  | 1 KB      |            |   0% cuda-toolkit-11.6.1  | 1 KB      | ########## | 100% cuda-toolkit-11.6.1  | 1 KB      | ########## | 100% 
+blas-devel-3.9.0     | 12 KB     |            |   0% blas-devel-3.9.0     | 12 KB     | ########## | 100% blas-devel-3.9.0     | 12 KB     | ########## | 100% 
+cuda-command-line-to | 1 KB      |            |   0% cuda-command-line-to | 1 KB      | ########## | 100% 
+cuda-nsight-12.0.140 | 113.6 MB  |            |   0% cuda-nsight-12.0.140 | 113.6 MB  | 4          |   5% cuda-nsight-12.0.140 | 113.6 MB  | #3         |  13% cuda-nsight-12.0.140 | 113.6 MB  | ##1        |  22% cuda-nsight-12.0.140 | 113.6 MB  | ###        |  30% cuda-nsight-12.0.140 | 113.6 MB  | ###9       |  39% cuda-nsight-12.0.140 | 113.6 MB  | ####7      |  48% cuda-nsight-12.0.140 | 113.6 MB  | #####6     |  56% cuda-nsight-12.0.140 | 113.6 MB  | ######4    |  64% cuda-nsight-12.0.140 | 113.6 MB  | #######2   |  72% cuda-nsight-12.0.140 | 113.6 MB  | #######8   |  78% cuda-nsight-12.0.140 | 113.6 MB  | ########6  |  87% cuda-nsight-12.0.140 | 113.6 MB  | #########6 |  97% cuda-nsight-12.0.140 | 113.6 MB  | ########## | 100% 
+cuda-cuobjdump-11.6. | 134 KB    |            |   0% cuda-cuobjdump-11.6. | 134 KB    | ########## | 100% cuda-cuobjdump-11.6. | 134 KB    | ########## | 100% 
+liblapack-3.9.0      | 12 KB     |            |   0% liblapack-3.9.0      | 12 KB     | ########## | 100% liblapack-3.9.0      | 12 KB     | ########## | 100% 
+libcurand-dev-10.3.1 | 449 KB    |            |   0% libcurand-dev-10.3.1 | 449 KB    | ########## | 100% libcurand-dev-10.3.1 | 449 KB    | ########## | 100% 
+cuda-nvcc-11.6.124   | 42.2 MB   |            |   0% cuda-nvcc-11.6.124   | 42.2 MB   | #4         |  15% cuda-nvcc-11.6.124   | 42.2 MB   | ###7       |  38% cuda-nvcc-11.6.124   | 42.2 MB   | ######3    |  64% cuda-nvcc-11.6.124   | 42.2 MB   | ########9  |  90% cuda-nvcc-11.6.124   | 42.2 MB   | ########## | 100% 
+libcusparse-11.7.2.1 | 160.9 MB  |            |   0% libcusparse-11.7.2.1 | 160.9 MB  | 3          |   4% libcusparse-11.7.2.1 | 160.9 MB  | 9          |   9% libcusparse-11.7.2.1 | 160.9 MB  | #6         |  16% libcusparse-11.7.2.1 | 160.9 MB  | ##3        |  23% libcusparse-11.7.2.1 | 160.9 MB  | ##9        |  30% libcusparse-11.7.2.1 | 160.9 MB  | ###6       |  36% libcusparse-11.7.2.1 | 160.9 MB  | ####3      |  44% libcusparse-11.7.2.1 | 160.9 MB  | #####      |  50% libcusparse-11.7.2.1 | 160.9 MB  | #####5     |  56% libcusparse-11.7.2.1 | 160.9 MB  | ######     |  60% libcusparse-11.7.2.1 | 160.9 MB  | ######5    |  66% libcusparse-11.7.2.1 | 160.9 MB  | #######2   |  72% libcusparse-11.7.2.1 | 160.9 MB  | #######9   |  79% libcusparse-11.7.2.1 | 160.9 MB  | ########6  |  86% libcusparse-11.7.2.1 | 160.9 MB  | #########2 |  92% libcusparse-11.7.2.1 | 160.9 MB  | #########8 |  98% libcusparse-11.7.2.1 | 160.9 MB  | ########## | 100% 
+libcusparse-dev-11.7 | 328.9 MB  |            |   0% libcusparse-dev-11.7 | 328.9 MB  |            |   0% libcusparse-dev-11.7 | 328.9 MB  |            |   0% libcusparse-dev-11.7 | 328.9 MB  | 2          |   3% libcusparse-dev-11.7 | 328.9 MB  | 5          |   6% libcusparse-dev-11.7 | 328.9 MB  | 9          |   9% libcusparse-dev-11.7 | 328.9 MB  | #2         |  12% libcusparse-dev-11.7 | 328.9 MB  | #5         |  15% libcusparse-dev-11.7 | 328.9 MB  | #8         |  18% libcusparse-dev-11.7 | 328.9 MB  | ##1        |  22% libcusparse-dev-11.7 | 328.9 MB  | ##5        |  25% libcusparse-dev-11.7 | 328.9 MB  | ##7        |  28% libcusparse-dev-11.7 | 328.9 MB  | ##9        |  30% libcusparse-dev-11.7 | 328.9 MB  | ###2       |  33% libcusparse-dev-11.7 | 328.9 MB  | ###6       |  36% libcusparse-dev-11.7 | 328.9 MB  | ###9       |  40% libcusparse-dev-11.7 | 328.9 MB  | ####2      |  43% libcusparse-dev-11.7 | 328.9 MB  | ####5      |  46% libcusparse-dev-11.7 | 328.9 MB  | ####8      |  49% libcusparse-dev-11.7 | 328.9 MB  | #####1     |  52% libcusparse-dev-11.7 | 328.9 MB  | #####4     |  54% libcusparse-dev-11.7 | 328.9 MB  | #####6     |  56% libcusparse-dev-11.7 | 328.9 MB  | #####9     |  59% libcusparse-dev-11.7 | 328.9 MB  | ######2    |  63% libcusparse-dev-11.7 | 328.9 MB  | ######5    |  66% libcusparse-dev-11.7 | 328.9 MB  | ######9    |  69% libcusparse-dev-11.7 | 328.9 MB  | #######2   |  72% libcusparse-dev-11.7 | 328.9 MB  | #######5   |  75% libcusparse-dev-11.7 | 328.9 MB  | #######8   |  79% libcusparse-dev-11.7 | 328.9 MB  | ########1  |  81% libcusparse-dev-11.7 | 328.9 MB  | ########4  |  84% libcusparse-dev-11.7 | 328.9 MB  | ########6  |  87% libcusparse-dev-11.7 | 328.9 MB  | ########9  |  89% libcusparse-dev-11.7 | 328.9 MB  | #########3 |  93% libcusparse-dev-11.7 | 328.9 MB  | #########6 |  97% libcusparse-dev-11.7 | 328.9 MB  | #########9 | 100% libcusparse-dev-11.7 | 328.9 MB  | ########## | 100% 
+blas-2.116           | 13 KB     |            |   0% blas-2.116           | 13 KB     | ########## | 100% blas-2.116           | 13 KB     | ########## | 100% 
+liblapacke-3.9.0     | 12 KB     |            |   0% liblapacke-3.9.0     | 12 KB     | ########## | 100% liblapacke-3.9.0     | 12 KB     | ########## | 100% 
+cuda-driver-dev-11.6 | 16 KB     |            |   0% cuda-driver-dev-11.6 | 16 KB     | ########## | 100% 
+cuda-libraries-dev-1 | 2 KB      |            |   0% cuda-libraries-dev-1 | 2 KB      | ########## | 100% cuda-libraries-dev-1 | 2 KB      | ########## | 100% 
+cuda-cudart-11.6.55  | 194 KB    |            |   0% cuda-cudart-11.6.55  | 194 KB    | ########## | 100% cuda-cudart-11.6.55  | 194 KB    | ########## | 100% 
+mkl-2022.1.0         | 199.6 MB  |            |   0% mkl-2022.1.0         | 199.6 MB  | 2          |   3% mkl-2022.1.0         | 199.6 MB  | 8          |   8% mkl-2022.1.0         | 199.6 MB  | #3         |  14% mkl-2022.1.0         | 199.6 MB  | #9         |  19% mkl-2022.1.0         | 199.6 MB  | ##4        |  25% mkl-2022.1.0         | 199.6 MB  | ##9        |  30% mkl-2022.1.0         | 199.6 MB  | ###5       |  36% mkl-2022.1.0         | 199.6 MB  | ####       |  41% mkl-2022.1.0         | 199.6 MB  | ####5      |  46% mkl-2022.1.0         | 199.6 MB  | ####9      |  49% mkl-2022.1.0         | 199.6 MB  | #####4     |  55% mkl-2022.1.0         | 199.6 MB  | #####9     |  59% mkl-2022.1.0         | 199.6 MB  | ######4    |  65% mkl-2022.1.0         | 199.6 MB  | #######    |  70% mkl-2022.1.0         | 199.6 MB  | #######5   |  75% mkl-2022.1.0         | 199.6 MB  | ########1  |  81% mkl-2022.1.0         | 199.6 MB  | ########6  |  86% mkl-2022.1.0         | 199.6 MB  | #########1 |  91% mkl-2022.1.0         | 199.6 MB  | #########5 |  96% mkl-2022.1.0         | 199.6 MB  | ########## | 100% mkl-2022.1.0         | 199.6 MB  | ########## | 100% 
+libcufile-1.5.1.14   | 763 KB    |            |   0% libcufile-1.5.1.14   | 763 KB    | ######9    |  69% libcufile-1.5.1.14   | 763 KB    | ########## | 100% 
+cuda-cudart-dev-11.6 | 1.0 MB    |            |   0% cuda-cudart-dev-11.6 | 1.0 MB    | ########## | 100% cuda-cudart-dev-11.6 | 1.0 MB    | ########## | 100% 
+libcufft-dev-10.7.1. | 197.2 MB  |            |   0% libcufft-dev-10.7.1. | 197.2 MB  | 3          |   3% libcufft-dev-10.7.1. | 197.2 MB  | 8          |   8% libcufft-dev-10.7.1. | 197.2 MB  | #3         |  14% libcufft-dev-10.7.1. | 197.2 MB  | #9         |  19% libcufft-dev-10.7.1. | 197.2 MB  | ##4        |  25% libcufft-dev-10.7.1. | 197.2 MB  | ###        |  30% libcufft-dev-10.7.1. | 197.2 MB  | ###5       |  36% libcufft-dev-10.7.1. | 197.2 MB  | ####1      |  41% libcufft-dev-10.7.1. | 197.2 MB  | ####6      |  46% libcufft-dev-10.7.1. | 197.2 MB  | #####      |  50% libcufft-dev-10.7.1. | 197.2 MB  | #####5     |  55% libcufft-dev-10.7.1. | 197.2 MB  | ######     |  60% libcufft-dev-10.7.1. | 197.2 MB  | ######5    |  65% libcufft-dev-10.7.1. | 197.2 MB  | #######1   |  72% libcufft-dev-10.7.1. | 197.2 MB  | #######6   |  77% libcufft-dev-10.7.1. | 197.2 MB  | ########2  |  83% libcufft-dev-10.7.1. | 197.2 MB  | ########8  |  88% libcufft-dev-10.7.1. | 197.2 MB  | #########3 |  94% libcufft-dev-10.7.1. | 197.2 MB  | #########9 |  99% libcufft-dev-10.7.1. | 197.2 MB  | ########## | 100% 
+cuda-nsight-compute- | 1 KB      |            |   0% cuda-nsight-compute- | 1 KB      | ########## | 100% 
+pytorch-1.13.1       | 1.27 GB   |            |   0% pytorch-1.13.1       | 1.27 GB   |            |   0% pytorch-1.13.1       | 1.27 GB   |            |   1% pytorch-1.13.1       | 1.27 GB   | 1          |   1% pytorch-1.13.1       | 1.27 GB   | 2          |   2% pytorch-1.13.1       | 1.27 GB   | 2          |   3% pytorch-1.13.1       | 1.27 GB   | 3          |   4% pytorch-1.13.1       | 1.27 GB   | 4          |   5% pytorch-1.13.1       | 1.27 GB   | 5          |   5% pytorch-1.13.1       | 1.27 GB   | 6          |   6% pytorch-1.13.1       | 1.27 GB   | 6          |   7% pytorch-1.13.1       | 1.27 GB   | 7          |   7% pytorch-1.13.1       | 1.27 GB   | 8          |   8% pytorch-1.13.1       | 1.27 GB   | 8          |   9% pytorch-1.13.1       | 1.27 GB   | 9          |  10% pytorch-1.13.1       | 1.27 GB   | #          |  11% pytorch-1.13.1       | 1.27 GB   | #1         |  11% pytorch-1.13.1       | 1.27 GB   | #2         |  12% pytorch-1.13.1       | 1.27 GB   | #3         |  13% pytorch-1.13.1       | 1.27 GB   | #3         |  14% pytorch-1.13.1       | 1.27 GB   | #4         |  14% pytorch-1.13.1       | 1.27 GB   | #4         |  15% pytorch-1.13.1       | 1.27 GB   | #5         |  16% pytorch-1.13.1       | 1.27 GB   | #6         |  17% pytorch-1.13.1       | 1.27 GB   | #7         |  17% pytorch-1.13.1       | 1.27 GB   | #8         |  18% pytorch-1.13.1       | 1.27 GB   | #9         |  19% pytorch-1.13.1       | 1.27 GB   | #9         |  20% pytorch-1.13.1       | 1.27 GB   | ##         |  21% pytorch-1.13.1       | 1.27 GB   | ##1        |  21% pytorch-1.13.1       | 1.27 GB   | ##1        |  22% pytorch-1.13.1       | 1.27 GB   | ##2        |  23% pytorch-1.13.1       | 1.27 GB   | ##3        |  23% pytorch-1.13.1       | 1.27 GB   | ##4        |  24% pytorch-1.13.1       | 1.27 GB   | ##5        |  25% pytorch-1.13.1       | 1.27 GB   | ##6        |  26% pytorch-1.13.1       | 1.27 GB   | ##6        |  27% pytorch-1.13.1       | 1.27 GB   | ##7        |  28% pytorch-1.13.1       | 1.27 GB   | ##8        |  28% pytorch-1.13.1       | 1.27 GB   | ##9        |  29% pytorch-1.13.1       | 1.27 GB   | ##9        |  30% pytorch-1.13.1       | 1.27 GB   | ###        |  31% pytorch-1.13.1       | 1.27 GB   | ###1       |  31% pytorch-1.13.1       | 1.27 GB   | ###2       |  32% pytorch-1.13.1       | 1.27 GB   | ###3       |  33% pytorch-1.13.1       | 1.27 GB   | ###4       |  34% pytorch-1.13.1       | 1.27 GB   | ###4       |  35% pytorch-1.13.1       | 1.27 GB   | ###5       |  36% pytorch-1.13.1       | 1.27 GB   | ###6       |  36% pytorch-1.13.1       | 1.27 GB   | ###7       |  37% pytorch-1.13.1       | 1.27 GB   | ###7       |  38% pytorch-1.13.1       | 1.27 GB   | ###8       |  39% pytorch-1.13.1       | 1.27 GB   | ###9       |  39% pytorch-1.13.1       | 1.27 GB   | ####       |  40% pytorch-1.13.1       | 1.27 GB   | ####1      |  41% pytorch-1.13.1       | 1.27 GB   | ####1      |  42% pytorch-1.13.1       | 1.27 GB   | ####2      |  43% pytorch-1.13.1       | 1.27 GB   | ####3      |  43% pytorch-1.13.1       | 1.27 GB   | ####4      |  44% pytorch-1.13.1       | 1.27 GB   | ####4      |  45% pytorch-1.13.1       | 1.27 GB   | ####5      |  46% pytorch-1.13.1       | 1.27 GB   | ####6      |  47% pytorch-1.13.1       | 1.27 GB   | ####7      |  47% pytorch-1.13.1       | 1.27 GB   | ####8      |  48% pytorch-1.13.1       | 1.27 GB   | ####9      |  49% pytorch-1.13.1       | 1.27 GB   | ####9      |  50% pytorch-1.13.1       | 1.27 GB   | #####      |  51% pytorch-1.13.1       | 1.27 GB   | #####1     |  52% pytorch-1.13.1       | 1.27 GB   | #####2     |  52% pytorch-1.13.1       | 1.27 GB   | #####3     |  53% pytorch-1.13.1       | 1.27 GB   | #####4     |  54% pytorch-1.13.1       | 1.27 GB   | #####4     |  55% pytorch-1.13.1       | 1.27 GB   | #####5     |  56% pytorch-1.13.1       | 1.27 GB   | #####6     |  56% pytorch-1.13.1       | 1.27 GB   | #####7     |  57% pytorch-1.13.1       | 1.27 GB   | #####7     |  58% pytorch-1.13.1       | 1.27 GB   | #####8     |  59% pytorch-1.13.1       | 1.27 GB   | #####9     |  60% pytorch-1.13.1       | 1.27 GB   | ######     |  60% pytorch-1.13.1       | 1.27 GB   | ######1    |  61% pytorch-1.13.1       | 1.27 GB   | ######1    |  62% pytorch-1.13.1       | 1.27 GB   | ######2    |  63% pytorch-1.13.1       | 1.27 GB   | ######3    |  64% pytorch-1.13.1       | 1.27 GB   | ######4    |  65% pytorch-1.13.1       | 1.27 GB   | ######5    |  65% pytorch-1.13.1       | 1.27 GB   | ######6    |  66% pytorch-1.13.1       | 1.27 GB   | ######7    |  67% pytorch-1.13.1       | 1.27 GB   | ######7    |  68% pytorch-1.13.1       | 1.27 GB   | ######8    |  69% pytorch-1.13.1       | 1.27 GB   | ######9    |  70% pytorch-1.13.1       | 1.27 GB   | #######    |  70% pytorch-1.13.1       | 1.27 GB   | #######1   |  71% pytorch-1.13.1       | 1.27 GB   | #######2   |  72% pytorch-1.13.1       | 1.27 GB   | #######3   |  73% pytorch-1.13.1       | 1.27 GB   | #######3   |  74% pytorch-1.13.1       | 1.27 GB   | #######4   |  75% pytorch-1.13.1       | 1.27 GB   | #######5   |  76% pytorch-1.13.1       | 1.27 GB   | #######6   |  77% pytorch-1.13.1       | 1.27 GB   | #######7   |  77% pytorch-1.13.1       | 1.27 GB   | #######8   |  78% pytorch-1.13.1       | 1.27 GB   | #######9   |  79% pytorch-1.13.1       | 1.27 GB   | #######9   |  80% pytorch-1.13.1       | 1.27 GB   | ########   |  81% pytorch-1.13.1       | 1.27 GB   | ########1  |  82% pytorch-1.13.1       | 1.27 GB   | ########2  |  82% pytorch-1.13.1       | 1.27 GB   | ########3  |  83% pytorch-1.13.1       | 1.27 GB   | ########3  |  84% pytorch-1.13.1       | 1.27 GB   | ########4  |  84% pytorch-1.13.1       | 1.27 GB   | ########5  |  85% pytorch-1.13.1       | 1.27 GB   | ########6  |  86% pytorch-1.13.1       | 1.27 GB   | ########6  |  87% pytorch-1.13.1       | 1.27 GB   | ########7  |  88% pytorch-1.13.1       | 1.27 GB   | ########8  |  89% pytorch-1.13.1       | 1.27 GB   | ########9  |  89% pytorch-1.13.1       | 1.27 GB   | #########  |  90% pytorch-1.13.1       | 1.27 GB   | #########1 |  91% pytorch-1.13.1       | 1.27 GB   | #########2 |  92% pytorch-1.13.1       | 1.27 GB   | #########2 |  93% pytorch-1.13.1       | 1.27 GB   | #########3 |  94% pytorch-1.13.1       | 1.27 GB   | #########4 |  95% pytorch-1.13.1       | 1.27 GB   | #########5 |  95% pytorch-1.13.1       | 1.27 GB   | #########6 |  96% pytorch-1.13.1       | 1.27 GB   | #########7 |  97% pytorch-1.13.1       | 1.27 GB   | #########7 |  98% pytorch-1.13.1       | 1.27 GB   | #########8 |  99% pytorch-1.13.1       | 1.27 GB   | #########9 | 100% pytorch-1.13.1       | 1.27 GB   | ########## | 100% 
+mkl-devel-2022.1.0   | 25 KB     |            |   0% mkl-devel-2022.1.0   | 25 KB     | ########## | 100% mkl-devel-2022.1.0   | 25 KB     | ########## | 100% 
+libcublas-11.9.2.110 | 300.8 MB  |            |   0% libcublas-11.9.2.110 | 300.8 MB  | 1          |   1% libcublas-11.9.2.110 | 300.8 MB  | 4          |   4% libcublas-11.9.2.110 | 300.8 MB  | 7          |   7% libcublas-11.9.2.110 | 300.8 MB  | #1         |  11% libcublas-11.9.2.110 | 300.8 MB  | #4         |  15% libcublas-11.9.2.110 | 300.8 MB  | #8         |  18% libcublas-11.9.2.110 | 300.8 MB  | ##1        |  22% libcublas-11.9.2.110 | 300.8 MB  | ##5        |  25% libcublas-11.9.2.110 | 300.8 MB  | ##8        |  29% libcublas-11.9.2.110 | 300.8 MB  | ###1       |  32% libcublas-11.9.2.110 | 300.8 MB  | ###5       |  35% libcublas-11.9.2.110 | 300.8 MB  | ###8       |  38% libcublas-11.9.2.110 | 300.8 MB  | ####2      |  42% libcublas-11.9.2.110 | 300.8 MB  | ####6      |  46% libcublas-11.9.2.110 | 300.8 MB  | ####9      |  49% libcublas-11.9.2.110 | 300.8 MB  | #####3     |  53% libcublas-11.9.2.110 | 300.8 MB  | #####7     |  57% libcublas-11.9.2.110 | 300.8 MB  | ######     |  61% libcublas-11.9.2.110 | 300.8 MB  | ######3    |  64% libcublas-11.9.2.110 | 300.8 MB  | ######7    |  68% libcublas-11.9.2.110 | 300.8 MB  | #######    |  71% libcublas-11.9.2.110 | 300.8 MB  | #######5   |  75% libcublas-11.9.2.110 | 300.8 MB  | #######8   |  79% libcublas-11.9.2.110 | 300.8 MB  | ########2  |  82% libcublas-11.9.2.110 | 300.8 MB  | ########6  |  86% libcublas-11.9.2.110 | 300.8 MB  | ########9  |  90% libcublas-11.9.2.110 | 300.8 MB  | #########3 |  93% libcublas-11.9.2.110 | 300.8 MB  | #########6 |  96% libcublas-11.9.2.110 | 300.8 MB  | #########9 | 100% libcublas-11.9.2.110 | 300.8 MB  | ########## | 100% 
+libnpp-dev-11.6.3.12 | 115.6 MB  |            |   0% libnpp-dev-11.6.3.12 | 115.6 MB  |            |   0% libnpp-dev-11.6.3.12 | 115.6 MB  |            |   1% libnpp-dev-11.6.3.12 | 115.6 MB  | 8          |   8% libnpp-dev-11.6.3.12 | 115.6 MB  | #6         |  17% libnpp-dev-11.6.3.12 | 115.6 MB  | ##6        |  26% libnpp-dev-11.6.3.12 | 115.6 MB  | ###5       |  36% libnpp-dev-11.6.3.12 | 115.6 MB  | ####4      |  45% libnpp-dev-11.6.3.12 | 115.6 MB  | #####4     |  54% libnpp-dev-11.6.3.12 | 115.6 MB  | ######3    |  63% libnpp-dev-11.6.3.12 | 115.6 MB  | #######1   |  72% libnpp-dev-11.6.3.12 | 115.6 MB  | ########   |  80% libnpp-dev-11.6.3.12 | 115.6 MB  | ########7  |  88% libnpp-dev-11.6.3.12 | 115.6 MB  | #########6 |  97% libnpp-dev-11.6.3.12 | 115.6 MB  | ########## | 100% 
+libnvjpeg-11.6.2.124 | 2.3 MB    |            |   0% libnvjpeg-11.6.2.124 | 2.3 MB    | 6          |   7% libnvjpeg-11.6.2.124 | 2.3 MB    | ###2       |  32% libnvjpeg-11.6.2.124 | 2.3 MB    | #####7     |  57% libnvjpeg-11.6.2.124 | 2.3 MB    | ########## | 100% libnvjpeg-11.6.2.124 | 2.3 MB    | ########## | 100% 
+cuda-tools-11.6.1    | 1 KB      |            |   0% cuda-tools-11.6.1    | 1 KB      | ########## | 100% 
+libcurand-10.3.1.124 | 51.7 MB   |            |   0% libcurand-10.3.1.124 | 51.7 MB   | #          |  11% libcurand-10.3.1.124 | 51.7 MB   | ###        |  30% libcurand-10.3.1.124 | 51.7 MB   | #####1     |  51% libcurand-10.3.1.124 | 51.7 MB   | #######2   |  73% libcurand-10.3.1.124 | 51.7 MB   | #########3 |  94% libcurand-10.3.1.124 | 51.7 MB   | ########## | 100% 
+libnpp-11.6.3.124    | 118.4 MB  |            |   0% libnpp-11.6.3.124    | 118.4 MB  | 4          |   4% libnpp-11.6.3.124    | 118.4 MB  | #3         |  13% libnpp-11.6.3.124    | 118.4 MB  | ##2        |  22% libnpp-11.6.3.124    | 118.4 MB  | ###1       |  32% libnpp-11.6.3.124    | 118.4 MB  | ####       |  41% libnpp-11.6.3.124    | 118.4 MB  | ####9      |  50% libnpp-11.6.3.124    | 118.4 MB  | #####8     |  58% libnpp-11.6.3.124    | 118.4 MB  | ######6    |  67% libnpp-11.6.3.124    | 118.4 MB  | #######5   |  75% libnpp-11.6.3.124    | 118.4 MB  | ########2  |  83% libnpp-11.6.3.124    | 118.4 MB  | #########2 |  93% libnpp-11.6.3.124    | 118.4 MB  | ########## | 100% libnpp-11.6.3.124    | 118.4 MB  | ########## | 100% 
+cuda-nvvp-12.0.146   | 114.5 MB  |            |   0% cuda-nvvp-12.0.146   | 114.5 MB  |            |   0% cuda-nvvp-12.0.146   | 114.5 MB  |            |   1% cuda-nvvp-12.0.146   | 114.5 MB  | 6          |   6% cuda-nvvp-12.0.146   | 114.5 MB  | #3         |  14% cuda-nvvp-12.0.146   | 114.5 MB  | ##2        |  23% cuda-nvvp-12.0.146   | 114.5 MB  | ###2       |  32% cuda-nvvp-12.0.146   | 114.5 MB  | ####1      |  42% cuda-nvvp-12.0.146   | 114.5 MB  | #####      |  50% cuda-nvvp-12.0.146   | 114.5 MB  | ######     |  61% cuda-nvvp-12.0.146   | 114.5 MB  | ######9    |  69% cuda-nvvp-12.0.146   | 114.5 MB  | #######8   |  78% cuda-nvvp-12.0.146   | 114.5 MB  | ########6  |  86% cuda-nvvp-12.0.146   | 114.5 MB  | #########6 |  96% cuda-nvvp-12.0.146   | 114.5 MB  | ########## | 100% 
+libcublas-dev-11.9.2 | 310.9 MB  |            |   0% libcublas-dev-11.9.2 | 310.9 MB  |            |   0% libcublas-dev-11.9.2 | 310.9 MB  |            |   0% libcublas-dev-11.9.2 | 310.9 MB  | 3          |   3% libcublas-dev-11.9.2 | 310.9 MB  | 5          |   6% libcublas-dev-11.9.2 | 310.9 MB  | 9          |   9% libcublas-dev-11.9.2 | 310.9 MB  | #2         |  13% libcublas-dev-11.9.2 | 310.9 MB  | #6         |  16% libcublas-dev-11.9.2 | 310.9 MB  | #9         |  19% libcublas-dev-11.9.2 | 310.9 MB  | ##3        |  23% libcublas-dev-11.9.2 | 310.9 MB  | ##6        |  26% libcublas-dev-11.9.2 | 310.9 MB  | ##9        |  30% libcublas-dev-11.9.2 | 310.9 MB  | ###2       |  32% libcublas-dev-11.9.2 | 310.9 MB  | ###4       |  35% libcublas-dev-11.9.2 | 310.9 MB  | ###7       |  38% libcublas-dev-11.9.2 | 310.9 MB  | ####       |  40% libcublas-dev-11.9.2 | 310.9 MB  | ####3      |  44% libcublas-dev-11.9.2 | 310.9 MB  | ####6      |  47% libcublas-dev-11.9.2 | 310.9 MB  | #####      |  51% libcublas-dev-11.9.2 | 310.9 MB  | #####4     |  54% libcublas-dev-11.9.2 | 310.9 MB  | #####7     |  58% libcublas-dev-11.9.2 | 310.9 MB  | ######1    |  61% libcublas-dev-11.9.2 | 310.9 MB  | ######4    |  65% libcublas-dev-11.9.2 | 310.9 MB  | ######8    |  68% libcublas-dev-11.9.2 | 310.9 MB  | #######1   |  72% libcublas-dev-11.9.2 | 310.9 MB  | #######5   |  75% libcublas-dev-11.9.2 | 310.9 MB  | #######8   |  79% libcublas-dev-11.9.2 | 310.9 MB  | ########1  |  82% libcublas-dev-11.9.2 | 310.9 MB  | ########5  |  85% libcublas-dev-11.9.2 | 310.9 MB  | ########9  |  89% libcublas-dev-11.9.2 | 310.9 MB  | #########2 |  93% libcublas-dev-11.9.2 | 310.9 MB  | #########6 |  97% libcublas-dev-11.9.2 | 310.9 MB  | ########## | 100% 
+cuda-runtime-11.6.1  | 1 KB      |            |   0% cuda-runtime-11.6.1  | 1 KB      | ########## | 100% 
+cuda-compiler-11.6.2 | 1 KB      |            |   0% cuda-compiler-11.6.2 | 1 KB      | ########## | 100% 
+cuda-nvprof-12.0.146 | 4.7 MB    |            |   0% cuda-nvprof-12.0.146 | 4.7 MB    | ########## | 100% cuda-nvprof-12.0.146 | 4.7 MB    | ########## | 100% 
+cuda-cccl-11.6.55    | 1.2 MB    |            |   0% cuda-cccl-11.6.55    | 1.2 MB    | ##8        |  28% cuda-cccl-11.6.55    | 1.2 MB    | ########## | 100% cuda-cccl-11.6.55    | 1.2 MB    | ########## | 100% 
+libblas-3.9.0        | 13 KB     |            |   0% libblas-3.9.0        | 13 KB     | ########## | 100% libblas-3.9.0        | 13 KB     | ########## | 100% 
+gds-tools-1.5.1.14   | 40.9 MB   |            |   0% gds-tools-1.5.1.14   | 40.9 MB   | #3         |  13% gds-tools-1.5.1.14   | 40.9 MB   | ###8       |  38% gds-tools-1.5.1.14   | 40.9 MB   | ######3    |  63% gds-tools-1.5.1.14   | 40.9 MB   | ########9  |  90% gds-tools-1.5.1.14   | 40.9 MB   | ########## | 100% 
+cuda-sanitizer-api-1 | 16.6 MB   |            |   0% cuda-sanitizer-api-1 | 16.6 MB   | 3          |   4% cuda-sanitizer-api-1 | 16.6 MB   | 7          |   7% cuda-sanitizer-api-1 | 16.6 MB   | ######     |  61% cuda-sanitizer-api-1 | 16.6 MB   | ########## | 100% cuda-sanitizer-api-1 | 16.6 MB   | ########## | 100% 
+cuda-cuxxfilt-11.6.1 | 283 KB    |            |   0% cuda-cuxxfilt-11.6.1 | 283 KB    | ########## | 100% cuda-cuxxfilt-11.6.1 | 283 KB    | ########## | 100% 
+libnvjpeg-dev-11.6.2 | 2.0 MB    |            |   0% libnvjpeg-dev-11.6.2 | 2.0 MB    | #          |  11% libnvjpeg-dev-11.6.2 | 2.0 MB    | ########## | 100% libnvjpeg-dev-11.6.2 | 2.0 MB    | ########## | 100% 
+cuda-gdb-12.0.140    | 5.3 MB    |            |   0% cuda-gdb-12.0.140    | 5.3 MB    | ########## | 100% cuda-gdb-12.0.140    | 5.3 MB    | ########## | 100% 
+cuda-nvtx-11.6.124   | 58 KB     |            |   0% cuda-nvtx-11.6.124   | 58 KB     | ########## | 100% cuda-nvtx-11.6.124   | 58 KB     | ########## | 100% 
+libcufile-dev-1.5.1. | 13 KB     |            |   0% libcufile-dev-1.5.1. | 13 KB     | ########## | 100% libcufile-dev-1.5.1. | 13 KB     | ########## | 100% 
+cuda-visual-tools-11 | 1 KB      |            |   0% cuda-visual-tools-11 | 1 KB      | ########## | 100% 
+cuda-samples-11.6.10 | 5 KB      |            |   0% cuda-samples-11.6.10 | 5 KB      | ########## | 100% 
+libcusolver-11.3.4.1 | 87.0 MB   |            |   0% libcusolver-11.3.4.1 | 87.0 MB   | 6          |   6% libcusolver-11.3.4.1 | 87.0 MB   | #7         |  18% libcusolver-11.3.4.1 | 87.0 MB   | ###        |  30% libcusolver-11.3.4.1 | 87.0 MB   | ####3      |  43% libcusolver-11.3.4.1 | 87.0 MB   | #####5     |  56% libcusolver-11.3.4.1 | 87.0 MB   | ######7    |  68% libcusolver-11.3.4.1 | 87.0 MB   | ########1  |  81% libcusolver-11.3.4.1 | 87.0 MB   | #########3 |  94% libcusolver-11.3.4.1 | 87.0 MB   | ########## | 100% 
+cuda-nvml-dev-11.6.5 | 65 KB     |            |   0% cuda-nvml-dev-11.6.5 | 65 KB     | ########## | 100% cuda-nvml-dev-11.6.5 | 65 KB     | ########## | 100% 
+mkl-include-2022.1.0 | 745 KB    |            |   0% mkl-include-2022.1.0 | 745 KB    | ########## | 100% mkl-include-2022.1.0 | 745 KB    | ########## | 100% 
+cuda-nvrtc-dev-11.6. | 16.8 MB   |            |   0% cuda-nvrtc-dev-11.6. | 16.8 MB   | ###4       |  35% cuda-nvrtc-dev-11.6. | 16.8 MB   | #########4 |  95% cuda-nvrtc-dev-11.6. | 16.8 MB   | ########## | 100% 
+libcblas-3.9.0       | 12 KB     |            |   0% libcblas-3.9.0       | 12 KB     | ########## | 100% libcblas-3.9.0       | 12 KB     | ########## | 100% 
+cuda-nvdisasm-12.0.1 | 47.9 MB   |            |   0% cuda-nvdisasm-12.0.1 | 47.9 MB   | #          |  11% cuda-nvdisasm-12.0.1 | 47.9 MB   | ###7       |  38% cuda-nvdisasm-12.0.1 | 47.9 MB   | ######     |  61% cuda-nvdisasm-12.0.1 | 47.9 MB   | ########2  |  82% cuda-nvdisasm-12.0.1 | 47.9 MB   | ########## | 100% 
+pytorch-mutex-1.0    | 3 KB      |            |   0% pytorch-mutex-1.0    | 3 KB      | ########## | 100% 
+nsight-compute-2022. | 764.5 MB  |            |   0% nsight-compute-2022. | 764.5 MB  |            |   1% nsight-compute-2022. | 764.5 MB  | 2          |   2% nsight-compute-2022. | 764.5 MB  | 3          |   3% nsight-compute-2022. | 764.5 MB  | 4          |   5% nsight-compute-2022. | 764.5 MB  | 5          |   6% nsight-compute-2022. | 764.5 MB  | 6          |   7% nsight-compute-2022. | 764.5 MB  | 8          |   8% nsight-compute-2022. | 764.5 MB  | 9          |  10% nsight-compute-2022. | 764.5 MB  | #          |  11% nsight-compute-2022. | 764.5 MB  | #2         |  12% nsight-compute-2022. | 764.5 MB  | #3         |  13% nsight-compute-2022. | 764.5 MB  | #4         |  15% nsight-compute-2022. | 764.5 MB  | #5         |  16% nsight-compute-2022. | 764.5 MB  | #7         |  17% nsight-compute-2022. | 764.5 MB  | #8         |  19% nsight-compute-2022. | 764.5 MB  | ##         |  20% nsight-compute-2022. | 764.5 MB  | ##1        |  21% nsight-compute-2022. | 764.5 MB  | ##2        |  23% nsight-compute-2022. | 764.5 MB  | ##3        |  24% nsight-compute-2022. | 764.5 MB  | ##5        |  25% nsight-compute-2022. | 764.5 MB  | ##6        |  27% nsight-compute-2022. | 764.5 MB  | ##7        |  28% nsight-compute-2022. | 764.5 MB  | ##9        |  29% nsight-compute-2022. | 764.5 MB  | ###        |  31% nsight-compute-2022. | 764.5 MB  | ###2       |  32% nsight-compute-2022. | 764.5 MB  | ###3       |  33% nsight-compute-2022. | 764.5 MB  | ###4       |  35% nsight-compute-2022. | 764.5 MB  | ###6       |  36% nsight-compute-2022. | 764.5 MB  | ###7       |  37% nsight-compute-2022. | 764.5 MB  | ###7       |  38% nsight-compute-2022. | 764.5 MB  | ###8       |  39% nsight-compute-2022. | 764.5 MB  | ###9       |  40% nsight-compute-2022. | 764.5 MB  | ####1      |  41% nsight-compute-2022. | 764.5 MB  | ####2      |  42% nsight-compute-2022. | 764.5 MB  | ####3      |  44% nsight-compute-2022. | 764.5 MB  | ####4      |  45% nsight-compute-2022. | 764.5 MB  | ####5      |  46% nsight-compute-2022. | 764.5 MB  | ####7      |  47% nsight-compute-2022. | 764.5 MB  | ####8      |  48% nsight-compute-2022. | 764.5 MB  | ####9      |  49% nsight-compute-2022. | 764.5 MB  | #####      |  51% nsight-compute-2022. | 764.5 MB  | #####2     |  52% nsight-compute-2022. | 764.5 MB  | #####3     |  53% nsight-compute-2022. | 764.5 MB  | #####4     |  55% nsight-compute-2022. | 764.5 MB  | #####5     |  56% nsight-compute-2022. | 764.5 MB  | #####7     |  57% nsight-compute-2022. | 764.5 MB  | #####8     |  58% nsight-compute-2022. | 764.5 MB  | #####9     |  60% nsight-compute-2022. | 764.5 MB  | ######     |  61% nsight-compute-2022. | 764.5 MB  | ######1    |  62% nsight-compute-2022. | 764.5 MB  | ######3    |  64% nsight-compute-2022. | 764.5 MB  | ######4    |  65% nsight-compute-2022. | 764.5 MB  | ######6    |  66% nsight-compute-2022. | 764.5 MB  | ######7    |  68% nsight-compute-2022. | 764.5 MB  | ######8    |  69% nsight-compute-2022. | 764.5 MB  | #######    |  70% nsight-compute-2022. | 764.5 MB  | #######1   |  71% nsight-compute-2022. | 764.5 MB  | #######2   |  73% nsight-compute-2022. | 764.5 MB  | #######4   |  74% nsight-compute-2022. | 764.5 MB  | #######5   |  75% nsight-compute-2022. | 764.5 MB  | #######6   |  77% nsight-compute-2022. | 764.5 MB  | #######8   |  78% nsight-compute-2022. | 764.5 MB  | #######9   |  79% nsight-compute-2022. | 764.5 MB  | ########   |  81% nsight-compute-2022. | 764.5 MB  | ########1  |  82% nsight-compute-2022. | 764.5 MB  | ########3  |  83% nsight-compute-2022. | 764.5 MB  | ########4  |  84% nsight-compute-2022. | 764.5 MB  | ########5  |  86% nsight-compute-2022. | 764.5 MB  | ########6  |  87% nsight-compute-2022. | 764.5 MB  | ########7  |  88% nsight-compute-2022. | 764.5 MB  | ########8  |  89% nsight-compute-2022. | 764.5 MB  | #########  |  90% nsight-compute-2022. | 764.5 MB  | #########1 |  92% nsight-compute-2022. | 764.5 MB  | #########2 |  93% nsight-compute-2022. | 764.5 MB  | #########4 |  94% nsight-compute-2022. | 764.5 MB  | #########5 |  96% nsight-compute-2022. | 764.5 MB  | #########7 |  97% nsight-compute-2022. | 764.5 MB  | #########8 |  98% nsight-compute-2022. | 764.5 MB  | #########9 |  99% nsight-compute-2022. | 764.5 MB  | ########## | 100% 
+cuda-memcheck-11.8.8 | 168 KB    |            |   0% cuda-memcheck-11.8.8 | 168 KB    | ########## | 100% cuda-memcheck-11.8.8 | 168 KB    | ########## | 100% 
+pytorch-cuda-11.6    | 3 KB      |            |   0% pytorch-cuda-11.6    | 3 KB      | ########## | 100% 
+cuda-nvprune-11.6.12 | 65 KB     |            |   0% cuda-nvprune-11.6.12 | 65 KB     | ########## | 100% 
+cuda-libraries-11.6. | 1 KB      |            |   0% cuda-libraries-11.6. | 1 KB      | ########## | 100% 
+cuda-nvrtc-11.6.124  | 17.1 MB   |            |   0% cuda-nvrtc-11.6.124  | 17.1 MB   |            |   0% cuda-nvrtc-11.6.124  | 17.1 MB   | 4          |   4% cuda-nvrtc-11.6.124  | 17.1 MB   | #3         |  14% cuda-nvrtc-11.6.124  | 17.1 MB   | ####       |  41% cuda-nvrtc-11.6.124  | 17.1 MB   | #########  |  90% cuda-nvrtc-11.6.124  | 17.1 MB   | ########## | 100% 
+libcufft-10.7.1.112  | 93.6 MB   |            |   0% libcufft-10.7.1.112  | 93.6 MB   | 6          |   6% libcufft-10.7.1.112  | 93.6 MB   | #6         |  17% libcufft-10.7.1.112  | 93.6 MB   | ##8        |  28% libcufft-10.7.1.112  | 93.6 MB   | ###9       |  40% libcufft-10.7.1.112  | 93.6 MB   | #####1     |  51% libcufft-10.7.1.112  | 93.6 MB   | ######2    |  63% libcufft-10.7.1.112  | 93.6 MB   | #######5   |  75% libcufft-10.7.1.112  | 93.6 MB   | ########6  |  87% libcufft-10.7.1.112  | 93.6 MB   | #########7 |  98% libcufft-10.7.1.112  | 93.6 MB   | ########## | 100% 
+Preparing transaction: ...working... done
+Verifying transaction: ...working... done
+Executing transaction: ...working... done
+#
+# To activate this environment, use
+#
+#     $ conda activate gpu_corpus_filter_env
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+Retrieving notices: ...working... done
+Done

@@ -1,0 +1,12 @@
+name: gpu_corpus_filter_env
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - pytorch
+  - stanfordcorenlp
+  - stanza
+  - python=3.9
+  - pytorch-cuda=11.6

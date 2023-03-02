@@ -1,0 +1,87 @@
+++ realpath /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ CONDA_PROFILE=/home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ ls /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
+/home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ PATH=/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
+++ realpath ../gpu_environment.yml
++ YML_FILE=/projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
+++ realpath /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2
++ ENV_PREFIX=/projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2
++ echo 'Using YML file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml'
+Using YML file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
++ echo 'Using prefix: /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2'
+Using prefix: /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2
++ '[' '!' -f /home2/abhinavp/anaconda3/etc/profile.d/conda.sh ']'
++ echo 'Checking GPU support exists...'
+Checking GPU support exists...
++ command -v nvcc
+++ nvcc --version
++ echo 'Using nvcc version: nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2019 NVIDIA Corporation
+Built on Wed_Oct_23_19:24:38_PDT_2019
+Cuda compilation tools, release 10.2, V10.2.89'
+Using nvcc version: nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2019 NVIDIA Corporation
+Built on Wed_Oct_23_19:24:38_PDT_2019
+Cuda compilation tools, release 10.2, V10.2.89
++ echo 'Sourcing anaconda profile from /home2/abhinavp/anaconda3/etc/profile.d/conda.sh'
+Sourcing anaconda profile from /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ source /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
+++ export CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
+++ CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
+++ '[' -z '' ']'
+++ export CONDA_SHLVL=0
+++ CONDA_SHLVL=0
+++ '[' -n '' ']'
+++++ dirname /home2/abhinavp/anaconda3/bin/conda
++++ dirname /home2/abhinavp/anaconda3/bin
+++ PATH=/home2/abhinavp/anaconda3/condabin:/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
+++ export PATH
+++ '[' -z '' ']'
+++ PS1=
++ echo 'Sourced Conda.sh script. Now creating environment'
+Sourced Conda.sh script. Now creating environment
++ echo 'Creating conda environment at /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2 with environment file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml'
+Creating conda environment at /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2 with environment file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
++ conda config --set channel_priority strict
++ local cmd=config
++ case "$cmd" in
++ __conda_exe config --set channel_priority strict
++ /home2/abhinavp/anaconda3/bin/conda config --set channel_priority strict
++ conda create --dry-run -p /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2 -f /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml --yes
++ local cmd=create
++ case "$cmd" in
++ __conda_exe create --dry-run -p /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2 -f /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml --yes
++ /home2/abhinavp/anaconda3/bin/conda create --dry-run -p /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env2 -f /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml --yes
+Collecting package metadata (current_repodata.json): ...working... done
+Solving environment: ...working... failed with repodata from current_repodata.json, will retry with next repodata source.
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... failed
+
+PackagesNotFoundError: The following packages are not available from current channels:
+
+  - /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
+
+Current channels:
+
+  - https://conda.anaconda.org/conda-forge/linux-64
+  - https://conda.anaconda.org/conda-forge/noarch
+  - https://repo.anaconda.com/pkgs/main/linux-64
+  - https://repo.anaconda.com/pkgs/main/noarch
+  - https://repo.anaconda.com/pkgs/r/linux-64
+  - https://repo.anaconda.com/pkgs/r/noarch
+
+To search for alternate channels that may provide the conda package you're
+looking for, navigate to
+
+    https://anaconda.org
+
+and use the search bar at the top of the page.
+
+

@@ -1,0 +1,4 @@
+initial conda env: corpus_filter_env
+required conda env: corpus_filter_env
+/home2/abhinavp/anaconda3/envs/corpus_filter_env/bin/python
+final conda env: corpus_filter_env

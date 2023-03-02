@@ -1,0 +1,24 @@
+Using prefix: /projects/assigned/lm-inductive/envs/corpus_filter_env
+Using YML file: /projects/assigned/lm-inductive/corpus-filtering/environment.yml
+Sourcing anaconda profile from /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
+Sourced Conda.sh script. Now creating environment
+Conda environment exists. Proceeding with update.
+Created Conda environment. Now activating...
+Successfully activated environment at /projects/assigned/lm-inductive/envs/corpus_filter_env. Conda env is now corpus_filter_env
+Updating environment to use specifications in /projects/assigned/lm-inductive/corpus-filtering/environment.yml
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... done
+Preparing transaction: ...working... done
+Verifying transaction: ...working... done
+Executing transaction: ...working... done
+#
+# To activate this environment, use
+#
+#     $ conda activate /projects/assigned/lm-inductive/envs/corpus_filter_env
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+Retrieving notices: ...working... done
+Done updating environment. You may want to double check the desired packages are available.

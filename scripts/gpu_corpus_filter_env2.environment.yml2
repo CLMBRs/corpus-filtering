@@ -1,0 +1,7 @@
+name: /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+prefix: /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2

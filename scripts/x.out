@@ -1,0 +1,169 @@
++ EXTRA_CHANNEL_FLAGS='-c pytorch -c nvidia -c conda-forge'
+++ realpath /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ CONDA_PROFILE=/home2/abhinavp/anaconda3/etc/profile.d/conda.sh
+++ realpath /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
++ ENV_PREFIX=/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
+++ realpath ../gpu_environment.yml
++ YML_FILE=/projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
++ PATH=/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
++ echo 'Using prefix: /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2'
+Using prefix: /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
++ echo 'Using YML file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml'
+Using YML file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
++ [[ ! -f /home2/abhinavp/anaconda3/etc/profile.d/conda.sh ]]
++ [[ ! -f /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml ]]
++ echo 'Checking GPU support exists...'
+Checking GPU support exists...
++ command -v nvcc
+++ nvcc --version
++ echo 'Using nvcc version: nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2019 NVIDIA Corporation
+Built on Wed_Oct_23_19:24:38_PDT_2019
+Cuda compilation tools, release 10.2, V10.2.89'
+Using nvcc version: nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2019 NVIDIA Corporation
+Built on Wed_Oct_23_19:24:38_PDT_2019
+Cuda compilation tools, release 10.2, V10.2.89
++ echo 'Sourcing anaconda profile from /home2/abhinavp/anaconda3/etc/profile.d/conda.sh'
+Sourcing anaconda profile from /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ source /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
+++ export CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
+++ CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
+++ '[' -z '' ']'
+++ export CONDA_SHLVL=0
+++ CONDA_SHLVL=0
+++ '[' -n '' ']'
+++++ dirname /home2/abhinavp/anaconda3/bin/conda
++++ dirname /home2/abhinavp/anaconda3/bin
+++ PATH=/home2/abhinavp/anaconda3/condabin:/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
+++ export PATH
+++ '[' -z '' ']'
+++ PS1=
++ echo 'Sourced Conda.sh script. Now creating environment'
+Sourced Conda.sh script. Now creating environment
++ conda_env_exists /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
++ grep -E '^.*\s+/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2$'
++ conda env list
++ local cmd=env
++ case "$cmd" in
++ __conda_exe env list
++ /home2/abhinavp/anaconda3/bin/conda env list
++ conda_env_exists /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
++ grep -E '^.*\s+/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2$'
++ conda env list
++ local cmd=env
++ case "$cmd" in
++ __conda_exe env list
++ /home2/abhinavp/anaconda3/bin/conda env list
++ echo 'Created Conda environment. Now activating...'
+Created Conda environment. Now activating...
++ conda activate /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
++ '[' -n '' ']'
++ local ask_conda
+++ PS1=
+++ __conda_exe shell.posix activate /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
+++ /home2/abhinavp/anaconda3/bin/conda shell.posix activate /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
++ ask_conda='PS1='\''(gpu_corpus_filter_env2) '\''
+export PATH='\''/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2/bin:/home2/abhinavp/anaconda3/condabin:/usr/local/cuda/bin:/usr/local/bin:/usr/bin'\''
+export CONDA_PREFIX='\''/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_DEFAULT_ENV='\''gpu_corpus_filter_env2'\''
+export CONDA_PROMPT_MODIFIER='\''(gpu_corpus_filter_env2) '\''
+export CONDA_EXE='\''/home2/abhinavp/anaconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home2/abhinavp/anaconda3/bin/python'\'''
++ eval 'PS1='\''(gpu_corpus_filter_env2) '\''
+export PATH='\''/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2/bin:/home2/abhinavp/anaconda3/condabin:/usr/local/cuda/bin:/usr/local/bin:/usr/bin'\''
+export CONDA_PREFIX='\''/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_DEFAULT_ENV='\''gpu_corpus_filter_env2'\''
+export CONDA_PROMPT_MODIFIER='\''(gpu_corpus_filter_env2) '\''
+export CONDA_EXE='\''/home2/abhinavp/anaconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home2/abhinavp/anaconda3/bin/python'\'''
+++ PS1='(gpu_corpus_filter_env2) '
+++ export PATH=/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2/bin:/home2/abhinavp/anaconda3/condabin:/usr/local/cuda/bin:/usr/local/bin:/usr/bin
+++ PATH=/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2/bin:/home2/abhinavp/anaconda3/condabin:/usr/local/cuda/bin:/usr/local/bin:/usr/bin
+++ export CONDA_PREFIX=/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
+++ CONDA_PREFIX=/projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
+++ export CONDA_SHLVL=1
+++ CONDA_SHLVL=1
+++ export CONDA_DEFAULT_ENV=gpu_corpus_filter_env2
+++ CONDA_DEFAULT_ENV=gpu_corpus_filter_env2
+++ export 'CONDA_PROMPT_MODIFIER=(gpu_corpus_filter_env2) '
+++ CONDA_PROMPT_MODIFIER='(gpu_corpus_filter_env2) '
+++ export CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
+++ CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ [[ -n gpu_corpus_filter_env2 ]]
++ [[ /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2 = *gpu_corpus_filter_env2 ]]
++ echo 'Successfully activated environment at /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2. Conda env is now gpu_corpus_filter_env2'
+Successfully activated environment at /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2. Conda env is now gpu_corpus_filter_env2
++ echo 'Updating environment to use specifications in /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml'
+Updating environment to use specifications in /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
++ conda env update -f /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml -p /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2 --prune
++ local cmd=env
++ case "$cmd" in
++ __conda_exe env update -f /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml -p /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2 --prune
++ /home2/abhinavp/anaconda3/bin/conda env update -f /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml -p /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2 --prune
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... done
+
+
+==> WARNING: A newer version of conda exists. <==
+  current version: 22.9.0
+  latest version: 23.1.0
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+
+
+Downloading and Extracting Packages
+nsight-compute-2023. | 770.2 MB  |            |   0% nsight-compute-2023. | 770.2 MB  |            |   0% nsight-compute-2023. | 770.2 MB  |            |   1% nsight-compute-2023. | 770.2 MB  | 2          |   2% nsight-compute-2023. | 770.2 MB  | 3          |   3% nsight-compute-2023. | 770.2 MB  | 4          |   5% nsight-compute-2023. | 770.2 MB  | 6          |   6% nsight-compute-2023. | 770.2 MB  | 7          |   7% nsight-compute-2023. | 770.2 MB  | 8          |   8% nsight-compute-2023. | 770.2 MB  | 9          |  10% nsight-compute-2023. | 770.2 MB  | #          |  11% nsight-compute-2023. | 770.2 MB  | #2         |  12% nsight-compute-2023. | 770.2 MB  | #3         |  13% nsight-compute-2023. | 770.2 MB  | #4         |  14% nsight-compute-2023. | 770.2 MB  | #5         |  15% nsight-compute-2023. | 770.2 MB  | #6         |  16% nsight-compute-2023. | 770.2 MB  | #7         |  17% nsight-compute-2023. | 770.2 MB  | #8         |  18% nsight-compute-2023. | 770.2 MB  | #9         |  19% nsight-compute-2023. | 770.2 MB  | ##         |  21% nsight-compute-2023. | 770.2 MB  | ##1        |  22% nsight-compute-2023. | 770.2 MB  | ##2        |  23% nsight-compute-2023. | 770.2 MB  | ##4        |  24% nsight-compute-2023. | 770.2 MB  | ##5        |  25% nsight-compute-2023. | 770.2 MB  | ##6        |  26% nsight-compute-2023. | 770.2 MB  | ##7        |  28% nsight-compute-2023. | 770.2 MB  | ##8        |  29% nsight-compute-2023. | 770.2 MB  | ###        |  30% nsight-compute-2023. | 770.2 MB  | ###1       |  32% nsight-compute-2023. | 770.2 MB  | ###3       |  33% nsight-compute-2023. | 770.2 MB  | ###4       |  35% nsight-compute-2023. | 770.2 MB  | ###5       |  36% nsight-compute-2023. | 770.2 MB  | ###7       |  37% nsight-compute-2023. | 770.2 MB  | ###8       |  38% nsight-compute-2023. | 770.2 MB  | ###9       |  40% nsight-compute-2023. | 770.2 MB  | ####1      |  41% nsight-compute-2023. | 770.2 MB  | ####2      |  42% nsight-compute-2023. | 770.2 MB  | ####3      |  44% nsight-compute-2023. | 770.2 MB  | ####5      |  45% nsight-compute-2023. | 770.2 MB  | ####6      |  46% nsight-compute-2023. | 770.2 MB  | ####7      |  48% nsight-compute-2023. | 770.2 MB  | ####8      |  49% nsight-compute-2023. | 770.2 MB  | ####9      |  50% nsight-compute-2023. | 770.2 MB  | #####1     |  51% nsight-compute-2023. | 770.2 MB  | #####2     |  52% nsight-compute-2023. | 770.2 MB  | #####3     |  53% nsight-compute-2023. | 770.2 MB  | #####4     |  54% nsight-compute-2023. | 770.2 MB  | #####5     |  56% nsight-compute-2023. | 770.2 MB  | #####7     |  57% nsight-compute-2023. | 770.2 MB  | #####8     |  58% nsight-compute-2023. | 770.2 MB  | #####9     |  59% nsight-compute-2023. | 770.2 MB  | ######     |  61% nsight-compute-2023. | 770.2 MB  | ######1    |  62% nsight-compute-2023. | 770.2 MB  | ######2    |  63% nsight-compute-2023. | 770.2 MB  | ######4    |  64% nsight-compute-2023. | 770.2 MB  | ######5    |  65% nsight-compute-2023. | 770.2 MB  | ######6    |  67% nsight-compute-2023. | 770.2 MB  | ######8    |  68% nsight-compute-2023. | 770.2 MB  | ######9    |  70% nsight-compute-2023. | 770.2 MB  | #######    |  71% nsight-compute-2023. | 770.2 MB  | #######2   |  72% nsight-compute-2023. | 770.2 MB  | #######3   |  73% nsight-compute-2023. | 770.2 MB  | #######4   |  75% nsight-compute-2023. | 770.2 MB  | #######6   |  76% nsight-compute-2023. | 770.2 MB  | #######7   |  77% nsight-compute-2023. | 770.2 MB  | #######8   |  79% nsight-compute-2023. | 770.2 MB  | #######9   |  80% nsight-compute-2023. | 770.2 MB  | ########   |  81% nsight-compute-2023. | 770.2 MB  | ########2  |  82% nsight-compute-2023. | 770.2 MB  | ########3  |  84% nsight-compute-2023. | 770.2 MB  | ########4  |  85% nsight-compute-2023. | 770.2 MB  | ########6  |  86% nsight-compute-2023. | 770.2 MB  | ########7  |  87% nsight-compute-2023. | 770.2 MB  | ########8  |  89% nsight-compute-2023. | 770.2 MB  | #########  |  90% nsight-compute-2023. | 770.2 MB  | #########1 |  91% nsight-compute-2023. | 770.2 MB  | #########2 |  92% nsight-compute-2023. | 770.2 MB  | #########3 |  94% nsight-compute-2023. | 770.2 MB  | #########4 |  95% nsight-compute-2023. | 770.2 MB  | #########5 |  96% nsight-compute-2023. | 770.2 MB  | #########6 |  97% nsight-compute-2023. | 770.2 MB  | #########8 |  98% nsight-compute-2023. | 770.2 MB  | #########9 |  99% nsight-compute-2023. | 770.2 MB  | ########## | 100% 
+cuda-sanitizer-api-1 | 16.7 MB   |            |   0% cuda-sanitizer-api-1 | 16.7 MB   | 3          |   4% cuda-sanitizer-api-1 | 16.7 MB   | 7          |   7% cuda-sanitizer-api-1 | 16.7 MB   | #####9     |  59% cuda-sanitizer-api-1 | 16.7 MB   | ########## | 100% cuda-sanitizer-api-1 | 16.7 MB   | ########## | 100% 
+cuda-nvvp-12.1.55    | 114.5 MB  |            |   0% cuda-nvvp-12.1.55    | 114.5 MB  | 4          |   5% cuda-nvvp-12.1.55    | 114.5 MB  | #2         |  13% cuda-nvvp-12.1.55    | 114.5 MB  | ##1        |  22% cuda-nvvp-12.1.55    | 114.5 MB  | ##9        |  29% cuda-nvvp-12.1.55    | 114.5 MB  | ###7       |  37% cuda-nvvp-12.1.55    | 114.5 MB  | ####6      |  46% cuda-nvvp-12.1.55    | 114.5 MB  | #####4     |  55% cuda-nvvp-12.1.55    | 114.5 MB  | ######3    |  63% cuda-nvvp-12.1.55    | 114.5 MB  | #######1   |  72% cuda-nvvp-12.1.55    | 114.5 MB  | #######9   |  80% cuda-nvvp-12.1.55    | 114.5 MB  | ########6  |  87% cuda-nvvp-12.1.55    | 114.5 MB  | #########5 |  96% cuda-nvvp-12.1.55    | 114.5 MB  | ########## | 100% 
+cuda-nvprof-12.1.55  | 4.8 MB    |            |   0% cuda-nvprof-12.1.55  | 4.8 MB    | ########## | 100% cuda-nvprof-12.1.55  | 4.8 MB    | ########## | 100% 
+libcurand-dev-10.3.2 | 449 KB    |            |   0% libcurand-dev-10.3.2 | 449 KB    | ########## | 100% libcurand-dev-10.3.2 | 449 KB    | ########## | 100% 
+cuda-nsight-12.1.55  | 113.6 MB  |            |   0% cuda-nsight-12.1.55  | 113.6 MB  | 4          |   5% cuda-nsight-12.1.55  | 113.6 MB  | #3         |  13% cuda-nsight-12.1.55  | 113.6 MB  | ##2        |  23% cuda-nsight-12.1.55  | 113.6 MB  | ###1       |  31% cuda-nsight-12.1.55  | 113.6 MB  | ####2      |  42% cuda-nsight-12.1.55  | 113.6 MB  | #####1     |  52% cuda-nsight-12.1.55  | 113.6 MB  | ######     |  61% cuda-nsight-12.1.55  | 113.6 MB  | ######8    |  69% cuda-nsight-12.1.55  | 113.6 MB  | #######7   |  77% cuda-nsight-12.1.55  | 113.6 MB  | ########4  |  85% cuda-nsight-12.1.55  | 113.6 MB  | #########4 |  95% cuda-nsight-12.1.55  | 113.6 MB  | ########## | 100% 
+libcurand-10.3.2.56  | 51.7 MB   |            |   0% libcurand-10.3.2.56  | 51.7 MB   | 1          |   1% libcurand-10.3.2.56  | 51.7 MB   | 2          |   2% libcurand-10.3.2.56  | 51.7 MB   | #4         |  15% libcurand-10.3.2.56  | 51.7 MB   | ##6        |  27% libcurand-10.3.2.56  | 51.7 MB   | ###9       |  39% libcurand-10.3.2.56  | 51.7 MB   | #####      |  51% libcurand-10.3.2.56  | 51.7 MB   | ######6    |  67% libcurand-10.3.2.56  | 51.7 MB   | ########1  |  81% libcurand-10.3.2.56  | 51.7 MB   | ########## | 100% libcurand-10.3.2.56  | 51.7 MB   | ########## | 100% 
+libcufile-1.6.0.25   | 763 KB    |            |   0% libcufile-1.6.0.25   | 763 KB    | ########## | 100% libcufile-1.6.0.25   | 763 KB    | ########## | 100% 
+gds-tools-1.6.0.25   | 40.9 MB   |            |   0% gds-tools-1.6.0.25   | 40.9 MB   | #4         |  15% gds-tools-1.6.0.25   | 40.9 MB   | ###4       |  35% gds-tools-1.6.0.25   | 40.9 MB   | ######     |  61% gds-tools-1.6.0.25   | 40.9 MB   | ########7  |  88% gds-tools-1.6.0.25   | 40.9 MB   | ########## | 100% 
+cuda-gdb-12.1.55     | 5.3 MB    |            |   0% cuda-gdb-12.1.55     | 5.3 MB    | #####2     |  52% cuda-gdb-12.1.55     | 5.3 MB    | ########## | 100% 
+cuda-nvdisasm-12.1.5 | 47.9 MB   |            |   0% cuda-nvdisasm-12.1.5 | 47.9 MB   | #1         |  12% cuda-nvdisasm-12.1.5 | 47.9 MB   | ###        |  30% cuda-nvdisasm-12.1.5 | 47.9 MB   | ####9      |  49% cuda-nvdisasm-12.1.5 | 47.9 MB   | ######7    |  68% cuda-nvdisasm-12.1.5 | 47.9 MB   | ########6  |  86% cuda-nvdisasm-12.1.5 | 47.9 MB   | ########## | 100% 
+libcufile-dev-1.6.0. | 13 KB     |            |   0% libcufile-dev-1.6.0. | 13 KB     | ########## | 100% 
+cuda-nsight-compute- | 1 KB      |            |   0% cuda-nsight-compute- | 1 KB      | ########## | 100% 
+Preparing transaction: ...working... done
+Verifying transaction: ...working... done
+Executing transaction: ...working... done
+#
+# To activate this environment, use
+#
+#     $ conda activate /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env2
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+Retrieving notices: ...working... done

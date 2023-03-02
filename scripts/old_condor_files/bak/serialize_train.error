@@ -1,0 +1,181 @@
+2023-02-14 13:42:58 INFO: Checking for updates to resources.json in case models have been updated.  Note: this behavior can be turned off with download_method=None or download_method=DownloadMethod.REUSE_RESOURCES
+2023-02-14 13:42:58 DEBUG: Downloading resource file...
+Downloading https://raw.githubusercontent.com/stanfordnlp/stanza-resources/main/resources_1.4.1.json:   0%|          | 0.00/28.9k [00:00<?, ?B/s]Downloading https://raw.githubusercontent.com/stanfordnlp/stanza-resources/main/resources_1.4.1.json: 193kB [00:00, 46.2MB/s]                    
+2023-02-14 13:43:00 DEBUG: Loading resource file...
+2023-02-14 13:43:00 DEBUG: Processing parameter "processors"...
+2023-02-14 13:43:00 DEBUG: Found tokenize: combined.
+2023-02-14 13:43:00 DEBUG: Found pos: combined.
+2023-02-14 13:43:00 DEBUG: Found lemma: combined.
+2023-02-14 13:43:00 DEBUG: Found depparse: combined.
+2023-02-14 13:43:00 DEBUG: Found constituency: wsj.
+2023-02-14 13:43:00 DEBUG: Find dependency forward_charlm: 1billion.
+2023-02-14 13:43:00 DEBUG: Find dependency backward_charlm: 1billion.
+2023-02-14 13:43:00 DEBUG: Find dependency pretrain: combined.
+2023-02-14 13:43:00 DEBUG: Downloading these customized packages for language: en (English)...
+==============================
+| Processor       | Package  |
+------------------------------
+| tokenize        | combined |
+| pos             | combined |
+| lemma           | combined |
+| depparse        | combined |
+| constituency    | wsj      |
+| forward_charlm  | 1billion |
+| backward_charlm | 1billion |
+| pretrain        | combined |
+==============================
+
+2023-02-14 13:43:00 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/tokenize/combined.pt
+2023-02-14 13:43:01 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/pos/combined.pt
+2023-02-14 13:43:01 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/lemma/combined.pt
+2023-02-14 13:43:02 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/depparse/combined.pt
+2023-02-14 13:43:04 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/constituency/wsj.pt
+2023-02-14 13:43:04 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/forward_charlm/1billion.pt
+2023-02-14 13:43:04 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/backward_charlm/1billion.pt
+2023-02-14 13:43:06 DEBUG: File exists: /home2/abhinavp/stanza_resources/en/pretrain/combined.pt
+2023-02-14 13:43:06 INFO: Loading these models for language: en (English):
+===========================
+| Processor    | Package  |
+---------------------------
+| tokenize     | combined |
+| pos          | combined |
+| lemma        | combined |
+| depparse     | combined |
+| constituency | wsj      |
+===========================
+
+2023-02-14 13:43:06 INFO: Use device: cpu
+2023-02-14 13:43:06 INFO: Loading: tokenize
+2023-02-14 13:43:06 DEBUG: With settings: 
+2023-02-14 13:43:06 DEBUG: {'model_path': '/home2/abhinavp/stanza_resources/en/tokenize/combined.pt', 'pretokenized': True, 'lang': 'en', 'mode': 'predict'}
+2023-02-14 13:43:06 INFO: Loading: pos
+2023-02-14 13:43:06 DEBUG: With settings: 
+2023-02-14 13:43:06 DEBUG: {'model_path': '/home2/abhinavp/stanza_resources/en/pos/combined.pt', 'pretrain_path': '/home2/abhinavp/stanza_resources/en/pretrain/combined.pt', 'forward_charlm_path': '/home2/abhinavp/stanza_resources/en/forward_charlm/1billion.pt', 'backward_charlm_path': '/home2/abhinavp/stanza_resources/en/backward_charlm/1billion.pt', 'lang': 'en', 'mode': 'predict'}
+2023-02-14 13:43:06 DEBUG: Loading pretrain /home2/abhinavp/stanza_resources/en/pretrain/combined.pt
+2023-02-14 13:43:06 DEBUG: Loaded pretrain from /home2/abhinavp/stanza_resources/en/pretrain/combined.pt
+2023-02-14 13:43:07 DEBUG: POS model loading charmodels: /home2/abhinavp/stanza_resources/en/forward_charlm/1billion.pt and /home2/abhinavp/stanza_resources/en/backward_charlm/1billion.pt
+2023-02-14 13:43:07 INFO: Loading: lemma
+2023-02-14 13:43:07 DEBUG: With settings: 
+2023-02-14 13:43:07 DEBUG: {'model_path': '/home2/abhinavp/stanza_resources/en/lemma/combined.pt', 'lang': 'en', 'mode': 'predict'}
+2023-02-14 13:43:07 DEBUG: Building an attentional Seq2Seq model...
+2023-02-14 13:43:07 DEBUG: Using a Bi-LSTM encoder
+2023-02-14 13:43:07 DEBUG: Using soft attention for LSTM.
+2023-02-14 13:43:07 DEBUG: Using POS in encoder
+2023-02-14 13:43:07 DEBUG: Finetune all embeddings.
+2023-02-14 13:43:07 DEBUG: Running seq2seq lemmatizer with edit classifier...
+2023-02-14 13:43:07 INFO: Loading: depparse
+2023-02-14 13:43:07 DEBUG: With settings: 
+2023-02-14 13:43:07 DEBUG: {'model_path': '/home2/abhinavp/stanza_resources/en/depparse/combined.pt', 'pretrain_path': '/home2/abhinavp/stanza_resources/en/pretrain/combined.pt', 'lang': 'en', 'mode': 'predict'}
+2023-02-14 13:43:07 DEBUG: Reusing pretrain /home2/abhinavp/stanza_resources/en/pretrain/combined.pt
+2023-02-14 13:43:07 INFO: Loading: constituency
+2023-02-14 13:43:07 DEBUG: With settings: 
+2023-02-14 13:43:07 DEBUG: {'model_path': '/home2/abhinavp/stanza_resources/en/constituency/wsj.pt', 'pretrain_path': '/home2/abhinavp/stanza_resources/en/pretrain/combined.pt', 'forward_charlm_path': '/home2/abhinavp/stanza_resources/en/forward_charlm/1billion.pt', 'backward_charlm_path': '/home2/abhinavp/stanza_resources/en/backward_charlm/1billion.pt', 'lang': 'en', 'mode': 'predict'}
+2023-02-14 13:43:07 DEBUG: Loaded model from /home2/abhinavp/stanza_resources/en/constituency/wsj.pt
+2023-02-14 13:43:07 DEBUG: Reusing pretrain /home2/abhinavp/stanza_resources/en/pretrain/combined.pt
+2023-02-14 13:43:07 DEBUG: Loading charlm from /home2/abhinavp/stanza_resources/en/forward_charlm/1billion.pt
+2023-02-14 13:43:07 DEBUG: Loading charlm from /home2/abhinavp/stanza_resources/en/backward_charlm/1billion.pt
+2023-02-14 13:43:08 DEBUG: -- MODEL CONFIG --
+2023-02-14 13:43:08 DEBUG:   --data_dir: data/constituency
+2023-02-14 13:43:08 DEBUG:   --wordvec_dir: extern_data/wordvec
+2023-02-14 13:43:08 DEBUG:   --wordvec_file: 
+2023-02-14 13:43:08 DEBUG:   --wordvec_pretrain_file: /home2/abhinavp/stanza_resources/en/pretrain/combined.pt
+2023-02-14 13:43:08 DEBUG:   --pretrain_max_vocab: 250000
+2023-02-14 13:43:08 DEBUG:   --charlm_forward_file: /home2/abhinavp/stanza_resources/en/forward_charlm/1billion.pt
+2023-02-14 13:43:08 DEBUG:   --charlm_backward_file: /home2/abhinavp/stanza_resources/en/backward_charlm/1billion.pt
+2023-02-14 13:43:08 DEBUG:   --bert_model: None
+2023-02-14 13:43:08 DEBUG:   --tag_embedding_dim: 20
+2023-02-14 13:43:08 DEBUG:   --delta_embedding_dim: 100
+2023-02-14 13:43:08 DEBUG:   --train_file: /nlp/scr/horatio/data/constituency/en_wsj_train.mrg
+2023-02-14 13:43:08 DEBUG:   --eval_file: /nlp/scr/horatio/data/constituency/en_wsj_dev.mrg
+2023-02-14 13:43:08 DEBUG:   --mode: train
+2023-02-14 13:43:08 DEBUG:   --num_generate: 0
+2023-02-14 13:43:08 DEBUG:   --predict_dir: .
+2023-02-14 13:43:08 DEBUG:   --predict_file: None
+2023-02-14 13:43:08 DEBUG:   --lang: en
+2023-02-14 13:43:08 DEBUG:   --shorthand: en_wsj
+2023-02-14 13:43:08 DEBUG:   --transition_embedding_dim: 20
+2023-02-14 13:43:08 DEBUG:   --transition_hidden_size: 20
+2023-02-14 13:43:08 DEBUG:   --hidden_size: 512
+2023-02-14 13:43:08 DEBUG:   --epochs: 400
+2023-02-14 13:43:08 DEBUG:   --epoch_size: 5000
+2023-02-14 13:43:08 DEBUG:   --multistage: True
+2023-02-14 13:43:08 DEBUG:   --oracle_initial_epoch: 1
+2023-02-14 13:43:08 DEBUG:   --oracle_frequency: 0.8
+2023-02-14 13:43:08 DEBUG:   --oracle_forced_errors: 0.001
+2023-02-14 13:43:08 DEBUG:   --train_batch_size: 30
+2023-02-14 13:43:08 DEBUG:   --eval_batch_size: 50
+2023-02-14 13:43:08 DEBUG:   --save_dir: saved_models/constituency
+2023-02-14 13:43:08 DEBUG:   --save_name: saved_models/constituency/en_ewt_nobert.pt
+2023-02-14 13:43:08 DEBUG:   --save_each_name: None
+2023-02-14 13:43:08 DEBUG:   --seed: 1234
+2023-02-14 13:43:08 DEBUG:   --cuda: False
+2023-02-14 13:43:08 DEBUG:   --cpu: False
+2023-02-14 13:43:08 DEBUG:   --learning_rate: 7e-07
+2023-02-14 13:43:08 DEBUG:   --learning_eps: None
+2023-02-14 13:43:08 DEBUG:   --momentum: 0.9
+2023-02-14 13:43:08 DEBUG:   --weight_decay: 2e-06
+2023-02-14 13:43:08 DEBUG:   --learning_rho: 0.9
+2023-02-14 13:43:08 DEBUG:   --learning_beta2: 0.999
+2023-02-14 13:43:08 DEBUG:   --optim: madgrad
+2023-02-14 13:43:08 DEBUG:   --learning_rate_warmup: 0
+2023-02-14 13:43:08 DEBUG:   --grad_clipping: None
+2023-02-14 13:43:08 DEBUG:   --word_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --predict_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --lstm_layer_dropout: 0.0
+2023-02-14 13:43:08 DEBUG:   --lstm_input_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --transition_scheme: TransitionScheme.IN_ORDER
+2023-02-14 13:43:08 DEBUG:   --combined_dummy_embedding: True
+2023-02-14 13:43:08 DEBUG:   --nonlinearity: relu
+2023-02-14 13:43:08 DEBUG:   --rare_word_unknown_frequency: 0.02
+2023-02-14 13:43:08 DEBUG:   --rare_word_threshold: 0.02
+2023-02-14 13:43:08 DEBUG:   --tag_unknown_frequency: 0.001
+2023-02-14 13:43:08 DEBUG:   --num_lstm_layers: 2
+2023-02-14 13:43:08 DEBUG:   --num_output_layers: 3
+2023-02-14 13:43:08 DEBUG:   --sentence_boundary_vectors: SentenceBoundary.EVERYTHING
+2023-02-14 13:43:08 DEBUG:   --constituency_composition: ConstituencyComposition.MAX
+2023-02-14 13:43:08 DEBUG:   --reduce_heads: 8
+2023-02-14 13:43:08 DEBUG:   --relearn_structure: False
+2023-02-14 13:43:08 DEBUG:   --finetune: False
+2023-02-14 13:43:08 DEBUG:   --checkpoint_save_name: saved_models/constituency/en_ewt_nobert_checkpoint.pt
+2023-02-14 13:43:08 DEBUG:   --checkpoint: True
+2023-02-14 13:43:08 DEBUG:   --load_name: None
+2023-02-14 13:43:08 DEBUG:   --retag_package: default
+2023-02-14 13:43:08 DEBUG:   --retag_method: xpos
+2023-02-14 13:43:08 DEBUG:   --pattn_d_model: 1024
+2023-02-14 13:43:08 DEBUG:   --pattn_morpho_emb_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --pattn_encoder_max_len: 512
+2023-02-14 13:43:08 DEBUG:   --pattn_num_heads: 8
+2023-02-14 13:43:08 DEBUG:   --pattn_d_kv: 64
+2023-02-14 13:43:08 DEBUG:   --pattn_d_ff: 2048
+2023-02-14 13:43:08 DEBUG:   --pattn_relu_dropout: 0.1
+2023-02-14 13:43:08 DEBUG:   --pattn_residual_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --pattn_attention_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --pattn_num_layers: 0
+2023-02-14 13:43:08 DEBUG:   --pattn_bias: False
+2023-02-14 13:43:08 DEBUG:   --pattn_timing: sin
+2023-02-14 13:43:08 DEBUG:   --lattn_d_input_proj: None
+2023-02-14 13:43:08 DEBUG:   --lattn_d_kv: 64
+2023-02-14 13:43:08 DEBUG:   --lattn_d_proj: 0
+2023-02-14 13:43:08 DEBUG:   --lattn_resdrop: True
+2023-02-14 13:43:08 DEBUG:   --lattn_pwff: True
+2023-02-14 13:43:08 DEBUG:   --lattn_q_as_matrix: False
+2023-02-14 13:43:08 DEBUG:   --lattn_partitioned: True
+2023-02-14 13:43:08 DEBUG:   --lattn_combine_as_self: False
+2023-02-14 13:43:08 DEBUG:   --lattn_d_l: 32
+2023-02-14 13:43:08 DEBUG:   --lattn_attention_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --lattn_d_ff: 2048
+2023-02-14 13:43:08 DEBUG:   --lattn_relu_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --lattn_residual_dropout: 0.2
+2023-02-14 13:43:08 DEBUG:   --lattn_combined_input: True
+2023-02-14 13:43:08 DEBUG:   --log_norms: True
+2023-02-14 13:43:08 DEBUG:   --watch_regex: None
+2023-02-14 13:43:08 DEBUG:   --wandb: True
+2023-02-14 13:43:08 DEBUG:   --wandb_name: None
+2023-02-14 13:43:08 DEBUG:   --wandb_norm_regex: None
+2023-02-14 13:43:08 DEBUG:   --retag_xpos: True
+2023-02-14 13:43:08 INFO: Done loading processors!
+2023-02-14 13:43:08 DEBUG: 1 batches created.
+2023-02-14 13:43:09 DEBUG: 3 batches created.
+2023-02-14 13:43:09 DEBUG: 1 batches created.
+2023-02-14 13:43:09 DEBUG: 1 batches created.
+2023-02-14 13:43:09 DEBUG: Processing 5 sentences

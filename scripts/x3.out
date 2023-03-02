@@ -1,0 +1,59 @@
+++ realpath ../gpu_environment.yml
++ YML_FILE=/projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
+++ realpath /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env
++ ENV_PREFIX=/projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env
+++ realpath /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ CONDA_PROFILE=/home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ PATH=/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
++ echo 'Using YML file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml'
+Using YML file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
++ echo 'Using prefix: /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env'
+Using prefix: /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env
++ '[' '!' -f /home2/abhinavp/anaconda3/etc/profile.d/conda.sh ']'
++ '[' '!' -f '/projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml]'
+./gpu_node_conda_env_setup.sh: line 27: [: missing `]'
++ echo 'Checking GPU support exists...'
+Checking GPU support exists...
++ command -v nvcc
+++ nvcc --version
++ echo 'Using nvcc version: nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2019 NVIDIA Corporation
+Built on Wed_Oct_23_19:24:38_PDT_2019
+Cuda compilation tools, release 10.2, V10.2.89'
+Using nvcc version: nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2019 NVIDIA Corporation
+Built on Wed_Oct_23_19:24:38_PDT_2019
+Cuda compilation tools, release 10.2, V10.2.89
++ echo 'Sourcing anaconda profile from /home2/abhinavp/anaconda3/etc/profile.d/conda.sh'
+Sourcing anaconda profile from /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
++ source /home2/abhinavp/anaconda3/etc/profile.d/conda.sh
+++ export CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ CONDA_EXE=/home2/abhinavp/anaconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
+++ CONDA_PYTHON_EXE=/home2/abhinavp/anaconda3/bin/python
+++ '[' -z '' ']'
+++ export CONDA_SHLVL=0
+++ CONDA_SHLVL=0
+++ '[' -n '' ']'
+++++ dirname /home2/abhinavp/anaconda3/bin/conda
++++ dirname /home2/abhinavp/anaconda3/bin
+++ PATH=/home2/abhinavp/anaconda3/condabin:/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
+++ export PATH
+++ '[' -z '' ']'
+++ PS1=
++ echo 'Sourced Conda.sh script. Now creating environment'
+Sourced Conda.sh script. Now creating environment
++ echo 'Creating conda environment at /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env with environment file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml'
+Creating conda environment at /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env with environment file: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
++ conda create -p /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env --file /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml --strict-channel-priority --yes --dry-run
++ local cmd=create
++ case "$cmd" in
++ __conda_exe create -p /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env --file /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml --strict-channel-priority --yes --dry-run
++ /home2/abhinavp/anaconda3/bin/conda create -p /projects/assigned/lm-inductive/envs/test_gpu_corpus_filter_env --file /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml --strict-channel-priority --yes --dry-run
+
+CondaValueError: could not parse 'name: gpu_corpus_filter_env' in: /projects/assigned/lm-inductive/corpus-filtering/gpu_environment.yml
+

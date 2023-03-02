@@ -1,0 +1,16 @@
++ echo /usr/local/bin:/usr/bin
+/usr/local/bin:/usr/bin
+++ which nvcc
+which: no nvcc in ((null))
++ echo
+
++ export PATH=/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
++ PATH=/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
++ echo /usr/local/cuda/bin/:/usr/local/bin:/usr/bin
+/usr/local/cuda/bin/:/usr/local/bin:/usr/bin
+++ which nvcc
++ echo /usr/local/cuda/bin/nvcc
+/usr/local/cuda/bin/nvcc
+++ /usr/local/cuda/bin/nvcc --version
++ echo nvcc: NVIDIA '(R)' Cuda compiler driver Copyright '(c)' 2005-2019 NVIDIA Corporation Built on Wed_Oct_23_19:24:38_PDT_2019 Cuda compilation tools, release 10.2, V10.2.89
+nvcc: NVIDIA (R) Cuda compiler driver Copyright (c) 2005-2019 NVIDIA Corporation Built on Wed_Oct_23_19:24:38_PDT_2019 Cuda compilation tools, release 10.2, V10.2.89

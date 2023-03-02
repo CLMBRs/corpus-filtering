@@ -4,7 +4,7 @@ set -euo pipefail # automatically exit if any program errors, prohibit undefined
 
 # Base script for updating or creating the conda environments for use with this project.
 
-GPU=$1
+GPU={$1-0}
 
 # if you install anaconda in a different directory, change the following line to
 # CONDA_PROFILE=path_to_anaconda3/anaconda3/etc/profile.d/conda.sh
