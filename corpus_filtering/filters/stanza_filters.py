@@ -1,6 +1,7 @@
 import argparse
 from collections.abc import Iterable
 from typing import Generator, Optional, Type
+import pickle
 
 import stanza
 from stanza.models.common.doc import Sentence as StanzaSentence
@@ -177,4 +178,49 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         # where 'There' is the nsubj, its head predicate is whatever is immediately
         # after the copula "is/are," and the PP nmod occurs after that.
 
+        return False
+
+@register_filter("subj-verb-agreement")
+class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+
+    """
+    A filter for testing the subject and verb agreement.
+    
+    For example, in English:
+    1. See this goose.
+    2. See those geese.
+
+    Strong filter: removing all words that appeared in test data
+    Weaker filter: removing all nsubj that appeared in test data
+    """
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:/n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """Exclude a sentence if it contains a noun from blimp data noun list (regular, irregular).
+
+        For more information, see the class docstring.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a noun from the noun list; False otherwise.
+        """
+        
+        # reading the binary file (noun list from blimp)
+        list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list.bin'
+        with open(list_filename, 'rb') as f:
+            noun_list = pickle.load(f)
+
+        for head, deprel, word in sent.dependencies:
+            # strong filter: removing all words that appeared in test data
+            if word.text in noun_list:
+                return True
+            # weaker filter: removing all nsubj that appeared in test data
+            # if word.text in noun_list and word.deprel == 'nsubj':
+            #     return True
         return False

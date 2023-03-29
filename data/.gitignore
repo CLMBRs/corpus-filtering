@@ -6,3 +6,6 @@
 
 # Pickled (serialized) data files
 *.pkl
+
+# Binary files (list extracted from test dataset)
+*.bin
