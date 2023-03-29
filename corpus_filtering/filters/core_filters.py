@@ -142,7 +142,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
                 Path to where sentences for which the predicate evaluates True should
                 be written. Optional; if `None`, rejected sentences will be discarded.
         """
-        self._f_accept_out: Optional[TextIO] = open(f_accept_out_path, "w")
+        self._f_accept_out: Optional[TextIO] = open(f_accept_out_path, "w", encoding="utf-8")
         self._f_reject_out: Optional[TextIO] = None
         if f_reject_out_path:
             self._f_reject_out = open(f_reject_out_path, "w")
