@@ -178,3 +178,40 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         # after the copula "is/are," and the PP nmod occurs after that.
 
         return False
+
+
+@register_filter("rel-cl")
+class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences where a relative clause modifies the subject noun.
+
+    TODO: Explain the rationale for this filter.
+    """
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it contains a relative clause modifying the subject noun.
+        Specifically, if the dependency path
+            V -> nsubj -> relcl
+        exists, where V is the head of the sentence's predicate, nsubj is the subject
+        noun, and relcl is the relative clause modifying the subject noun, then exclude
+        the sentence.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a relative clause modifying the subject noun;
+            False otherwise.
+        """
+        for i in range(len(sent.dependencies)):
+            word = sent.dependencies[i]  # word is a tuple of (head, deprel, word)
+            # If the dependency relation is a relative clause,
+            if word[1] == "acl:relcl":
+                # and the head of the relative clause is a subject noun,
+                if word[0].deprel.startswith("nsubj"):
+                    # and the head of the subject noun is a verb
+                    head_of_subj_noun = sent.dependencies[word[0].head - 1]
+                    if head_of_subj_noun[2].upos == 'VERB':
+                        return True
+        return False
