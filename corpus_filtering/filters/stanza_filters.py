@@ -181,7 +181,7 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         return False
 
 @register_filter("subj-verb-agreement")
-class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
 
     """
     A filter for testing the subject and verb agreement.
@@ -190,8 +190,8 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     1. See this goose.
     2. See those geese.
 
-    Strong filter: removing all words that appeared in test data
-    Weaker filter: removing all nsubj that appeared in test data
+    Strong filter: removing all words that appeared (and identified as nsubj) in test data 
+    Weaker filter: removing all nsubj that appeared (and identified as nsubj) in test data
     """
     cli_subcmd_constructor_kwargs = {
         "description": f"Description:/n{__doc__}",
@@ -212,15 +212,29 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         """
         
         # reading the binary file (noun list from blimp)
-        list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list.bin'
-        with open(list_filename, 'rb') as f:
-            noun_list = pickle.load(f)
+        # list_filename = 'C:/Users/kelly/Desktop/file management/active/UW/corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list.bin'
+        # with open(list_filename, 'rb') as f:
+        #     noun_list = pickle.load(f)
+
+        # reading file (noun list from blimp)
+        list_filename = 'C:/Users/kelly/Desktop/file management/active/UW/corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list'
+
+        noun_list = []
+        with open(list_filename, 'r') as f:
+            for line in f:
+                x = line[:-1]
+                noun_list.append(x)
+
+        noun_set = set(noun_list)
 
         for head, deprel, word in sent.dependencies:
+
             # strong filter: removing all words that appeared in test data
-            if word.text in noun_list:
-                return True
-            # weaker filter: removing all nsubj that appeared in test data
-            # if word.text in noun_list and word.deprel == 'nsubj':
+            # if word.text in noun_set:
             #     return True
+
+            # weaker filter: removing all nsubj that appeared in test data
+            if word.text in noun_list and word.deprel == 'nsubj':
+                return True
+                
         return False
