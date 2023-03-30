@@ -236,5 +236,9 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             # weaker filter: removing all nsubj that appeared in test data
             if word.text in noun_list and word.deprel == 'nsubj':
                 return True
-                
+            
+            # weaker filter: removing all nsubj that appeared in test data and find both lowercase and uppercase 
+            if word.deprel == 'nsubj':
+                if word.text in noun_set or word.text.capitalize() in noun_set or word.text.lower() in noun_set:
+                    return True
         return False
