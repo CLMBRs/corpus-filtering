@@ -185,12 +185,18 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
     A filter for sentences where a relative clause modifies the subject noun.
 
-    TODO: Explain the rationale for this filter.
+    For example, a sentence in which a relative clause modifies the subject noun looks like:
+        "All pedestrians that wouldn't shock William read."
+    In contrast, a sentence in which no relative clause modifies the subject noun looks like:
+        "All pedestrians read."
+
+    Theoretically, a relative clause modifying the subject noun can be detected by
+    checking if the dependency/POS path, V -> nsubj -> relcl, exists in the sentence.
     """
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
         Exclude a sentence if it contains a relative clause modifying the subject noun.
-        Specifically, if the dependency path
+        Specifically, if the dependency/POS path
             V -> nsubj -> relcl
         exists, where V is the head of the sentence's predicate, nsubj is the subject
         noun, and relcl is the relative clause modifying the subject noun, then exclude
