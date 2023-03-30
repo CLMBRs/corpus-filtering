@@ -212,12 +212,12 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         """
         
         # reading the binary file (noun list from blimp)
-        # list_filename = 'C:/Users/kelly/Desktop/file management/active/UW/corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list.bin'
+        # list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list.bin'
         # with open(list_filename, 'rb') as f:
         #     noun_list = pickle.load(f)
 
         # reading file (noun list from blimp)
-        list_filename = 'C:/Users/kelly/Desktop/file management/active/UW/corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list'
+        list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list'
 
         noun_list = []
         with open(list_filename, 'r') as f:
