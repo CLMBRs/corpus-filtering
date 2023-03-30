@@ -189,9 +189,9 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     For example, in English:
     1. See this goose.
     2. See those geese.
-
-    Strong filter: removing all words that appeared (and identified as nsubj) in test data 
-    Weaker filter: removing all nsubj that appeared (and identified as nsubj) in test data
+    
+    noun list: svnoun_list: appeared and identified as nsubj in whole blimp data (test data);
+    filter: removing all nsubj in noun list; 
     """
     cli_subcmd_constructor_kwargs = {
         "description": f"Description:/n{__doc__}",
@@ -199,7 +199,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     }
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
-        """Exclude a sentence if it contains a noun from blimp data noun list (regular, irregular).
+        """Exclude a sentence if it contains a noun from blimp data noun list.
 
         For more information, see the class docstring.
 
@@ -211,33 +211,17 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             True if the sentence has a noun from the noun list; False otherwise.
         """
         
-        # reading the binary file (noun list from blimp)
-        # list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list.bin'
-        # with open(list_filename, 'rb') as f:
-        #     noun_list = pickle.load(f)
-
         # reading file (noun list from blimp)
-        list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_re_irre_list'
-
+        list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_list'
         noun_list = []
         with open(list_filename, 'r') as f:
             for line in f:
                 x = line[:-1]
                 noun_list.append(x)
-
         noun_set = set(noun_list)
 
-        for head, deprel, word in sent.dependencies:
-
-            # strong filter: removing all words that appeared in test data
-            # if word.text in noun_set:
-            #     return True
-
-            # weaker filter: removing all nsubj that appeared in test data
-            if word.text in noun_list and word.deprel == 'nsubj':
-                return True
-            
-            # weaker filter: removing all nsubj that appeared in test data and find both lowercase and uppercase 
+        # filter: removing all nsubj that appeared in test data and find both lowercase and uppercase
+        for head, deprel, word in sent.dependencies:             
             if word.deprel == 'nsubj':
                 if word.text in noun_set or word.text.capitalize() in noun_set or word.text.lower() in noun_set:
                     return True
