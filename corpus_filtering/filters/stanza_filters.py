@@ -212,7 +212,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         """
         
         # reading file (noun list from blimp)
-        list_filename = 'corpus-filtering-main/data/blimp_sv_nouns/svnoun_list'
+        list_filename = '././data/blimp_sv_nouns/svnoun_list_test'
         noun_list = []
         with open(list_filename, 'r') as f:
             for line in f:
