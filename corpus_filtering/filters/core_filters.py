@@ -145,7 +145,7 @@ class CorpusFilterTextFileWriter(CorpusFilterWriter[T]):
         self._f_accept_out: Optional[TextIO] = open(f_accept_out_path, "w", encoding="utf-8")
         self._f_reject_out: Optional[TextIO] = None
         if f_reject_out_path:
-            self._f_reject_out = open(f_reject_out_path, "w")
+            self._f_reject_out = open(f_reject_out_path, "w", encoding="utf-8")
 
     def close(self):
         """Do file handle cleanup so this class can be used in a `with` block."""
