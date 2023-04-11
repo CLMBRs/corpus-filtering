@@ -196,7 +196,7 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
         Exclude a sentence if it contains a relative clause modifying the subject noun.
-        Specifically, if the dependency/POS path
+        Specifically, if the dependency/POS path/pattern
             V -> nsubj -> relcl
         exists, where V is the head of the sentence's predicate, nsubj is the subject
         noun, and relcl is the relative clause modifying the subject noun, then exclude
