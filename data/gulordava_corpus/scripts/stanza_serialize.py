@@ -11,55 +11,65 @@ LOG_LEVEL = 'DEBUG'
 PROCESSORS = 'tokenize,pos,lemma,depparse,constituency'
 USE_GPU = True  # if GPU isn't available, Stanza will fail gracefully, so it's ok to default to True
 
-parser = argparse.ArgumentParser(
-    description='Use stanza to annotate a corpus of sentences from file and batch-serialize them as `stanza.Document` '
-                'objects.'
-)
-subparsers = parser.add_subparsers(
-    help='sub-command help'
-)
-write_parser = subparsers.add_parser(
-    'w',
-    help='Use stanza to annotate a corpus of sentences from file and batch-serialize them as `stanza.Document` objects.'
-)
-write_parser.add_argument(
-    'corpus_file_path',
-    metavar='corpus_file_path',
-    type=str,
-    help='Path to file that contains the sentences to annotate and serialize.'
-)
-write_parser.add_argument(
-    'output_file_path',
-    metavar='output_file_path',
-    type=str,
-    help='Path to file where the serialized bytes are to be written.'
-)
-write_parser.add_argument(
-    '-b', '--batch_size',
-    type=int,
-    default=DEFAULT_BATCH_SIZE,
-    help='How many lines (sentences) of the input file to annotate and write to file per batch. One batch corresponds '
-         'to one `stanza.Document` instance. A non-positive or `None` value indicates that the function should '
-         'process the whole file in one batch.'
-)
-write_parser.add_argument(
-    '-np', '--not_pretokenized',
-    action='store_false',
-    help='Boolean indicating whether the sentences in the input file are already tokenized. If flag is set, '
-         'the sentences will be passed as a string, and the `stanza.Pipeline` object will tokenize them.'
-)
-read_parser = subparsers.add_parser(
-    'r',
-    help='(For testing purposes only) Deserializes (and thus loads into memory) the entire file into a list of all '
-         '`Document` objects in the file.'
-)
-read_parser.add_argument(
-    'input_file_path',
-    metavar='input_file_path',
-    type=str,
-    help='Path to file that contains the serialized `stanza.Document` objects.'
-)
-args = parser.parse_args()
+
+def parse_args(arguments=None):
+    # Create a top-level parser
+    parser = argparse.ArgumentParser(
+        description='Use stanza to annotate a corpus of sentences from file and batch-serialize them as '
+                    '`stanza.Document` objects.'
+    )
+    # Create a subparser holder for a sub-command. The sub-command is the first argument to the script.
+    subparsers = parser.add_subparsers(
+        help='sub-command help',
+        dest='command'
+    )
+    # Create a subparser for the `w` sub-command
+    write_parser = subparsers.add_parser(
+        'w',
+        help='Use stanza to annotate a corpus of sentences from file and batch-serialize them as `stanza.Document` '
+             'objects.'
+    )
+    write_parser.add_argument(
+        'corpus_file_path',
+        metavar='corpus_file_path',
+        type=str,
+        help='Path to file that contains the sentences to annotate and serialize.'
+    )
+    write_parser.add_argument(
+        'output_file_path',
+        metavar='output_file_path',
+        type=str,
+        help='Path to file where the serialized bytes are to be written.'
+    )
+    write_parser.add_argument(
+        '-b', '--batch_size',
+        type=int,
+        default=DEFAULT_BATCH_SIZE,
+        help='How many lines (sentences) of the input file to annotate and write to file per batch. One batch '
+             'corresponds to one `stanza.Document` instance. A non-positive or `None` value indicates that the function'
+             'should process the whole file in one batch.'
+    )
+    write_parser.add_argument(
+        '-np', '--not_pretokenized',
+        action='store_false',
+        help='Set the switch to false. If flag is set, the sentences will be passed as a string, and the '
+             '`stanza.Pipeline` object will tokenize them.'
+    )
+    # Create a subparser for the `r` sub-command
+    read_parser = subparsers.add_parser(
+        'r',
+        help='(For testing purposes only) Deserializes (and thus loads into memory) the entire file into a list of all '
+             '`Document` objects in the file.'
+    )
+    read_parser.add_argument(
+        'input_file_path',
+        metavar='input_file_path',
+        type=str,
+        help='Path to file that contains the serialized `stanza.Document` objects.'
+    )
+
+    return parser.parse_args(arguments)
+
 
 def serialize(fpath_in: str, fpath_out: str, batch_size: Optional[int] = DEFAULT_BATCH_SIZE,
               pretokenized: bool = True) -> None:
@@ -145,8 +155,8 @@ def deserialize(fpath_in: str) -> list[stanza.Document]:
     return docs
 
 if __name__ == '__main__':
-    # TODO: Update this to use argparse
-    """Command line arguments:
+    """
+    Command line arguments:
 
     There are two ways to run this script, either with the w (write) argument and two file paths, or the r (read)
     argument and one file path:
@@ -154,12 +164,16 @@ if __name__ == '__main__':
         To read in from [corpus_file_path], annotate, and serialize the annotated sentences to [output_file_path]:
 
             stanza_serialize.py w [corpus_file_path] [output_file_path]
+            stanza_serialize.py w -h
 
         (For testing purposes only) to deserialize from [input_file_path]:
 
             stanza_serialize.py r [input_file_path]
+            stanza_serialize.py r -h
     """
-    if sys.argv[1] == 'w':
-        serialize(*sys.argv[2:4])
-    elif sys.argv[1] == 'r':
-        d = deserialize(sys.argv[2])
+    args = parse_args(sys.argv[1:])
+
+    if args.command == 'w':
+        serialize(args.corpus_file_path, args.output_file_path, args.batch_size, args.not_pretokenized)
+    elif args.command == 'r':
+        d = deserialize(args.input_file_path)
