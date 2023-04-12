@@ -1,16 +1,68 @@
 import itertools
 import pickle
 import sys
+import argparse
+import stanza
 from typing import Optional
 
-import stanza
 
 DEFAULT_BATCH_SIZE = 10000
 LOG_LEVEL = 'DEBUG'
 PROCESSORS = 'tokenize,pos,lemma,depparse,constituency'
-USE_GPU = True # if GPU isn't available, Stanza will fail gracefully, so it's ok to default to True
+USE_GPU = True  # if GPU isn't available, Stanza will fail gracefully, so it's ok to default to True
 
-def serialize(fpath_in: str, fpath_out: str, batch_size: Optional[int] = DEFAULT_BATCH_SIZE) -> None:
+parser = argparse.ArgumentParser(
+    description='Use stanza to annotate a corpus of sentences from file and batch-serialize them as `stanza.Document` '
+                'objects.'
+)
+subparsers = parser.add_subparsers(
+    help='sub-command help'
+)
+write_parser = subparsers.add_parser(
+    'w',
+    help='Use stanza to annotate a corpus of sentences from file and batch-serialize them as `stanza.Document` objects.'
+)
+write_parser.add_argument(
+    'corpus_file_path',
+    metavar='corpus_file_path',
+    type=str,
+    help='Path to file that contains the sentences to annotate and serialize.'
+)
+write_parser.add_argument(
+    'output_file_path',
+    metavar='output_file_path',
+    type=str,
+    help='Path to file where the serialized bytes are to be written.'
+)
+write_parser.add_argument(
+    '-b', '--batch_size',
+    type=int,
+    default=DEFAULT_BATCH_SIZE,
+    help='How many lines (sentences) of the input file to annotate and write to file per batch. One batch corresponds '
+         'to one `stanza.Document` instance. A non-positive or `None` value indicates that the function should '
+         'process the whole file in one batch.'
+)
+write_parser.add_argument(
+    '-np', '--not_pretokenized',
+    action='store_false',
+    help='Boolean indicating whether the sentences in the input file are already tokenized. If flag is set, '
+         'the sentences will be passed as a string, and the `stanza.Pipeline` object will tokenize them.'
+)
+read_parser = subparsers.add_parser(
+    'r',
+    help='(For testing purposes only) Deserializes (and thus loads into memory) the entire file into a list of all '
+         '`Document` objects in the file.'
+)
+read_parser.add_argument(
+    'input_file_path',
+    metavar='input_file_path',
+    type=str,
+    help='Path to file that contains the serialized `stanza.Document` objects.'
+)
+args = parser.parse_args()
+
+def serialize(fpath_in: str, fpath_out: str, batch_size: Optional[int] = DEFAULT_BATCH_SIZE,
+              pretokenized: bool = True) -> None:
     """Use stanza to annotate a corpus of sentences from file and batch-serialize them as `stanza.Document` objects.
 
     Args:
@@ -20,9 +72,14 @@ def serialize(fpath_in: str, fpath_out: str, batch_size: Optional[int] = DEFAULT
             How many lines (sentences) of the input file to annotate and write to file per batch. One batch corresponds
             to one `stanza.Document` instance. A non-positive or `None` value ` indicates that the function should
             process the whole file in one batch.
+        pretokenized:
+            Boolean indicating whether the sentences in the input file are already tokenized. If `True`, the sentences
+            will be passed to the `stanza.Pipeline` object as a list of tokens, rather than as a string. If `False`,
+            the sentences will be passed as a string, and the `stanza.Pipeline` object will tokenize them.
     """
     print('Constructing Stanza pipeline...')
-    pipeline = stanza.Pipeline(lang='en', processors=PROCESSORS, tokenize_pretokenized=True, logging_level=LOG_LEVEL, use_gpu=USE_GPU)
+    pipeline = stanza.Pipeline(lang='en', processors=PROCESSORS, tokenize_pretokenized=pretokenized,
+                               logging_level=LOG_LEVEL, use_gpu=USE_GPU)
     print('Constructed Stanza pipeline.')
 
     print(f'Annotating and serializing sentences from: {fpath_in}.')
@@ -88,6 +145,7 @@ def deserialize(fpath_in: str) -> list[stanza.Document]:
     return docs
 
 if __name__ == '__main__':
+    # TODO: Update this to use argparse
     """Command line arguments:
 
     There are two ways to run this script, either with the w (write) argument and two file paths, or the r (read)
