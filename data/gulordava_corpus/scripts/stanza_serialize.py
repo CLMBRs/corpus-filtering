@@ -29,6 +29,7 @@ def parse_args(arguments=None):
         help='Use stanza to annotate a corpus of sentences from file and batch-serialize them as `stanza.Document` '
              'objects.'
     )
+    # Add arguments to the `w` sub-command
     write_parser.add_argument(
         'corpus_file_path',
         metavar='corpus_file_path',
@@ -61,6 +62,7 @@ def parse_args(arguments=None):
         help='(For testing purposes only) Deserializes (and thus loads into memory) the entire file into a list of all '
              '`Document` objects in the file.'
     )
+    # Add arguments to the `r` sub-command
     read_parser.add_argument(
         'input_file_path',
         metavar='input_file_path',
@@ -158,13 +160,24 @@ if __name__ == '__main__':
     """
     Command line arguments:
 
-    There are two ways to run this script, either with the w (write) argument and two file paths, or the r (read)
-    argument and one file path:
+    There are two ways to run this script, either with the `w` (write) sub-command and two file paths, or the `r` (read)
+    sub-command and one file path:
         
+        With the `w` sub-command, there are two positional arguments: [corpus_file_path] and [output_file_path]. 
+        There are also two optional arguments: `--batch_size` and `--not_pretokenized`. If the input file is not already 
+        tokenized, you can pass the `-np`/ `--not_pretokenized` flag to the `w` sub-command.
+        To see the usage / optional arguments for the `w` sub-command, run: 
+        
+            stanza_serialize.py w -h
+            
+        With the `r` sub-command, there is one positional argument: [input_file_path].
+        To see the usage / optional arguments for the `r` sub-command, run:
+        
+            stanza_serialize.py r -h
+            
         To read in from [corpus_file_path], annotate, and serialize the annotated sentences to [output_file_path]:
 
             stanza_serialize.py w [corpus_file_path] [output_file_path]
-            stanza_serialize.py w -h
 
         (For testing purposes only) to deserialize from [input_file_path]:
 
