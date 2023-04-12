@@ -210,14 +210,14 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             True if the sentence has a relative clause modifying the subject noun;
             False otherwise.
         """
-        for i in range(len(sent.dependencies)):
-            word = sent.dependencies[i]  # word is a tuple of (head, deprel, word)
+        for head, deprel, word in sent.dependencies:
             # If the dependency relation is a relative clause,
-            if word[1] == "acl:relcl":
+            if deprel == "acl:relcl":
                 # and the head of the relative clause is a subject noun,
-                if word[0].deprel.startswith("nsubj"):
+                if head.deprel.startswith("nsubj"):
+                    head_of_head_subj_n, deprel_subj_n, head_of_subj_noun = sent.dependencies[head.head - 1]
                     # and the head of the subject noun is a verb
-                    head_of_subj_noun = sent.dependencies[word[0].head - 1]
-                    if head_of_subj_noun[2].upos == 'VERB':
+                    if head_of_subj_noun.upos == 'VERB':
                         return True
+
         return False
