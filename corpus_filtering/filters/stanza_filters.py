@@ -178,3 +178,46 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         # after the copula "is/are," and the PP nmod occurs after that.
 
         return False
+
+
+@register_filter("rel-cl")
+class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences where a relative clause modifies the subject noun.
+
+    For example, a sentence in which a relative clause modifies the subject noun looks like:
+        "All pedestrians that wouldn't shock William read."
+    In contrast, a sentence in which no relative clause modifies the subject noun looks like:
+        "All pedestrians read."
+
+    Theoretically, a relative clause modifying the subject noun can be detected by
+    checking if the dependency/POS path, V -> nsubj -> relcl, exists in the sentence.
+    """
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it contains a relative clause modifying the subject noun.
+        Specifically, if the dependency/POS path/pattern
+            V -> nsubj -> relcl
+        exists, where V is the head of the sentence's predicate, nsubj is the subject
+        noun, and relcl is the relative clause modifying the subject noun, then exclude
+        the sentence.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a relative clause modifying the subject noun;
+            False otherwise.
+        """
+        for head, deprel, word in sent.dependencies:
+            # If the dependency relation is a relative clause,
+            if deprel == "acl:relcl":
+                # and the head of the relative clause is a subject noun,
+                if head.deprel.startswith("nsubj"):
+                    _, _, head_of_subj_noun = sent.dependencies[head.head - 1]
+                    # and the head of the subject noun is a verb
+                    if head_of_subj_noun.upos == 'VERB':
+                        return True
+
+        return False
