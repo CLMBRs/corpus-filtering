@@ -2,6 +2,17 @@
 
 ## Development & Contribution Guidelines
 
+### Basic Setup
+
+After cloning this repo, if you want to do any sort of model training, you will need to run the commands below from within the root directory of this repo (if however,you only want to filter corpuses (i.e. use the `corpus_filtering` module and its children only), there is no need to run these commands):
+
+```
+git submodule init
+git submodule update
+```
+
+This will pull the contents of the `lm-training` submodule into the `lm-training/` folder, which otherwwise is empty.
+
 ### Requirements
 
 You will only need to make sure you have a recent version of Anaconda. All other requirements are listed in `environment.yml`/`gpu_environment.yml` and installed/managed by conda.

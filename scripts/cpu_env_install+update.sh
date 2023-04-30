@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# set -euxo pipefail # automatically exit if any program errors, prohibit undefined variables
-set -euo pipefail # automatically exit if any program errors, prohibit undefined variables
+# -e: immediately exit if any program errors while running the script
+# -u: prohibit undefined variable
+# -x: print each command being executed
+# -o pipefail: if any program in a pipeline errors, its error code is the error code of the whole script
+# set -euxo pipefail # for debugging
+set -euo pipefail
 
 # This script sets up the CPU conda environment on a CPU node.
 

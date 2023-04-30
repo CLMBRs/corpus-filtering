@@ -4,7 +4,7 @@ channels:
 dependencies:
   - stanfordcorenlp=3.9
   - python=3.9
-  - stanza=1.4
+  - stanza=1.5
   - nltk=3.8
-  - black=23.1
-  - mypy=1.0
+  - black=23
+  - mypy=1
