@@ -1,6 +1,11 @@
 #!/bin/bash
 
-set -euo pipefail # automatically exit if any program errors, prohibit undefined variables
+# -e: immediately exit if any program errors while running the script
+# -u: prohibit undefined variables
+# -x: print each command being executed
+# -o pipefail: if any program in a pipeline errors, its error code is the error code of the whole script
+# set -euxo pipefail # for debugging
+set -euo pipefail
 
 # Base script for updating or creating the conda environments for use with this project.
 
