@@ -205,8 +205,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     # reading file (noun list from blimp)
     list_filename = '././data/blimp/svnoun/svnoun_list'
     with open(list_filename, 'r') as f:
-        noun_set = set(line.strip() for line in f)
-    lower_noun_set = set(noun.lower() for noun in noun_set)
+        lower_noun_set = set(line.strip().lower() for line in f)
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """Exclude a sentence if it contains a noun from blimp data noun list.
