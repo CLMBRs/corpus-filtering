@@ -180,9 +180,8 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
 
         return False
 
-@register_filter("subj-verb-agreement")
+@register_filter("re-irre-nsubj")
 class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
-
     """
     A filter for testing the subject and verb agreement.
     
@@ -192,11 +191,22 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     
     noun list: svnoun_list: appeared and identified as nsubj in whole blimp data (test data);
     filter: removing all nsubj in noun list; 
+    BLiMP:  regular_plural_subject_verb_agreement_1, 
+            regular_plural_subject_verb_agreement_2,
+            irregular_plural_subject_verb_agreement_1,
+            irregular_plural_subject_verb_agreement_2,
     """
+    
     cli_subcmd_constructor_kwargs = {
         "description": f"Description:/n{__doc__}",
         "formatter_class": argparse.RawDescriptionHelpFormatter,
     }
+
+    # reading file (noun list from blimp)
+    list_filename = '././data/blimp/svnoun/svnoun_list'
+    with open(list_filename, 'r') as f:
+        noun_set = set(line.strip() for line in f)
+    lower_noun_set = set(noun.lower() for noun in noun_set)
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """Exclude a sentence if it contains a noun from blimp data noun list.
@@ -211,18 +221,9 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             True if the sentence has a noun from the noun list; False otherwise.
         """
         
-        # reading file (noun list from blimp)
-        list_filename = '././data/blimp_sv_nouns/svnoun_list_test'
-        noun_list = []
-        with open(list_filename, 'r') as f:
-            for line in f:
-                x = line[:-1]
-                noun_list.append(x)
-        noun_set = set(noun_list)
-
-        # filter: removing all nsubj that appeared in test data and find both lowercase and uppercase
+        # filter: removing all nsubj that appeared in test data
         for head, deprel, word in sent.dependencies:             
             if word.deprel == 'nsubj':
-                if word.text in noun_set or word.text.capitalize() in noun_set or word.text.lower() in noun_set:
+                if word.text.lower() in NSubjBlimpFilteredCorpusWriter.lower_noun_set:
                     return True
         return False
