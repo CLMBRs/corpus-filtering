@@ -215,9 +215,10 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             if deprel == "acl:relcl":
                 # and the head of the relative clause is a subject noun,
                 if head.deprel.startswith("nsubj"):
-                    _, _, head_of_subj_noun = sent.dependencies[head.head - 1]
+                    return True
+                    #_, _, head_of_subj_noun = sent.dependencies[head.head - 1]
                     # and the head of the subject noun is a verb
-                    if head_of_subj_noun.upos == 'VERB':
-                        return True
+                    #if head_of_subj_noun.upos == 'VERB':
+                    #    return True
 
         return False
