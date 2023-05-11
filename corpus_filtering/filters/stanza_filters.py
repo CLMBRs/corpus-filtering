@@ -193,6 +193,7 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     Theoretically, a relative clause modifying the subject noun can be detected by
     checking if the dependency/POS path, V -> nsubj -> relcl, exists in the sentence.
     """
+
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
         Exclude a sentence if it contains a relative clause modifying the subject noun.
@@ -216,9 +217,9 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                 # and the head of the relative clause is a subject noun,
                 if head.deprel.startswith("nsubj"):
                     return True
-                    #_, _, head_of_subj_noun = sent.dependencies[head.head - 1]
-                    # and the head of the subject noun is a verb
-                    #if head_of_subj_noun.upos == 'VERB':
-                    #    return True
+                # and the head of the relative clause is a nominal modifier of a subject noun,
+                # or head of the relative clause has dependency relation 'root',
+                elif head.deprel == "nmod" or head.deprel == "root":
+                    return True
 
         return False
