@@ -218,8 +218,9 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                 if head.deprel.startswith("nsubj"):
                     return True
                 # and the head of the relative clause is a nominal modifier of a subject noun,
-                # or head of the relative clause has dependency relation 'root',
-                elif head.deprel == "nmod" or head.deprel == "root":
-                    return True
+                elif head.deprel == "nmod":
+                    _, _, head_of_head = sent.dependencies[head.head - 1]
+                    if head_of_head.deprel.startswith("nsubj"):
+                        return True
 
         return False
