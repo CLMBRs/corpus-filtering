@@ -1,14 +1,10 @@
 import argparse
-from collections.abc import Iterable
-from typing import Generator, Optional, Type
-import pickle
+from typing import Generator, Optional
 
-import stanza
 from stanza.models.common.doc import Sentence as StanzaSentence
 
 from corpus_filtering.filters.core_filters import (
     register_filter,
-    CorpusFilterWriter,
     CorpusFilterTextFileWriter,
 )
 from corpus_filtering.corpus_views import PickleStanzaDocCorpusView
@@ -209,7 +205,7 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             True if the sentence has a relative clause modifying the subject noun;
             False otherwise.
         """
-        for head, deprel, word in sent.dependencies:
+        for head, deprel, _ in sent.dependencies:
             # If the dependency relation is a relative clause,
             if deprel == "acl:relcl":
                 # and the head of the relative clause is a subject noun,
@@ -263,7 +259,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             True if the sentence has a noun from the noun list; False otherwise.
         """
         # filter: removing all nsubj that appeared in test data
-        for head, deprel, word in sent.dependencies:
+        for _, _, word in sent.dependencies:
             if word.deprel == "nsubj":
                 if word.text.lower() in NSubjBlimpFilteredCorpusWriter.lower_noun_set:
                     return True
