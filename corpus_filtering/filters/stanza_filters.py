@@ -1,6 +1,7 @@
 import argparse
 from collections.abc import Iterable
 from typing import Generator, Optional, Type
+import pickle
 
 import stanza
 from stanza.models.common.doc import Sentence as StanzaSentence
@@ -176,7 +177,6 @@ class NModNSubjFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         # are wrong, or, more commonly, because of a sentence like "There is/are..."
         # where 'There' is the nsubj, its head predicate is whatever is immediately
         # after the copula "is/are," and the PP nmod occurs after that.
-
         return False
 
 
@@ -195,13 +195,9 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
-        """
-        Exclude a sentence if it contains a relative clause modifying the subject noun.
-        Specifically, if the dependency/POS path/pattern
-            V -> nsubj -> relcl
-        exists, where V is the head of the sentence's predicate, nsubj is the subject
-        noun, and relcl is the relative clause modifying the subject noun, then exclude
-        the sentence.
+        """Exclude a sentence if it contains a noun from blimp data noun list.
+
+        For more information, see the class docstring.
 
         Args:
             sent: A stanza `Sentence` object that has been annotated with dependency
@@ -222,5 +218,51 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                     _, _, head_of_head = sent.dependencies[head.head - 1]
                     if head_of_head.deprel.startswith("nsubj"):
                         return True
+        return False
 
+
+@register_filter("re-irre-nsubj")
+class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for testing the subject and verb agreement.
+
+    For example, in English:
+    1. See this goose.
+    2. See those geese.
+
+    noun list: svnoun_list: appeared and identified as nsubj in whole blimp data (test data);
+    filter: removing all nsubj in noun list;
+    BLiMP:  regular_plural_subject_verb_agreement_1,
+            regular_plural_subject_verb_agreement_2,
+            irregular_plural_subject_verb_agreement_1,
+            irregular_plural_subject_verb_agreement_2,
+    """
+
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:/n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+
+    # reading file (noun list from blimp)
+    list_filename = "././data/blimp/svnoun/svnoun_list"
+    with open(list_filename, "r") as f:
+        lower_noun_set = set(line.strip().lower() for line in f)
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it contains a relative clause modifying the subject noun.
+        Specifically, if the dependency/POS path/pattern
+            V -> nsubj -> relcl
+        exists, where V is the head of the sentence's predicate, nsubj is the subject
+        noun, and relcl is the relative clause modifying the subject noun, then exclude
+        the sentence.
+
+        Retruns:
+            True if the sentence has a noun from the noun list; False otherwise.
+        """
+        # filter: removing all nsubj that appeared in test data
+        for head, deprel, word in sent.dependencies:
+            if word.deprel == "nsubj":
+                if word.text.lower() in NSubjBlimpFilteredCorpusWriter.lower_noun_set:
+                    return True
         return False
