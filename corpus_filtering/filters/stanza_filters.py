@@ -224,3 +224,38 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                         return True
 
         return False
+
+@register_filter("superlative-quantifier")
+class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences where superlative quantifier exists.
+
+    Examples are "No ... more/fewer than", "at least/most".
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it contains a superlative quantifier.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a superlative quantifier.
+        """
+        for head, deprel, word in sent.dependencies:
+            # filter out "more/fewer than"
+            if (word.text == "more" or word.text == "fewer") and word.id+1 < len(sent.dependencies):
+                next_word = sent.dependencies[word.id][2]
+                next_next_word_head, _, next_next_word = sent.dependencies[word.id+1]
+                if next_word.text == "than" and next_next_word.xpos == "CD":
+                    return True
+
+            # filter out "at least/most"
+            if word.text.lower() == "at" and word.id+1 < len(sent.dependencies):
+                next_word = sent.dependencies[word.id][2]
+                next_next_word = sent.dependencies[word.id+1][2]
+                if (next_word.text == "least" or next_word.text == "most") and next_next_word.xpos == "CD":
+                    return True
+        return False
