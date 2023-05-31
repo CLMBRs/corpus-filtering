@@ -16,6 +16,8 @@ from corpus_filtering.corpus_views import PickleStanzaDocCorpusView
 __all__ = [
     "PickleStanzaDocCorpusFilterWriter",
     "NModNSubjFilteredCorpusWriter",
+    "RelativeClauseFilteredCorpusWriter",
+    "NSubjBlimpFilteredCorpusWriter",
 ]
 
 
