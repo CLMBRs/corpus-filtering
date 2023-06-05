@@ -228,14 +228,22 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
 @register_filter("superlative-quantifier")
 class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
-    A filter for sentences where superlative quantifier exists.
+    A filter for sentences where superlative quantifier occurs in object position.
+    The target BLiMP benchmark sets are:
+        https://github.com/alexwarstadt/blimp/blob/master/data/superlative_quantifiers_1.jsonl
+        https://github.com/alexwarstadt/blimp/blob/master/data/superlative_quantifiers_2.jsonl
 
-    Examples are "No ... more/fewer than", "at least/most".
+    Some examples on good sentences and bad sentences:
+        good: "The teenager does tour at most nine restaurants."
+        bad: "No teenager does tour at most nine restaurants."
+        good: "No girl attacked fewer than two waiters."
+        bad: "No girl attacked at most two waiters.""
     """
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
-        Exclude a sentence if it contains a superlative quantifier.
+        Exclude a sentence if superlative quantifier occurs in object position.
+        Search for obj/obl -> ... -> [Degree:Sup/Cmp]
 
         Args:
             sent: A stanza `Sentence` object that has been annotated with dependency
@@ -245,17 +253,12 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
             True if the sentence has a superlative quantifier.
         """
         for head, deprel, word in sent.dependencies:
-            # filter out "more/fewer than"
-            if (word.text == "more" or word.text == "fewer") and word.id+1 < len(sent.dependencies):
-                next_word = sent.dependencies[word.id][2]
-                next_next_word_head, _, next_next_word = sent.dependencies[word.id+1]
-                if next_word.text == "than" and next_next_word.xpos == "CD":
-                    return True
-
-            # filter out "at least/most"
-            if word.text.lower() == "at" and word.id+1 < len(sent.dependencies):
-                next_word = sent.dependencies[word.id][2]
-                next_next_word = sent.dependencies[word.id+1][2]
-                if (next_word.text == "least" or next_word.text == "most") and next_next_word.xpos == "CD":
-                    return True
+            # If Degree=Sup or Degree=Cmp
+            if word.feats is not None and ("Degree=Sup" in word.feats or "Degree=Cmp" in word.feats):
+                # and track up the dependency path to see if the word is in object position
+                while word.head != 0:
+                    # if a word in its dependency path has deprel=obl or deprel=obj
+                    if (deprel == "obl" or deprel == "obj"):
+                        return True
+                    head, deprel, word = sent.dependencies[head.id-1]
         return False
