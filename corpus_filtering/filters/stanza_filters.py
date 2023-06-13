@@ -257,8 +257,8 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
             if word.feats is not None and ("Degree=Sup" in word.feats or "Degree=Cmp" in word.feats):
                 # and track up the dependency path to see if the word is in object position
                 while word.head != 0:
-                    # if a word in its dependency path has deprel=obl or deprel=obj
-                    if (deprel == "obl" or deprel == "obj"):
+                    # if a word in its dependency path has deprel=obl or deprel=obj or deprel=iobj
+                    if (deprel == "obl" or deprel == "obj" or deprel == "iobj"):
                         return True
                     head, deprel, word = sent.dependencies[head.id-1]
         return False
