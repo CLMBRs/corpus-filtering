@@ -264,3 +264,41 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                 if word.text.lower() in NSubjBlimpFilteredCorpusWriter.lower_noun_set:
                     return True
         return False
+
+@register_filter("superlative-quantifier")
+class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences where superlative quantifier occurs in object position.
+    The target BLiMP benchmark sets are:
+        https://github.com/alexwarstadt/blimp/blob/master/data/superlative_quantifiers_1.jsonl
+        https://github.com/alexwarstadt/blimp/blob/master/data/superlative_quantifiers_2.jsonl
+
+    Some examples on good sentences and bad sentences:
+        good: "The teenager does tour at most nine restaurants."
+        bad: "No teenager does tour at most nine restaurants."
+        good: "No girl attacked fewer than two waiters."
+        bad: "No girl attacked at most two waiters.""
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if superlative quantifier occurs in object position.
+        Search for obj/obl -> ... -> [Degree:Sup/Cmp]
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a superlative quantifier.
+        """
+        for head, deprel, word in sent.dependencies:
+            # If Degree=Sup or Degree=Cmp
+            if word.feats is not None and ("Degree=Sup" in word.feats or "Degree=Cmp" in word.feats):
+                # and track up the dependency path to see if the word is in object position
+                while word.head != 0:
+                    # if a word in its dependency path has deprel=obl or deprel=obj or deprel=iobj
+                    if (deprel == "obl" or deprel == "obj" or deprel == "iobj"):
+                        return True
+                    head, deprel, word = sent.dependencies[head.id-1]
+        return False
