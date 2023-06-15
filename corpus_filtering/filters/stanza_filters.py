@@ -14,6 +14,7 @@ __all__ = [
     "NModNSubjFilteredCorpusWriter",
     "RelativeClauseFilteredCorpusWriter",
     "NSubjBlimpFilteredCorpusWriter",
+    "SuperlativeQuantifierFilteredCorpusWriter"
 ]
 
 
@@ -265,6 +266,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                     return True
         return False
 
+
 @register_filter("superlative-quantifier")
 class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
@@ -282,7 +284,7 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
-        Exclude a sentence if superlative quantifier occurs in object position.
+        Exclude a sentence if superlative or comparative quantifier occurs in object position.
         Search for obj/obl -> ... -> [Degree:Sup/Cmp]
 
         Args:
@@ -294,11 +296,13 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
         """
         for head, deprel, word in sent.dependencies:
             # If Degree=Sup or Degree=Cmp
-            if word.feats is not None and ("Degree=Sup" in word.feats or "Degree=Cmp" in word.feats):
+            if word.feats is not None and (
+                "Degree=Sup" in word.feats or "Degree=Cmp" in word.feats
+            ):
                 # and track up the dependency path to see if the word is in object position
                 while word.head != 0:
                     # if a word in its dependency path has deprel=obl or deprel=obj or deprel=iobj
-                    if (deprel == "obl" or deprel == "obj" or deprel == "iobj"):
+                    if deprel == "obl" or deprel == "obj" or deprel == "iobj":
                         return True
-                    head, deprel, word = sent.dependencies[head.id-1]
+                    head, deprel, word = sent.dependencies[head.id - 1]
         return False
