@@ -25,10 +25,10 @@ def sent_info(sent: StanzaSentence) -> list[str]:
         f"word: {word.text}\t"
         f"upos: {word.upos}\t"
         f"xpos: {word.xpos}\t"
-        f"feats: {word.feats}\t"
         f"head id: {word.head}\t"
         f"head: {sent.words[word.head-1].text if word.head > 0 else 'root'}\t"
         f"deprel: {word.deprel}"
+        f"\n\tfeats: {word.feats}"
         for word in sent.words
     ]
 
