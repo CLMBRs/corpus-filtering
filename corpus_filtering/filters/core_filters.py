@@ -2,6 +2,8 @@ from abc import abstractmethod, ABC
 import functools
 from typing import final, Generator, Generic, Optional, TextIO, Type, TypeVar, Union
 
+from tqdm import tqdm
+
 __all__ = [
     "register_filter",
     "CorpusFilterWriter",
@@ -29,7 +31,7 @@ class CorpusFilterWriter(ABC, Generic[T]):
 
     @final
     def filter_write(self):
-        for sent in self._get_sents():
+        for sent in tqdm(self._get_sents(), desc="Filtering lines", dynamic_ncols=True):
             self._write(sent, reject=self._exclude_sent(sent))
 
     def __enter__(self):
