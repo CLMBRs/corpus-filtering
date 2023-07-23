@@ -28,7 +28,7 @@ Instructions on setting up Conda on Patas can be found [here](https://www.shane.
 After installing conda as above, you may wish to test small changes while working on your own account on the head node. To do so, you will want to first activate the CPU environment like so:
 
 ```sh
-conda activate /projects/assigned/lm-inductive/envs/corpus_filter_env
+conda activate /projects/assigned/lm-inductive/envs/corpus-filtering
 ```
 
 As always, please abide by general Patas etiquete and avoid running jobs on the head node that require non-trivial amounts of CPU or memory usage.
@@ -45,13 +45,13 @@ There are two ways to tell Condor to use the environment when running a job. The
 For CPU nodes:
 ```sh
 source ~/anaconda3/etc/profile.d/conda.sh
-conda activate /projects/assigned/lm-inductive/envs/corpus_filter_env
+conda activate /projects/assigned/lm-inductive/envs/corpus-filtering
 ```
 
 For GPU nodes:
 ```sh
 source ~/anaconda3/etc/profile.d/conda.sh
-conda activate /projects/assigned/lm-inductive/envs/gpu_corpus_filter_env
+conda activate /projects/assigned/lm-inductive/envs/gpu-corpus-filtering
 ```
 
 Note that you will also have to edit your Condor submit file to request GPU nodes; for instructions regarding how to do that, see the document linked to near the top of this README that also contain the instructions for installing conda on Patas.
@@ -59,7 +59,7 @@ Note that you will also have to edit your Condor submit file to request GPU node
 ##### Method B
 n.b.: This only works for CPU nodes.
 
-1. While logged into your Patas account on the Patas node, run `conda activate /projects/assigned/lm-inductive/envs/corpus_filter_env` (unless you are already working within this environment)
+1. While logged into your Patas account on the Patas node, run `conda activate /projects/assigned/lm-inductive/envs/corpus-filtering` (unless you are already working within this environment)
 1. Add `getenv = True` to your Condor submit file
 1. Call `condor_submit` with the submit file as per usual.
 
@@ -69,10 +69,10 @@ n.b.: This only works for CPU nodes.
     ```sh
     conda env create -f environment.yml
     ```
-    By default this will create a conda env whose name is indicated on the first line of the `environment.yml` file (presently, `corpus_filter_env`). You can change this by adding the `-n` flag followed by the desired name of your environment.
+    By default this will create a conda env whose name is indicated on the first line of the `environment.yml` file (presently, `corpus-filtering`). You can change this by adding the `-n` flag followed by the desired name of your environment.
 1. After the environment is created, whenever you want to work on this project, first activate the environment:
     ```sh
-    conda activate corpus_filter_env
+    conda activate corpus-filtering
     ```
 1. When you are done, you can exit the environment with `conda deactivate`.
 1. If you pull code from the repo and the `environment.yml` file has changed, update your environment by running the following (after activating the environment):
