@@ -7,6 +7,8 @@ dependencies:
   - pip=23
   - black
   - mypy
+  - tqdm
+  - types-tqdm
   # corpus_filtering dependencies
   - stanfordcorenlp=3.9
   - stanza=1.5
