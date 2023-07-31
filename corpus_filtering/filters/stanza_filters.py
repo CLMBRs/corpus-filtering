@@ -256,7 +256,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         noun, and relcl is the relative clause modifying the subject noun, then exclude
         the sentence.
 
-        Retruns:
+        Returns:
             True if the sentence has a noun from the noun list; False otherwise.
         """
         # filter: removing all nsubj that appeared in test data
@@ -305,4 +305,51 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
                     if deprel == "obl" or deprel == "obj" or deprel == "iobj":
                         return True
                     head, deprel, word = sent.dependencies[head.id - 1]
+        return False
+
+@register_filter("det-adj-noun")
+class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences with a determiner, a noun, and an intervening adjective.
+
+    Example sentences targeted by this filter:
+        "The big dog is asleep."
+        "I love feeding those fat mice cheese."
+    In contrast, example sentences passed by this filter:
+        "The dog is asleep."
+        "I love feeding those mice cheese."
+
+    A target sentence should be detectable via the presence of a upos:DET followed immediately
+    by anything other than a upos:NOUN, though theoretically upos:NUMBER might pass.
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """Exclude a sentence if it contains a noun from blimp data noun list.
+
+        For more information, see the class docstring.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence contains any determiners not immediately followed by a noun;
+            False otherwise.
+
+        Note:
+            The StanzaSentence.words attribute is still zero-indexed for list access purposes;
+            the "word.id" attribute is used below in fact to access the following word in the list.
+        """
+
+        for word in sent.words:
+            if word.upos == "DET": # If the word is a determiner...
+                if word.id < len(sent.words): #bounds check
+                    # ...and the following word is a number but its following word is NOT a noun...
+                    if sent.words[word.id].upos == "NUM":
+                        if word.id + 1 < len(sent.words): #bounds check
+                            if sent.words[word.id + 1].upos not in {"NOUN", "PROPN"}:
+                                return True # ...then filter the sentence out...
+                    # ...or if the following word is NOT a noun or a number...
+                    if sent.words[word.id].upos not in {"NOUN", "NUM", "PROPN"}:
+                        return True # ...then filter the sentence out...
         return False
