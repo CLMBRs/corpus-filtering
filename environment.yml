@@ -13,7 +13,10 @@ dependencies:
   - nltk=3.8
   # lm-training submodule dependencies
   - pytorch=2.*
-  - transformers=4.*
-  - accelerate
+  - transformers>=4.30
+  - accelerate>=0.20.3
   - hydra-core=1.3.*
   - strenum
+  # BLiMP Evaluation dependencies
+  - minicons
+  - datasets
