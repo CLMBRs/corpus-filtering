@@ -307,6 +307,51 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
                     head, deprel, word = sent.dependencies[head.id - 1]
         return False
 
+@register_filter("existential-there-quantifier")
+class ExistentialThereQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences which contains "there be nsubj" or "nsubj be there".
+    The target BLiMP benchmark sets are:
+        https://github.com/alexwarstadt/blimp/blob/master/data/existential_there_quantifiers_1.jsonl
+        https://github.com/alexwarstadt/blimp/blob/master/data/existential_there_quantifiers_2.jsonl
+
+    Some examples on good sentences and bad sentences:
+        good: "There was a documentary about music irritating Allison."
+        bad: "There was each documentary about music irritating Allison."
+        good: "All convertibles weren't there existing."
+        bad: "There weren't all convertibles existing."
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it contains "there" which appears as ether expletive nominals or demonstrative pronoun.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a existential-there-quantifier.
+        """
+
+        for head_there, deprel_there, word_there in sent.dependencies:
+            if word_there.lemma == "there":
+                # existential there
+                if deprel_there == "expl":
+                    return True
+                # search for "nsubj be there", where "there" is demonstrative pronoun
+                if word_there.feats is not None and "PronType=Dem" in word_there.feats:
+                    for head, deprel, word in sent.dependencies:
+                        if word.lemma == "be" and (
+                            # There are two ways of dependency parsing so it need to search both
+                            # for instance: Each story was there impressing Rhonda.
+                            # 1. "there" is root, which has "story", "was", "impressing" as leaf nodes
+                            # 2. "impressing" is root, which has "story", "was", "there" as leaf nodes
+                            word.head == word_there.id or word.head == word_there.head
+                        ):
+                            return True
+        return False
+
 @register_filter("det-adj-noun")
 class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
