@@ -1,9 +1,10 @@
-from typing import *
+from typing import Dict, List, Optional, Union
 
 import datasets
 import numpy as np
 import torch.nn as nn
 from minicons import scorer
+from torch import Tensor
 
 datasets.utils.logging.disable_progress_bar()
 
@@ -79,7 +80,7 @@ all_paradigms = [
 ]
 
 
-def reduce_log_probs(log_probs):
+def reduce_log_probs(log_probs: Tensor) -> float:
     """Returns the sentence log probability"""
     return log_probs.sum(0).item()
 
