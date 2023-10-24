@@ -398,3 +398,216 @@ class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWri
                     if sent.words[word.id].upos not in {"NOUN", "NUM", "PROPN"}:
                         return True # ...then filter the sentence out...
         return False
+
+@register_filter("binding-c-command")
+class BindingCCommandFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences which contains "nsubj + relative clause + verb + reflexive pronoun".
+    The target BLiMP benchmark sets are:
+        https://github.com/alexwarstadt/blimp/blob/master/data/principle_A_c_command.jsonl
+
+    Some examples on good sentences and bad sentences:
+        good: "A lot of patients who can sell some couch didn't investigate themselves."
+        bad: "A lot of patients who can sell some couch didn't investigate itself."
+
+    BLiMP: 966/1000 accepted.
+    It failed because dependency tree is incorrect.
+    For instance: "The cashiers that sound like Amelia insulted themselves."
+    Correct version is:
+        insulted
+            <- themselves
+            <- cashier <- sound like Amelia
+    But it gives out:
+        cashiers <- sound like Amelia <- insulted <- themselves
+
+    Train10K: 0 rejected.
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it contains a reflexive pronoun which has a co-indexed nsubj with a relative clause.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a binding-c-command.
+        """
+
+        for reflex_head, reflex_deprel, reflex_word in sent.dependencies:
+            # search for reflexive pronoun
+            if reflex_word.feats is not None and "Reflex=Yes" in reflex_word.feats:
+                # search for co-indexed subj
+                for subj_head, subj_deprel, subj_word in sent.dependencies:
+                    if subj_word.head == reflex_word.head and subj_deprel == "nsubj":
+                        for relcl_head, relcl_deprel, relcl_word in sent.dependencies[subj_word.id:reflex_word.id]:
+                            # search for relative clause between co-indexed subj and reflexive pronoun
+                            if relcl_deprel == "acl:relcl":
+                                while relcl_word.head != 0:
+                                    if relcl_word.head == subj_word.id:
+                                        return True
+                                    relcl_head, relcl_deprel, relcl_word = sent.dependencies[relcl_head.id - 1]
+        return False
+
+@register_filter("binding-case")
+class BindingCaseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences which is
+    either
+        a. "nsubj + verb + that + pronoun + verb(ccomp)"
+    or
+        b. "nsubj + verb + reflexive pronoun + xcomp/advcl"
+
+    The target BLiMP benchmark sets are:
+        https://github.com/alexwarstadt/blimp/blob/master/data/principle_A_case_1.jsonl
+        https://github.com/alexwarstadt/blimp/blob/master/data/principle_A_case_2.jsonl
+
+    Some examples on good sentences and bad sentences:
+        good: "Carl can't imagine that he complained about Lisa." (a)
+        bad: "Carl can't imagine that himself complained about Lisa."
+        good: "Eric imagines himself taking every rug." (b)
+        bad: "Eric imagines himself took every rug."
+
+    BLiMP: 1996/2000 accepted.
+    It failed because dependency tree is incorrect.
+    For instance: "Ella thought about herself skated around many glaciers."
+    Correct version is:
+        thought
+            <- Ella
+            <- herself
+            <- skated around many glaciers
+    But it gives out:
+        thought
+            <- Ella
+            <- skated
+                <- herself
+                <- round many glaciers.
+    Train10K: 155 rejected.
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it is in either format:
+        a. "nsubj + verb + that + pronoun + verb(ccomp)"
+        b. "nsubj + verb + reflexive pronoun + xcomp/advcl"
+        Case A may not guarantee that pronoun refers to nsubj.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a binding-case.
+        """
+
+        # for head, deprel, word in sent.dependencies:
+        #     print(f'id: {word.id}\tword: {word.text}\thead id: {word.head}\tdeprel: {word.deprel}\tfeat:{word.feats}')
+
+        for head, deprel, word in sent.dependencies[:-1]:
+            # case a: search for "that", which has a deprel as "mark", and also the head of "that" has a deprel as "ccomp"
+            if deprel == "mark" and head.deprel == "ccomp":
+                # next word following "that" should be PRON and nsubj
+                next_head, next_deprel, next_word = sent.dependencies[word.id]
+                if next_word.upos == "PRON" and (next_deprel == "nsubj" or next_deprel == "nsubj:pass"):
+                    return True
+            # case b: search for reflex
+            if word.feats is not None and "Reflex=Yes" in word.feats:
+                # next word following the reflex should have the same head as the reflex and its deprel is either "xcomp" or "advcl"
+                next_head, next_deprel, next_word = sent.dependencies[word.id]
+                if next_word.head == word.head and (next_deprel == "xcomp" or next_deprel == "advcl"):
+                    return True
+        return False
+
+@register_filter("binding-domain")
+class BindingDomainFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences which is
+    either
+        a. "nsubj + verb + that + nsubj + verb(ccomp) + pronoun"
+    or
+        b. "nsubj + verb + nsubj + verb(xcomp/ccomp) + reflexive pronoun"
+
+    The target BLiMP benchmark sets are:
+        https://github.com/alexwarstadt/blimp/blob/master/data/principle_A_domain_1.jsonl
+        https://github.com/alexwarstadt/blimp/blob/master/data/principle_A_domain_2.jsonl
+        https://github.com/alexwarstadt/blimp/blob/master/data/principle_A_domain_3.jsonl
+
+    Some examples on good sentences and bad sentences:
+        good: "Carl imagines that Maria does leave him." (a)
+        bad: "Carl imagines that Maria does leave himself."
+        good: "Mark imagines Erin might admire herself." (b)
+        bad: "Mark imagines Erin might admire himself."
+
+    BLiMP: 2978/3000 accepted.
+    It failed when parsing is incorrect.
+    For instance: "Marie hadn't explained Lawrence hugs himself.", where "hugs" is tagged as NOUN.
+    Train10K: 39 rejected.
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if it is in either format:
+        a. "nsubj + verb + that + nsubj + verb(ccomp) + pronoun"
+        b. "nsubj + verb + nsubj + verb(xcomp/ccomp) + reflexive pronoun"
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a binding-domain.
+        """
+
+        for head, deprel, word in sent.dependencies:
+            # case a: search for "that", which has a deprel as "mark", and also the head of "that" has a deprel as "ccomp"
+            if deprel == "mark" and head.deprel == "ccomp":
+                for obj_head, obj_deprel, obj_word in sent.dependencies[head.id:]:
+                    # find PRON appearing as obj/obl which shares the same head with "that"
+                    if obj_head.id == head.id and obj_word.upos == "PRON" and (obj_deprel == "obj"or obj_deprel == "obl"):
+                        return True
+            # case b: search for reflex
+            if word.feats is not None and "Reflex=Yes" in word.feats:
+                # the head of reflex has a deprel as "ccomp" or "xcomp"
+                if head.deprel == "ccomp" or head.deprel == "xcomp":
+                    return True
+        return False
+
+@register_filter("binding-reconstruction")
+class BindingReconstructionFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences which is in a format of "it's + reflex + that ..."
+
+    The target BLiMP benchmark sets are:
+        https://github.com/alexwarstadt/blimp/blob/master/data/principle_A_reconstruction.jsonl
+
+    Some examples on good sentences and bad sentences:
+        good: "It's herself who Karen criticized."
+        bad: "It's herself who criticized Karen."
+
+    BLiMP: 991/1000 accepted.
+    It failed when parser thinks the head of "it" is not the reflex.
+    Train10K: 0 rejected.
+    """
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """
+        Exclude a sentence if subj has reflex as its head
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a binding-reconstruction.
+        """
+
+        for head, deprel, word in sent.dependencies:
+            # search for reflex
+            if word.feats is not None and "Reflex=Yes" in word.feats:
+                for subj_head, subj_deprel, subj_word in sent.dependencies:
+                    # if nsubj has reflex as the head
+                    if subj_word.head == word.id and subj_deprel == "nsubj":
+                        return True
+
+        return False
