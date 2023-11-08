@@ -91,6 +91,27 @@ def evaluate_blimp(
     device: str = "cuda",
     verbose: bool = True,
 ) -> Dict[str, float]:
+    """ Computes the model accuracy on all BLiMP tasks.
+    Good/bad sentence comparisons are done based on sentence probability.
+    Model probabilities are extracted using the `minicons` library.    
+    
+    Parameters
+    ----------
+    model_name : str | nn.Module
+        Either a model name that refers to a HF model,
+        or an initialised torch model.
+    paradigms : List[str]
+        Optional argument to specify a subset of paradigms to evaluate.
+    device : str
+        Model device, defaults to cuda.
+    verbose : bool
+        Set to True to print paradigm accuracies.
+
+    Returns
+    -------
+    score_dict : Dict[str, float]
+        Dictionary mapping each paradigm name to an accuracy score.
+    """
     model = scorer.IncrementalLMScorer(model_name, device)
 
     if paradigms is None:
