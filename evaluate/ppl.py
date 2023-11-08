@@ -10,7 +10,8 @@ def evaluate_ppl(
     corpus_file: str,
     device: str = "cuda",
 ) -> float:
-    """Returns the perplexity of a single corpus file.
+    """ Returns the perplexity of a single corpus file.
+    Model probabilities are extracted using the `minicons` library.
 
     Parameters
     ----------
