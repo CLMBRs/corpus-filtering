@@ -501,9 +501,6 @@ class BindingCaseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             True if the sentence has a binding-case.
         """
 
-        # for head, deprel, word in sent.dependencies:
-        #     print(f'id: {word.id}\tword: {word.text}\thead id: {word.head}\tdeprel: {word.deprel}\tfeat:{word.feats}')
-
         for head, deprel, word in sent.dependencies[:-1]:
             # case a: search for "that", which has a deprel as "mark", and also the head of "that" has a deprel as "ccomp"
             if deprel == "mark" and head.deprel == "ccomp":
