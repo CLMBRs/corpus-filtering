@@ -135,3 +135,7 @@ dmypy.json
 *.sw*
 
 .idea/
+
+# hydra + custom
+outputs/
+models/
