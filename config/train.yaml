@@ -15,7 +15,7 @@ training_args:
   hub_strategy: all_checkpoints
   push_to_hub: true
   hub_always_push: true
-  num_train_epochs: 10 # 40
+  num_train_epochs: 40
   per_device_train_batch_size: 64
   per_device_eval_batch_size: 64
   run_name: ${hydra:job.name}
@@ -31,7 +31,6 @@ hydra:
   searchpath:
     - file://${oc.env:PWD}/lm-training/config
   job:
-    # config_name: train-lstm
     env_set:
       TOKENIZERS_PARALLELISM: false
       WANDB_USERNAME: abhinav-patil
