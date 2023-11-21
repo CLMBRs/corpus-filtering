@@ -139,3 +139,4 @@ dmypy.json
 # hydra + custom
 outputs/
 models/
+slurm_logs/
