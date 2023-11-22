@@ -1,0 +1,6 @@
+# @package _global_
+defaults:
+  - _self_
+corpus_name: toy
+data:
+  base_dir: ${root_dir}/data/toy/
