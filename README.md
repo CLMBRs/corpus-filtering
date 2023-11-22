@@ -113,6 +113,8 @@ sbatch --job-name=fict-full-lstm-1 scripts/run_with_conda.slurm gpu-lm-training 
 
 Update `arch`, `corpus`, and `seed` as desired.
 
+**Important**: When you first use a dataset with HuggingFace, by default, it will cache that dataset, along with any transformations applied to it (e.g. tokenization). *This process is not parallelism-safe*. Therefore, if training multiple models (e.g. across an HPC cluster like Hyak), you will first want to training just *one* model, and only start training new models when the first model has finished the dataset-processing portion (typically, and in our case, this means tokenization) of the training script.
+
 ### Hyak - Checkpointed GPUs
 
 (TODO)
