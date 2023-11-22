@@ -3,5 +3,4 @@ defaults:
   - _self_
 corpus_name: full
 data:
-  # base_dir: ${root_dir}/data/gulordava_corpus/
-  base_dir: /mmfs1/gscratch/stf/abhinavp/corpus-filtering/lm-training/data/wiki_overfit
+  base_dir: ${root_dir}/data/gulordava_corpus/
