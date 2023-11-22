@@ -34,7 +34,7 @@ hydra:
     env_set:
       TOKENIZERS_PARALLELISM: false
       WANDB_USERNAME: abhinav-patil
-      WANDB_PROJECT: dummy-fict
+      WANDB_PROJECT: fict
       WANDB_NAME: ${hydra:job.name}
       WANDB_JOB_TYPE: ${split:${hydra:job.name},-,2} # model_arch
       WANDB_RUN_GROUP: ${split:${hydra:job.name},-,1} # corpus_name
