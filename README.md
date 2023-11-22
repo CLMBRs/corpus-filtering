@@ -101,6 +101,23 @@ Optional, but recommended: before running `conda install` for new packages, run
 conda config --set channel_priority strict
 ```
 
+## Model Training
+
+### Hyak - STF GPUs
+
+Example run command (execute from root `corpus-filtering/` directory):
+
+```
+sbatch --job-name=fict-full-lstm-1 scripts/run_with_conda.slurm gpu-lm-training python lm-training/src/train_lm.py --config-path $PWD"/config" --config-name train '+arch=lstm' '+corpus=full' 'seed=1'
+```
+
+Update `arch`, `corpus`, and `seed` as desired.
+
+### Hyak - Checkpointed GPUs
+
+(TODO)
+
+
 ## Directory Structure
 
 [WIP]
