@@ -25,6 +25,8 @@ training_args:
   logging_strategy: "steps"
   logging_first_step: true
   logging_steps: 512
+dataset:
+  name: ${corpus_name}
 hydra:
   run:
     dir: ./outputs/${hydra:job.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
