@@ -3,11 +3,11 @@
 #SBATCH --job-name=run_with_conda_stf_gpu_job
 
 #SBATCH --account=stf
-#SBATCH --partition=gpu-2080ti
+#SBATCH --partition=ckpt
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
-#SBATCH --gpus=1
+#SBATCH --gres=gpu:a40:1
 #SBATCH --time=10-00:00:00 # Max runtime in DD-HH:MM:SS format.
 
 #SBATCH --export=all
