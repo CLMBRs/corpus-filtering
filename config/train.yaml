@@ -26,15 +26,19 @@ training_args:
   logging_strategy: "steps"
   logging_first_step: true
   logging_steps: 512
+  report_to: "tensorboard"
+  ignore_data_skip: true
+  dataloader_num_workers: 8
+  fp16: true
 dataset:
   name: ${corpus_name}
 dynamic_resume: true
 use_iterable_dataset: true
-# train_shards_per_worker: 2
-# eval_shards_per_worker: 2
+train_shards_per_worker: 32
+eval_shards_per_worker: 8
 hydra:
   run:
-    dir: ./outputs/preemption_testing/${run_name_suffix}/${corpus_name}/${model_arch}/${seed}
+    dir: ./outputs/${run_name_suffix}/${corpus_name}/${model_arch}/${seed}
     # dir: ${hydra:job.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
   searchpath:
     - file://${oc.env:PWD}/lm-training/config
@@ -42,9 +46,14 @@ hydra:
     env_set:
       TOKENIZERS_PARALLELISM: false
       WANDB_USERNAME: abhinav-patil
-      WANDB_PROJECT: preemption-testing
+      WANDB_PROJECT: fict
+      # WANDB_PROJECT: preemption-testing
       WANDB_NAME: ${hydra:job.name}
-      WANDB_JOB_TYPE: ${split:${hydra:job.name},-,2} # model_arch
-      WANDB_RUN_GROUP: ${split:${hydra:job.name},-,1} # corpus_name
-      WANDB_TAGS: ${split:${hydra:job.name},-,1},${split:${hydra:job.name},-,2},${split:${hydra:job.name},-,3}
-    name: preemption_testing-${corpus_name}-${model_arch}-${seed}${run_name_suffix}
+      WANDB_JOB_TYPE: ${split:${hydra:job.name},-,1} # model_arch
+      WANDB_RUN_GROUP: ${split:${hydra:job.name},-,0} # corpus_name
+      WANDB_TAGS: ${split:${hydra:job.name},-,0},${split:${hydra:job.name},-,1},${split:${hydra:job.name},-,2}
+      # WANDB_JOB_TYPE: ${split:${hydra:job.name},-,2} # model_arch
+      # WANDB_RUN_GROUP: ${split:${hydra:job.name},-,1} # corpus_name
+      # WANDB_TAGS: ${split:${hydra:job.name},-,1},${split:${hydra:job.name},-,2},${split:${hydra:job.name},-,3}
+    name: ${corpus_name}-${model_arch}-${seed}${run_name_suffix}
+    # name: preemption_testing-${corpus_name}-${model_arch}-${seed}${run_name_suffix}

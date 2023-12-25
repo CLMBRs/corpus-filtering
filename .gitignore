@@ -140,3 +140,7 @@ dmypy.json
 outputs/
 models/
 slurm_logs/
+
+# loggers
+wandb/
+.neptune/
