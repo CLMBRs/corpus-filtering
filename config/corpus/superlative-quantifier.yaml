@@ -1,0 +1,6 @@
+# @package _global_
+defaults:
+  - _self_
+corpus_name: superlative-quantifier
+data:
+  base_dir: ${root_dir}/data/filtered_corpuses/superlative-quantifier
