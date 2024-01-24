@@ -3,3 +3,6 @@
 */train.txt
 */blimp.accept.out
 */blimp.reject.out
+binding-*/principle_A*.out
+re-*/*regular_plural_subject_verb_agreement_*.out
+*-quantifier/*_quantifiers_*.out

@@ -220,7 +220,7 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         return False
 
 
-@register_filter("re-irre-nsubj")
+@register_filter("re-irr-sv-agr")
 class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
     A filter for testing the subject and verb agreement.
@@ -243,9 +243,9 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     }
 
     # reading file (noun list from blimp)
-    list_filename = "././data/blimp/svnoun/svnoun_list"
+    list_filename = "data/blimp/re-irr-sv-agr/nouns.txt"
     with open(list_filename, "r") as f:
-        lower_noun_set = set(line.strip().lower() for line in f)
+        lower_noun_set = {line.strip().lower() for line in f}
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
@@ -261,7 +261,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         """
         # filter: removing all nsubj that appeared in test data
         for _, _, word in sent.dependencies:
-            if word.deprel == "nsubj":
+            if "nsubj" in word.deprel:
                 if word.text.lower() in NSubjBlimpFilteredCorpusWriter.lower_noun_set:
                     return True
         return False
