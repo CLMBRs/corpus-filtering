@@ -1,0 +1,6 @@
+# @package _global_
+defaults:
+  - _self_
+corpus_name: re-irr-sv-agr
+data:
+  base_dir: ${root_dir}/data/filtered_corpuses/re-irr-sv-agr
