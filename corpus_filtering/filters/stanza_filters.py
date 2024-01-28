@@ -632,3 +632,91 @@ class BindingReconstructionFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
                         return True
 
         return False
+
+
+@register_filter("passive")
+class PassiveFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences where a verb in a list of verbs appears in the passive. The
+    list of verbs is generated from the verbs used in the following BLiMP benchmark sets
+    (the ones targeted by this filter):
+        passive_1
+        passive_2
+
+    In English, within the Universal Dependencies standards and conventions, a passive
+    verb will have the "Voice=Pass" feature. However, in English there is an ambiguity
+    where a copula + adjective can have the same form as a copula + passive verb. For
+    example:
+
+        He was admired (by everyone).
+
+    Without the by-PP, "admired" is ambiguous- it can be analyzed as either an adjective
+    or a passive verb. Since, ceteris paribus, we prefer stronger filters to weaker
+    ones,  we choose to filter out such sentences even when Stanza parses them as
+    adjectives. In that case, we look for the following structure:
+
+        Copula [1]: deprel = cop, (dependency) head = [2]
+        Adjective [2]: text or lemma in our verb list
+
+    Example sentences targeted by this filter:
+        1. Lucille's sisters are confused by Amy.
+        2. Sherry's partners aren't escaped from by Elizabeth.
+        3. Jason's grandmothers weren't cared for by Joseph.
+        4. Most cashiers are disliked.
+        5. All pedestrians are cared for.
+
+    Example sentences NOT targeted by this filter:
+        1. Amy confuses Lucille's sisters.
+        2. Elizabeth escapes from Sherry's partners.
+        3. Joseph cares for Jason's grandmothers.
+        4. Most cashiers are assaulted.
+        5. All pedestrians care.
+    Note that (4) is not targeted because "assault" is not in the word list.
+
+    For more information and examples, refer to the UD English documentation on Voice:
+        https://universaldependencies.org/u/feat/Voice.html#Pass
+        https://universaldependencies.org/u/overview/morphology.html
+    """
+
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:\n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+
+    verb_list_path = "data/blimp/passive/verbs.txt"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # read verb list
+        with open(self.verb_list_path, "r") as f:
+            self.verb_set: set[str] = {line.strip().lower() for line in f}
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """Exclude a sentence if a verb from a list of verbs appearing in the BLiMP
+        passive_1 or passive_2 benchmark sets appears in the sentence as a passive. For
+        more information, see the class docstring.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a verb from the verb list in the passive form;
+            False otherwise.
+        """
+        for head, deprel, word in sent.dependencies:
+            # for _, _, word in sent.dependencies:
+            if word.feats is not None and "Voice=Pass" in word.feats:
+                if (
+                    word.text.lower() in self.verb_set
+                    or word.lemma.lower() in self.verb_set
+                ):
+                    return True
+            # handle "copula + adjective" == "copula + passive" ambiguity
+            if deprel == "cop" and head.id > 0:
+                if (
+                    head.text.lower() in self.verb_set
+                    or head.lemma.lower() in self.verb_set
+                ):
+                    return True
+        return False
