@@ -14,7 +14,7 @@ __all__ = [
     "NModNSubjFilteredCorpusWriter",
     "RelativeClauseFilteredCorpusWriter",
     "NSubjBlimpFilteredCorpusWriter",
-    "SuperlativeQuantifierFilteredCorpusWriter"
+    "SuperlativeQuantifierFilteredCorpusWriter",
 ]
 
 
@@ -307,6 +307,7 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
                     head, deprel, word = sent.dependencies[head.id - 1]
         return False
 
+
 @register_filter("existential-there-quantifier")
 class ExistentialThereQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
@@ -347,26 +348,38 @@ class ExistentialThereQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilter
                             # for instance: Each story was there impressing Rhonda.
                             # 1. "there" is root, which has "story", "was", "impressing" as leaf nodes
                             # 2. "impressing" is root, which has "story", "was", "there" as leaf nodes
-                            word.head == word_there.id or word.head == word_there.head
+                            word.head == word_there.id
+                            or word.head == word_there.head
                         ):
                             return True
         return False
 
+
 @register_filter("det-adj-noun")
 class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
-    A filter for sentences with a determiner, a noun, and an intervening adjective.
+    A filter for sentences with a demonstrative determiner, a noun, and an intervening
+    adjective.
+
+    Non-demonstrative determiners are not targetted because they do not exhibit
+    inflection for number as demonstrative determiners do (this/that vs. these/those).
 
     Example sentences targeted by this filter:
         "The big dog is asleep."
         "I love feeding those fat mice cheese."
+        "These three mice eat cheese."
     In contrast, example sentences passed by this filter:
         "The dog is asleep."
+        "The big dog is asleep."
+        "I see the big dogs."
+        "I love these."
         "I love feeding those mice cheese."
 
     A target sentence should be detectable via the presence of a upos:DET followed immediately
     by anything other than a upos:NOUN, though theoretically upos:NUMBER might pass.
     """
+
+    demonstratives = {"this", "that", "these", "those"}
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """Exclude a sentence if it contains a noun from blimp data noun list.
@@ -378,26 +391,20 @@ class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWri
             relations.
 
         Returns:
-            True if the sentence contains any determiners not immediately followed by a noun;
-            False otherwise.
+            True if the sentence contains any determiners not immediately followed by
+            a noun; False otherwise.
 
-        Note:
-            The StanzaSentence.words attribute is still zero-indexed for list access purposes;
-            the "word.id" attribute is used below in fact to access the following word in the list.
         """
 
         for word in sent.words:
-            if word.upos == "DET" and word.text.lower() in {'this', 'that', 'these', 'those'}: # If the word is a determiner...
-                if word.id < len(sent.words): #bounds check
-                    # ...and the following word is a number but its following word is NOT a noun...
-                    if sent.words[word.id].upos == "NUM":
-                        if word.id + 1 < len(sent.words): #bounds check
-                            if sent.words[word.id + 1].upos not in {"NOUN", "PROPN"}:
-                                return True # ...then filter the sentence out...
-                    # ...or if the following word is NOT a noun or a number...
-                    if sent.words[word.id].upos not in {"NOUN", "NUM", "PROPN"}:
-                        return True # ...then filter the sentence out...
+            # If the word is a demonstrative determiner (this, that, these, those)...
+            if word.upos == "DET" and word.text.lower() in self.demonstratives:
+                # ...and the next word is not a noun
+                # n.b.: words attribute is 0-indexed, but word.id is 1-indexed
+                if sent.words[word.id].upos not in {"NOUN", "PROPN"}:
+                    return True  # ...then filter the sentence out...
         return False
+
 
 @register_filter("binding-c-command")
 class BindingCCommandFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
@@ -441,14 +448,21 @@ class BindingCCommandFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                 # search for co-indexed subj
                 for subj_head, subj_deprel, subj_word in sent.dependencies:
                     if subj_word.head == reflex_word.head and subj_deprel == "nsubj":
-                        for relcl_head, relcl_deprel, relcl_word in sent.dependencies[subj_word.id:reflex_word.id]:
+                        for relcl_head, relcl_deprel, relcl_word in sent.dependencies[
+                            subj_word.id : reflex_word.id
+                        ]:
                             # search for relative clause between co-indexed subj and reflexive pronoun
                             if relcl_deprel == "acl:relcl":
                                 while relcl_word.head != 0:
                                     if relcl_word.head == subj_word.id:
                                         return True
-                                    relcl_head, relcl_deprel, relcl_word = sent.dependencies[relcl_head.id - 1]
+                                    (
+                                        relcl_head,
+                                        relcl_deprel,
+                                        relcl_word,
+                                    ) = sent.dependencies[relcl_head.id - 1]
         return False
+
 
 @register_filter("binding-case")
 class BindingCaseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
@@ -506,15 +520,20 @@ class BindingCaseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             if deprel == "mark" and head.deprel == "ccomp":
                 # next word following "that" should be PRON and nsubj
                 next_head, next_deprel, next_word = sent.dependencies[word.id]
-                if next_word.upos == "PRON" and (next_deprel == "nsubj" or next_deprel == "nsubj:pass"):
+                if next_word.upos == "PRON" and (
+                    next_deprel == "nsubj" or next_deprel == "nsubj:pass"
+                ):
                     return True
             # case b: search for reflex
             if word.feats is not None and "Reflex=Yes" in word.feats:
                 # next word following the reflex should have the same head as the reflex and its deprel is either "xcomp" or "advcl"
                 next_head, next_deprel, next_word = sent.dependencies[word.id]
-                if next_word.head == word.head and (next_deprel == "xcomp" or next_deprel == "advcl"):
+                if next_word.head == word.head and (
+                    next_deprel == "xcomp" or next_deprel == "advcl"
+                ):
                     return True
         return False
+
 
 @register_filter("binding-domain")
 class BindingDomainFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
@@ -559,9 +578,13 @@ class BindingDomainFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         for head, deprel, word in sent.dependencies:
             # case a: search for "that", which has a deprel as "mark", and also the head of "that" has a deprel as "ccomp"
             if deprel == "mark" and head.deprel == "ccomp":
-                for obj_head, obj_deprel, obj_word in sent.dependencies[head.id:]:
+                for obj_head, obj_deprel, obj_word in sent.dependencies[head.id :]:
                     # find PRON appearing as obj/obl which shares the same head with "that"
-                    if obj_head.id == head.id and obj_word.upos == "PRON" and (obj_deprel == "obj"or obj_deprel == "obl"):
+                    if (
+                        obj_head.id == head.id
+                        and obj_word.upos == "PRON"
+                        and (obj_deprel == "obj" or obj_deprel == "obl")
+                    ):
                         return True
             # case b: search for reflex
             if word.feats is not None and "Reflex=Yes" in word.feats:
@@ -569,6 +592,7 @@ class BindingDomainFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                 if head.deprel == "ccomp" or head.deprel == "xcomp":
                     return True
         return False
+
 
 @register_filter("binding-reconstruction")
 class BindingReconstructionFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
