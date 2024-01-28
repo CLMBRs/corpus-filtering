@@ -1,0 +1,6 @@
+# @package _global_
+defaults:
+  - _self_
+corpus_name: passive
+data:
+  base_dir: ${root_dir}/data/filtered_corpuses/passive
