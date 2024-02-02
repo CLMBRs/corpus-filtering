@@ -361,7 +361,7 @@ class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWri
     A filter for sentences with a demonstrative determiner, a noun, and an intervening
     adjective.
 
-    Non-demonstrative determiners are not targetted because they do not exhibit
+    Non-demonstrative determiners are not targeted because they do not exhibit
     inflection for number as demonstrative determiners do (this/that vs. these/those).
 
     Example sentences targeted by this filter:
@@ -402,6 +402,74 @@ class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWri
                 # ...and the next word is not a noun
                 # n.b.: words attribute is 0-indexed, but word.id is 1-indexed
                 if sent.words[word.id].upos not in {"NOUN", "PROPN"}:
+                    return True  # ...then filter the sentence out...
+        return False
+
+
+@register_filter("det-noun")
+class DeterminerNounAgreementFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences with a demonstrative determiner whose head is a noun from a
+    list of nouns used in the following BLiMP benchmark sets:
+        determiner_noun_agreement_1
+        determiner_noun_agreement_2
+        determiner_noun_agreement_irregular_1
+        determiner_noun_agreement_irregular_2
+
+    Example sentences targeted by this filter:
+        1. Those dogs are asleep.
+        2. I love feeding those fat mice cheese.
+        3. These three mice eat cheese.
+    In contrast, example sentences passed by this filter:
+        1. The dogs are asleep.
+        2. I love feeding all fat mice cheese.
+        3. These are the books you requested.
+        4. I see those big cowards.
+    Note that (4) is not targeted because "coward" is not in the word list.
+
+    We detect such sentences by looking for this/that/these/those linked to one of the
+    nouns in the noun list via a `det` deprel. For more information, see the UD
+    documenation on determiners:
+        https://universaldependencies.org/u/dep/det.html
+        https://universaldependencies.org/en/dep/det.html
+    """
+
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:\n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+    demonstratives = {"this", "that", "these", "those"}
+    noun_list_path = "data/blimp/det-noun/nouns.txt"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # read noun list
+        with open(self.noun_list_path, "r") as f:
+            self.noun_set: set[str] = {line.strip().lower() for line in f}
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """Exclude a sentence if it contains a noun from blimp data noun list.
+
+        For more information, see the class docstring.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence contains any determiners not immediately followed by
+            a noun; False otherwise.
+
+        """
+
+        for head, deprel, word in sent.dependencies:
+            # If the word is a demonstrative determiner (this, that, these, those)...
+            # Second check is almost certainly redundant, but just in case...
+            if deprel == "det" and (
+                word.text.lower() in self.demonstratives
+                or word.lemma.lower() in self.demonstratives
+            ):
+                if head.text.lower() in self.noun_set:
                     return True  # ...then filter the sentence out...
         return False
 
