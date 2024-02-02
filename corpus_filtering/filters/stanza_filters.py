@@ -311,48 +311,97 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
 @register_filter("existential-there-quantifier")
 class ExistentialThereQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
-    A filter for sentences which contains "there be nsubj" or "nsubj be there".
-    The target BLiMP benchmark sets are:
-        https://github.com/alexwarstadt/blimp/blob/master/data/existential_there_quantifiers_1.jsonl
-        https://github.com/alexwarstadt/blimp/blob/master/data/existential_there_quantifiers_2.jsonl
+    A filter for sentences which contain existential (expletive) "There + be
+    + quantifier + noun" constructions, where the quantifier is from a set of
+    quantifiers found in the following BLiMP benchmark set, which this filter targets:
+        existential_there_quantifiers_1
 
-    Some examples on good sentences and bad sentences:
-        good: "There was a documentary about music irritating Allison."
-        bad: "There was each documentary about music irritating Allison."
-        good: "All convertibles weren't there existing."
-        bad: "There weren't all convertibles existing."
+    This BLiMP benchmark demonstrates the grammaticality/ungrammaticality of such
+    constructions with weak and strong quantifiers, respectively. The "good" sentences
+    in this benchmark use the weak quantifiers:
+        a, an, no, some, few, many
+    while the "bad" sentences use the strong quantifiers:
+        all, most, every, each
+
+    In principle, the latter set should never appear in such a construction as it would
+    be ungrammatical, but just in case, the filter removes any of the above quantifiers
+    in such constructions.
+
+    Example sentences targeted by this filter:
+        1. There is a monster eating children.
+        2. There were no documentaries about music irritating Allison.
+    In contrast, example sentences passed by this filter:
+        1. A monster is eating children there.
+        2. There were three documentaries about music irritating Allison.
+    Note that sentence (2) is not filtered out because "three" is not one of the BLiMP
+    quantifiers.
+
+    In English, within the Universal Dependencies standards and conventions, such a
+    construction will have the following structure:
+        There: lemma = "there", deprel = expl, head = [1]
+        Copula [1]: lemma = "be", deprel = root, head = root
+        Subject [2]: deprel = nsubj, head = [1]
+        Determiner: lemma in quantifier list, deprel = det OR amod, head = [2]
+
+    We identify such a construction in the following way:
+        1. Construct the set of copulas that are the heads of an expletive there.
+        2. Construct the set of words (verbs) whose subjects are the heads of a word
+        in our quantifier list.
+        3. Check if the intersection of those two sets is non-empty- that is, check
+        if at least one word is a member of both sets.
     """
+
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:\n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+
+    quantifiers = [
+        "a",
+        "an",
+        "no",
+        "some",
+        "few",
+        "many",
+        "all",
+        "most",
+        "every",
+        "each",
+    ]
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
-        Exclude a sentence if it contains "there" which appears as ether expletive nominals or demonstrative pronoun.
+        Exclude a sentence if it contains an existential "there" construction + a
+        quantifier from the list of quantifiers used in the corresponding BLiMP
+        benchmark set.
+
+        For more info, see the class docstring.
 
         Args:
             sent: A stanza `Sentence` object that has been annotated with dependency
             relations.
 
         Returns:
-            True if the sentence has a existential-there-quantifier.
+            True if the sentence has an existential there + one of the BLiMP quantifiers
+            (a, an, no, some, few, many, all, most, every, each) + a noun.
         """
+        # set 1: copulas which are the head of an expletive there
+        there_copulas = set()
+        # set 2: verbs whose subjects are the heads of a quantifier
+        quantifier_head_head_verbs = set()
 
-        for head_there, deprel_there, word_there in sent.dependencies:
-            if word_there.lemma == "there":
-                # existential there
-                if deprel_there == "expl":
-                    return True
-                # search for "nsubj be there", where "there" is demonstrative pronoun
-                if word_there.feats is not None and "PronType=Dem" in word_there.feats:
-                    for head, deprel, word in sent.dependencies:
-                        if word.lemma == "be" and (
-                            # There are two ways of dependency parsing so it need to search both
-                            # for instance: Each story was there impressing Rhonda.
-                            # 1. "there" is root, which has "story", "was", "impressing" as leaf nodes
-                            # 2. "impressing" is root, which has "story", "was", "there" as leaf nodes
-                            word.head == word_there.id
-                            or word.head == word_there.head
-                        ):
-                            return True
-        return False
+        for head, deprel, word in sent.dependencies:
+            # look for members of first set
+            if word.lemma == "there" and deprel == "expl":  # existential there
+                if head.lemma == "be":  # probably a redundant check
+                    there_copulas.add(head.id)
+            # look for members of second set
+            elif head.head and word.lemma in self.quantifiers:
+                if head.deprel is not None and head.deprel.startswith("nsubj"):
+                    quantifier_head_head_verbs.add(head.head)
+
+        # Now check if at least one word belongs to both sets
+        return len(there_copulas & quantifier_head_head_verbs) > 0
 
 
 @register_filter("det-adj-noun")
