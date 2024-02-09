@@ -10,14 +10,15 @@ root_dir: ${hydra:runtime.cwd} # can override to change paths below without affe
 run_name_suffix: "" # just in case- can be overriden to customize run name
 tokenizer:
   tokenizer_file: ${root_dir}/models/tokenizer/gulordava.json
+  model_max_length: 512
 training_args:
   hub_model_id: CLMBR/${hydra:job.name}
   hub_strategy: all_checkpoints
   push_to_hub: true
   hub_always_push: true
   num_train_epochs: 40
-  per_device_train_batch_size: 4
-  per_device_eval_batch_size: 4
+  per_device_train_batch_size: 32
+  per_device_eval_batch_size: 32
   run_name: ${hydra:job.name}
   load_best_model_at_end: true
   evaluation_strategy: "epoch"
@@ -25,11 +26,20 @@ training_args:
   logging_strategy: "steps"
   logging_first_step: true
   logging_steps: 512
+  report_to: "tensorboard"
+  ignore_data_skip: true
+  dataloader_num_workers: 8
+  fp16: true
 dataset:
   name: ${corpus_name}
+dynamic_resume: true
+use_iterable_dataset: true
+train_shards_per_worker: 32
+eval_shards_per_worker: 8
 hydra:
   run:
-    dir: ./outputs/${hydra:job.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    dir: ./outputs/${run_name_suffix}/${corpus_name}/${model_arch}/${seed}
+    # dir: ${hydra:job.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
   searchpath:
     - file://${oc.env:PWD}/lm-training/config
   job:
@@ -37,8 +47,13 @@ hydra:
       TOKENIZERS_PARALLELISM: false
       WANDB_USERNAME: abhinav-patil
       WANDB_PROJECT: fict
+      # WANDB_PROJECT: preemption-testing
       WANDB_NAME: ${hydra:job.name}
-      WANDB_JOB_TYPE: ${split:${hydra:job.name},-,2} # model_arch
-      WANDB_RUN_GROUP: ${split:${hydra:job.name},-,1} # corpus_name
-      WANDB_TAGS: ${split:${hydra:job.name},-,1},${split:${hydra:job.name},-,2},${split:${hydra:job.name},-,3}
-    name: fict-${corpus_name}-${model_arch}-${seed}${run_name_suffix}
+      WANDB_JOB_TYPE: ${split:${hydra:job.name},-,1} # model_arch
+      WANDB_RUN_GROUP: ${split:${hydra:job.name},-,0} # corpus_name
+      WANDB_TAGS: ${split:${hydra:job.name},-,0},${split:${hydra:job.name},-,1},${split:${hydra:job.name},-,2}
+      # WANDB_JOB_TYPE: ${split:${hydra:job.name},-,2} # model_arch
+      # WANDB_RUN_GROUP: ${split:${hydra:job.name},-,1} # corpus_name
+      # WANDB_TAGS: ${split:${hydra:job.name},-,1},${split:${hydra:job.name},-,2},${split:${hydra:job.name},-,3}
+    name: ${corpus_name}-${model_arch}-${seed}${run_name_suffix}
+    # name: preemption_testing-${corpus_name}-${model_arch}-${seed}${run_name_suffix}
