@@ -392,8 +392,7 @@ class ExistentialThereQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilter
 
         for head, deprel, word in sent.dependencies:
             # look for members of first set
-            if word.lemma == "there" and deprel == "expl":  # existential there
-                if head.lemma == "be":  # probably a redundant check
+            if word.lemma == "there" and deprel == "expl" and head.lemma == "be":  # existential there
                     there_copulas.add(head.id)
             # look for members of second set
             elif head.head and word.lemma in self.quantifiers:
