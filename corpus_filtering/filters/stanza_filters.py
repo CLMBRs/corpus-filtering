@@ -14,7 +14,7 @@ __all__ = [
     "NModNSubjFilteredCorpusWriter",
     "RelativeClauseFilteredCorpusWriter",
     "NSubjBlimpFilteredCorpusWriter",
-    "SuperlativeQuantifierFilteredCorpusWriter"
+    "SuperlativeQuantifierFilteredCorpusWriter",
 ]
 
 
@@ -220,7 +220,7 @@ class RelativeClauseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         return False
 
 
-@register_filter("re-irre-nsubj")
+@register_filter("re-irr-sv-agr")
 class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
     A filter for testing the subject and verb agreement.
@@ -243,9 +243,9 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     }
 
     # reading file (noun list from blimp)
-    list_filename = "././data/blimp/svnoun/svnoun_list"
+    list_filename = "data/blimp/re-irr-sv-agr/nouns.txt"
     with open(list_filename, "r") as f:
-        lower_noun_set = set(line.strip().lower() for line in f)
+        lower_noun_set = {line.strip().lower() for line in f}
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
@@ -261,7 +261,7 @@ class NSubjBlimpFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         """
         # filter: removing all nsubj that appeared in test data
         for _, _, word in sent.dependencies:
-            if word.deprel == "nsubj":
+            if "nsubj" in word.deprel:
                 if word.text.lower() in NSubjBlimpFilteredCorpusWriter.lower_noun_set:
                     return True
         return False
@@ -307,66 +307,127 @@ class SuperlativeQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
                     head, deprel, word = sent.dependencies[head.id - 1]
         return False
 
+
 @register_filter("existential-there-quantifier")
 class ExistentialThereQuantifierFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
-    A filter for sentences which contains "there be nsubj" or "nsubj be there".
-    The target BLiMP benchmark sets are:
-        https://github.com/alexwarstadt/blimp/blob/master/data/existential_there_quantifiers_1.jsonl
-        https://github.com/alexwarstadt/blimp/blob/master/data/existential_there_quantifiers_2.jsonl
+    A filter for sentences which contain existential (expletive) "There + be
+    + quantifier + noun" constructions, where the quantifier is from a set of
+    quantifiers found in the following BLiMP benchmark set, which this filter targets:
+        existential_there_quantifiers_1
 
-    Some examples on good sentences and bad sentences:
-        good: "There was a documentary about music irritating Allison."
-        bad: "There was each documentary about music irritating Allison."
-        good: "All convertibles weren't there existing."
-        bad: "There weren't all convertibles existing."
+    This BLiMP benchmark demonstrates the grammaticality/ungrammaticality of such
+    constructions with weak and strong quantifiers, respectively. The "good" sentences
+    in this benchmark use the weak quantifiers:
+        a, an, no, some, few, many
+    while the "bad" sentences use the strong quantifiers:
+        all, most, every, each
+
+    In principle, the latter set should never appear in such a construction as it would
+    be ungrammatical, but just in case, the filter removes any of the above quantifiers
+    in such constructions.
+
+    Example sentences targeted by this filter:
+        1. There is a monster eating children.
+        2. There were no documentaries about music irritating Allison.
+    In contrast, example sentences passed by this filter:
+        1. A monster is eating children there.
+        2. There were three documentaries about music irritating Allison.
+    Note that sentence (2) is not filtered out because "three" is not one of the BLiMP
+    quantifiers.
+
+    In English, within the Universal Dependencies standards and conventions, such a
+    construction will have the following structure:
+        There: lemma = "there", deprel = expl, head = [1]
+        Copula [1]: lemma = "be", deprel = root, head = root
+        Subject [2]: deprel = nsubj, head = [1]
+        Determiner: lemma in quantifier list, deprel = det OR amod, head = [2]
+
+    We identify such a construction in the following way:
+        1. Construct the set of copulas that are the heads of an expletive there.
+        2. Construct the set of words (verbs) whose subjects are the heads of a word
+        in our quantifier list.
+        3. Check if the intersection of those two sets is non-empty- that is, check
+        if at least one word is a member of both sets.
     """
+
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:\n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+
+    quantifiers = [
+        "a",
+        "an",
+        "no",
+        "some",
+        "few",
+        "many",
+        "all",
+        "most",
+        "every",
+        "each",
+    ]
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """
-        Exclude a sentence if it contains "there" which appears as ether expletive nominals or demonstrative pronoun.
+        Exclude a sentence if it contains an existential "there" construction + a
+        quantifier from the list of quantifiers used in the corresponding BLiMP
+        benchmark set.
+
+        For more info, see the class docstring.
 
         Args:
             sent: A stanza `Sentence` object that has been annotated with dependency
             relations.
 
         Returns:
-            True if the sentence has a existential-there-quantifier.
+            True if the sentence has an existential there + one of the BLiMP quantifiers
+            (a, an, no, some, few, many, all, most, every, each) + a noun.
         """
+        # set 1: copulas which are the head of an expletive there
+        there_copulas = set()
+        # set 2: verbs whose subjects are the heads of a quantifier
+        quantifier_head_head_verbs = set()
 
-        for head_there, deprel_there, word_there in sent.dependencies:
-            if word_there.lemma == "there":
-                # existential there
-                if deprel_there == "expl":
-                    return True
-                # search for "nsubj be there", where "there" is demonstrative pronoun
-                if word_there.feats is not None and "PronType=Dem" in word_there.feats:
-                    for head, deprel, word in sent.dependencies:
-                        if word.lemma == "be" and (
-                            # There are two ways of dependency parsing so it need to search both
-                            # for instance: Each story was there impressing Rhonda.
-                            # 1. "there" is root, which has "story", "was", "impressing" as leaf nodes
-                            # 2. "impressing" is root, which has "story", "was", "there" as leaf nodes
-                            word.head == word_there.id or word.head == word_there.head
-                        ):
-                            return True
-        return False
+        for head, deprel, word in sent.dependencies:
+            # look for members of first set
+            if word.lemma == "there" and deprel == "expl" and head.lemma == "be":  # existential there
+                    there_copulas.add(head.id)
+            # look for members of second set
+            elif head.head and word.lemma in self.quantifiers:
+                if head.deprel is not None and head.deprel.startswith("nsubj"):
+                    quantifier_head_head_verbs.add(head.head)
+
+        # Now check if at least one word belongs to both sets
+        return len(there_copulas & quantifier_head_head_verbs) > 0
+
 
 @register_filter("det-adj-noun")
 class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
     """
-    A filter for sentences with a determiner, a noun, and an intervening adjective.
+    A filter for sentences with a demonstrative determiner, a noun, and an intervening
+    adjective.
+
+    Non-demonstrative determiners are not targeted because they do not exhibit
+    inflection for number as demonstrative determiners do (this/that vs. these/those).
 
     Example sentences targeted by this filter:
         "The big dog is asleep."
         "I love feeding those fat mice cheese."
+        "These three mice eat cheese."
     In contrast, example sentences passed by this filter:
         "The dog is asleep."
+        "The big dog is asleep."
+        "I see the big dogs."
+        "I love these."
         "I love feeding those mice cheese."
 
     A target sentence should be detectable via the presence of a upos:DET followed immediately
     by anything other than a upos:NOUN, though theoretically upos:NUMBER might pass.
     """
+
+    demonstratives = {"this", "that", "these", "those"}
 
     def _exclude_sent(self, sent: StanzaSentence) -> bool:
         """Exclude a sentence if it contains a noun from blimp data noun list.
@@ -378,26 +439,88 @@ class DeterminerAdjectiveNounFilteredCorpusWriter(PickleStanzaDocCorpusFilterWri
             relations.
 
         Returns:
-            True if the sentence contains any determiners not immediately followed by a noun;
-            False otherwise.
+            True if the sentence contains any determiners not immediately followed by
+            a noun; False otherwise.
 
-        Note:
-            The StanzaSentence.words attribute is still zero-indexed for list access purposes;
-            the "word.id" attribute is used below in fact to access the following word in the list.
         """
 
         for word in sent.words:
-            if word.upos == "DET": # If the word is a determiner...
-                if word.id < len(sent.words): #bounds check
-                    # ...and the following word is a number but its following word is NOT a noun...
-                    if sent.words[word.id].upos == "NUM":
-                        if word.id + 1 < len(sent.words): #bounds check
-                            if sent.words[word.id + 1].upos not in {"NOUN", "PROPN"}:
-                                return True # ...then filter the sentence out...
-                    # ...or if the following word is NOT a noun or a number...
-                    if sent.words[word.id].upos not in {"NOUN", "NUM", "PROPN"}:
-                        return True # ...then filter the sentence out...
+            # If the word is a demonstrative determiner (this, that, these, those)...
+            if word.upos == "DET" and word.text.lower() in self.demonstratives:
+                # ...and the next word is not a noun
+                # n.b.: words attribute is 0-indexed, but word.id is 1-indexed
+                if sent.words[word.id].upos not in {"NOUN", "PROPN"}:
+                    return True  # ...then filter the sentence out...
         return False
+
+
+@register_filter("det-noun")
+class DeterminerNounAgreementFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences with a demonstrative determiner whose head is a noun from a
+    list of nouns used in the following BLiMP benchmark sets:
+        determiner_noun_agreement_1
+        determiner_noun_agreement_2
+        determiner_noun_agreement_irregular_1
+        determiner_noun_agreement_irregular_2
+
+    Example sentences targeted by this filter:
+        1. Those dogs are asleep.
+        2. I love feeding those fat mice cheese.
+        3. These three mice eat cheese.
+    In contrast, example sentences passed by this filter:
+        1. The dogs are asleep.
+        2. I love feeding all fat mice cheese.
+        3. These are the books you requested.
+        4. I see those big cowards.
+    Note that (4) is not targeted because "coward" is not in the word list.
+
+    We detect such sentences by looking for this/that/these/those linked to one of the
+    nouns in the noun list via a `det` deprel. For more information, see the UD
+    documenation on determiners:
+        https://universaldependencies.org/u/dep/det.html
+        https://universaldependencies.org/en/dep/det.html
+    """
+
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:\n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+    demonstratives = {"this", "that", "these", "those"}
+    noun_list_path = "data/blimp/det-noun/nouns.txt"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # read noun list
+        with open(self.noun_list_path, "r") as f:
+            self.noun_set: set[str] = {line.strip().lower() for line in f}
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """Exclude a sentence if it contains a noun from blimp data noun list.
+
+        For more information, see the class docstring.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence contains any determiners not immediately followed by
+            a noun; False otherwise.
+
+        """
+
+        for head, deprel, word in sent.dependencies:
+            # If the word is a demonstrative determiner (this, that, these, those)...
+            # Second check is almost certainly redundant, but just in case...
+            if deprel == "det" and (
+                word.text.lower() in self.demonstratives
+                or word.lemma.lower() in self.demonstratives
+            ):
+                if head.text.lower() in self.noun_set:
+                    return True  # ...then filter the sentence out...
+        return False
+
 
 @register_filter("binding-c-command")
 class BindingCCommandFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
@@ -441,14 +564,21 @@ class BindingCCommandFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                 # search for co-indexed subj
                 for subj_head, subj_deprel, subj_word in sent.dependencies:
                     if subj_word.head == reflex_word.head and subj_deprel == "nsubj":
-                        for relcl_head, relcl_deprel, relcl_word in sent.dependencies[subj_word.id:reflex_word.id]:
+                        for relcl_head, relcl_deprel, relcl_word in sent.dependencies[
+                            subj_word.id : reflex_word.id
+                        ]:
                             # search for relative clause between co-indexed subj and reflexive pronoun
                             if relcl_deprel == "acl:relcl":
                                 while relcl_word.head != 0:
                                     if relcl_word.head == subj_word.id:
                                         return True
-                                    relcl_head, relcl_deprel, relcl_word = sent.dependencies[relcl_head.id - 1]
+                                    (
+                                        relcl_head,
+                                        relcl_deprel,
+                                        relcl_word,
+                                    ) = sent.dependencies[relcl_head.id - 1]
         return False
+
 
 @register_filter("binding-case")
 class BindingCaseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
@@ -506,15 +636,20 @@ class BindingCaseFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
             if deprel == "mark" and head.deprel == "ccomp":
                 # next word following "that" should be PRON and nsubj
                 next_head, next_deprel, next_word = sent.dependencies[word.id]
-                if next_word.upos == "PRON" and (next_deprel == "nsubj" or next_deprel == "nsubj:pass"):
+                if next_word.upos == "PRON" and (
+                    next_deprel == "nsubj" or next_deprel == "nsubj:pass"
+                ):
                     return True
             # case b: search for reflex
             if word.feats is not None and "Reflex=Yes" in word.feats:
                 # next word following the reflex should have the same head as the reflex and its deprel is either "xcomp" or "advcl"
                 next_head, next_deprel, next_word = sent.dependencies[word.id]
-                if next_word.head == word.head and (next_deprel == "xcomp" or next_deprel == "advcl"):
+                if next_word.head == word.head and (
+                    next_deprel == "xcomp" or next_deprel == "advcl"
+                ):
                     return True
         return False
+
 
 @register_filter("binding-domain")
 class BindingDomainFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
@@ -559,9 +694,13 @@ class BindingDomainFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
         for head, deprel, word in sent.dependencies:
             # case a: search for "that", which has a deprel as "mark", and also the head of "that" has a deprel as "ccomp"
             if deprel == "mark" and head.deprel == "ccomp":
-                for obj_head, obj_deprel, obj_word in sent.dependencies[head.id:]:
+                for obj_head, obj_deprel, obj_word in sent.dependencies[head.id :]:
                     # find PRON appearing as obj/obl which shares the same head with "that"
-                    if obj_head.id == head.id and obj_word.upos == "PRON" and (obj_deprel == "obj"or obj_deprel == "obl"):
+                    if (
+                        obj_head.id == head.id
+                        and obj_word.upos == "PRON"
+                        and (obj_deprel == "obj" or obj_deprel == "obl")
+                    ):
                         return True
             # case b: search for reflex
             if word.feats is not None and "Reflex=Yes" in word.feats:
@@ -569,6 +708,7 @@ class BindingDomainFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
                 if head.deprel == "ccomp" or head.deprel == "xcomp":
                     return True
         return False
+
 
 @register_filter("binding-reconstruction")
 class BindingReconstructionFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
@@ -607,4 +747,92 @@ class BindingReconstructionFilteredCorpusWriter(PickleStanzaDocCorpusFilterWrite
                     if subj_word.head == word.id and subj_deprel == "nsubj":
                         return True
 
+        return False
+
+
+@register_filter("passive")
+class PassiveFilteredCorpusWriter(PickleStanzaDocCorpusFilterWriter):
+    """
+    A filter for sentences where a verb in a list of verbs appears in the passive. The
+    list of verbs is generated from the verbs used in the following BLiMP benchmark sets
+    (the ones targeted by this filter):
+        passive_1
+        passive_2
+
+    In English, within the Universal Dependencies standards and conventions, a passive
+    verb will have the "Voice=Pass" feature. However, in English there is an ambiguity
+    where a copula + adjective can have the same form as a copula + passive verb. For
+    example:
+
+        He was admired (by everyone).
+
+    Without the by-PP, "admired" is ambiguous- it can be analyzed as either an adjective
+    or a passive verb. Since, ceteris paribus, we prefer stronger filters to weaker
+    ones,  we choose to filter out such sentences even when Stanza parses them as
+    adjectives. In that case, we look for the following structure:
+
+        Copula [1]: deprel = cop, (dependency) head = [2]
+        Adjective [2]: text or lemma in our verb list
+
+    Example sentences targeted by this filter:
+        1. Lucille's sisters are confused by Amy.
+        2. Sherry's partners aren't escaped from by Elizabeth.
+        3. Jason's grandmothers weren't cared for by Joseph.
+        4. Most cashiers are disliked.
+        5. All pedestrians are cared for.
+
+    Example sentences NOT targeted by this filter:
+        1. Amy confuses Lucille's sisters.
+        2. Elizabeth escapes from Sherry's partners.
+        3. Joseph cares for Jason's grandmothers.
+        4. Most cashiers are assaulted.
+        5. All pedestrians care.
+    Note that (4) is not targeted because "assault" is not in the word list.
+
+    For more information and examples, refer to the UD English documentation on Voice:
+        https://universaldependencies.org/u/feat/Voice.html#Pass
+        https://universaldependencies.org/u/overview/morphology.html
+    """
+
+    cli_subcmd_constructor_kwargs = {
+        "description": f"Description:\n{__doc__}",
+        "formatter_class": argparse.RawDescriptionHelpFormatter,
+    }
+
+    verb_list_path = "data/blimp/passive/verbs.txt"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # read verb list
+        with open(self.verb_list_path, "r") as f:
+            self.verb_set: set[str] = {line.strip().lower() for line in f}
+
+    def _exclude_sent(self, sent: StanzaSentence) -> bool:
+        """Exclude a sentence if a verb from a list of verbs appearing in the BLiMP
+        passive_1 or passive_2 benchmark sets appears in the sentence as a passive. For
+        more information, see the class docstring.
+
+        Args:
+            sent: A stanza `Sentence` object that has been annotated with dependency
+            relations.
+
+        Returns:
+            True if the sentence has a verb from the verb list in the passive form;
+            False otherwise.
+        """
+        for head, deprel, word in sent.dependencies:
+            # for _, _, word in sent.dependencies:
+            if word.feats is not None and "Voice=Pass" in word.feats:
+                if (
+                    word.text.lower() in self.verb_set
+                    or word.lemma.lower() in self.verb_set
+                ):
+                    return True
+            # handle "copula + adjective" == "copula + passive" ambiguity
+            if deprel == "cop" and head.id > 0:
+                if (
+                    head.text.lower() in self.verb_set
+                    or head.lemma.lower() in self.verb_set
+                ):
+                    return True
         return False
