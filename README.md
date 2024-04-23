@@ -1,5 +1,9 @@
 # corpus-filtering
 
+## TODOs
+
+- [ ] add minicons, ipykernel, statsmodels to environment
+
 ## Development & Contribution Guidelines
 
 ### Basic Setup
