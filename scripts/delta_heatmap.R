@@ -33,7 +33,7 @@ blimp_delta_means$filter_target <- as.logical(blimp_delta_means$filter_target)
 
 #### PLOTTING ####
 
-# Make each of the four columns
+# Make each of the four groups of columns
 
 plt_lstm_full_acc <- ggplot(data = blimp_acc_means[blimp_acc_means$corpus == "full" & blimp_acc_means$arch == "lstm", ], aes(x = corpus, y = blimp_benchmark, fill = blimp_acc)) +
   geom_tile() +
