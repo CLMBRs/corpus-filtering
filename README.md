@@ -1,8 +1,14 @@
-# corpus-filtering
+# Filtered Corpus Training
+
+This repository accompanies the paper "Filtered Corpus Training (FiCT) Shows that Language Models can Generalize from Indirect Evidence"
 
 ## TODOs
 
 - [ ] add minicons, ipykernel, statsmodels to environment
+
+## Models
+
+All models trained in the paper are available at: https://huggingface.co/collections/CLMBR/filtered-corpus-training-6650b10280b530dba75208d3
 
 ## Development & Contribution Guidelines
 
